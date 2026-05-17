@@ -1,0 +1,1003 @@
+{
+  "app": {
+    "name": "طير السعد",
+    "tagline": "لوحة تحكم التوصيل · smartgateapp.com"
+  },
+  "language": {
+    "label": "اللغة",
+    "english": "English",
+    "arabic": "العربية"
+  },
+  "auth": {
+    "welcomeBack": "مرحبًا بعودتك",
+    "cardDescription": "سجّل الدخول بالهاتف أو البريد الإلكتروني، أو أنشئ حسابًا. يفتح دور المسؤول لوحة المسؤولين بعد تسجيل الدخول أو التسجيل.",
+    "signInTab": "تسجيل الدخول",
+    "registerTab": "تسجيل",
+    "phoneOrEmail": "الهاتف أو البريد الإلكتروني",
+    "phoneOrEmailPlaceholder": "+964… أو you@domain.com",
+    "password": "كلمة المرور",
+    "signIn": "تسجيل الدخول",
+    "fullName": "الاسم الكامل",
+    "phone": "الهاتف",
+    "role": "الدور",
+    "roleSender": "مرسل",
+    "roleDriver": "سائق",
+    "roleAdmin": "مسؤول",
+    "cityOptional": "المدينة (اختياري)",
+    "selectCity": "اختر مدينة",
+    "createAccount": "إنشاء حساب",
+    "validation": {
+      "phone": {
+        "required": "أدخل رقم الهاتف أو البريد الإلكتروني.",
+        "minLogin": "استخدم 3 أحرف على الأقل.",
+        "minRegister": "استخدم 5 أحرف على الأقل لرقم الهاتف."
+      },
+      "password": {
+        "required": "أدخل كلمة المرور.",
+        "minRegister": "يجب أن تتكوّن كلمة المرور من 8 أحرف على الأقل."
+      },
+      "name": {
+        "required": "أدخل اسمك الكامل."
+      }
+    }
+  },
+  "nav": {
+    "senderDashboard": "لوحة التحكم",
+    "senderOrders": "طلباتي",
+    "senderCreate": "إنشاء طلب",
+    "senderAddresses": "العناوين المحفوظة",
+    "senderPayments": "طرق الدفع",
+    "senderSupport": "الدعم والمساعدة",
+    "senderSettings": "الإعدادات",
+    "driverDashboard": "لوحة التحكم",
+    "driverAvailable": "طلبات متاحة",
+    "driverDeliveries": "توصيلاتي",
+    "driverEarnings": "الأرباح",
+    "driverVehicle": "المركبة والمستندات",
+    "driverRatings": "التقييمات والمراجعات",
+    "driverSupport": "الدعم",
+    "driverSettings": "الإعدادات"
+  },
+  "dashboard": {
+    "pingApi": "اختبار واجهة API",
+    "signOut": "تسجيل الخروج",
+    "system": "النظام",
+    "dbConnected": "قاعدة البيانات متصلة",
+    "dbCheck": "تحقق من قاعدة البيانات",
+    "apiPending": "واجهة API…",
+    "openMenu": "فتح القائمة",
+    "signOutShort": "خروج",
+    "badgeAdmin": "مسؤول",
+    "badgeSender": "مرسل",
+    "badgeDriver": "سائق",
+    "unknownRole": "دور غير معروف."
+  },
+  "sender": {
+    "dashboard": {
+      "title": "لوحة المرسل",
+      "subtitle": "تتبع الطرود التي أنشأتها وحالتها.",
+      "createOrderCta": "إنشاء طلب جديد",
+      "stats": {
+        "totalOrders": "إجمالي الطلبات",
+        "inTransit": "قيد التوصيل",
+        "delivered": "تم التسليم",
+        "pendingPickup": "بانتظار الاستلام",
+        "vsPrevious": "مقارنةً بالسابق"
+      },
+      "tabs": {
+        "active": "نشطة",
+        "completed": "مكتملة",
+        "cancelled": "ملغاة",
+        "drafts": "مسودات"
+      },
+      "orders": {
+        "title": "الطلبات",
+        "subtitle": "ابحث، وصفِّ، وأدر شحناتك",
+        "searchPlaceholder": "رقم التتبع أو المستلم…",
+        "searchClearAria": "مسح البحث",
+        "emptyTitle": "لا توجد طلبات بعد",
+        "emptyBody": "عند إنشاء شحنة، ستظهر هنا مع تحديثات مباشرة للحالة.",
+        "emptyCta": "أنشئ طلبك الأول",
+        "pagination": "صفحة {{page}} من {{totalPages}} · {{count}} طلبًا",
+        "previous": "السابق",
+        "next": "التالي",
+        "table": {
+          "trackingId": "رقم التتبع",
+          "recipient": "المستلم",
+          "destination": "الوجهة",
+          "status": "الحالة",
+          "driver": "السائق",
+          "created": "تاريخ الإنشاء",
+          "amount": "المبلغ"
+        },
+        "actionsMenuAria": "إجراءات الصف",
+        "view": "عرض",
+        "cancel": "إلغاء",
+        "rate": "تقييم",
+        "help": "مساعدة"
+      },
+      "filters": {
+        "status": "الحالة",
+        "from": "من",
+        "to": "إلى",
+        "sort": "الترتيب",
+        "allStatuses": "كل الحالات",
+        "all": "الكل",
+        "newestFirst": "الأحدث أولاً",
+        "oldestFirst": "الأقدم أولاً",
+        "amountHigh": "المبلغ (الأعلى)",
+        "amountLow": "المبلغ (الأدنى)"
+      }
+    }
+  },
+  "driver": {
+    "activeDelivery": {
+      "empty": {
+        "title": "لا توجد عملية توصيل نشطة",
+        "description": "اقبل عرضًا من تبويب «المتاح» لبدء المسار."
+      },
+      "estimatedPayout": "{{amount}} دفع تقديري",
+      "mapPlaceholder": {
+        "title": "خريطة المسار المباشر (معاينة)",
+        "hint": "اربط Mapbox أو خرائط Google للتوجيه خطوة بخطوة."
+      },
+      "pickup": "نقطة الاستلام",
+      "dropoff": "نقطة التسليم",
+      "callSender": "اتصال بالمرسل",
+      "chatSender": "مراسلة المرسل",
+      "callRecipient": "اتصال بالمستلم",
+      "chatRecipient": "مراسلة المستلم",
+      "reportIssue": "الإبلاغ عن مشكلة",
+      "stepsTitle": "خطوات التوصيل",
+      "stepsSubtitle": "أكمل الخطوات بالترتيب.",
+      "steps": {
+        "navigate_pickup": {
+          "label": "التوجّه إلى الاستلام",
+          "action": "فتح الخريطة للاستلام"
+        },
+        "arrived_pickup": {
+          "label": "وصلت إلى الاستلام",
+          "action": "تأكيد الوصول"
+        },
+        "picked_up": {
+          "label": "تم استلام الطرد",
+          "action": "تأكيد بالصورة"
+        },
+        "navigate_delivery": {
+          "label": "التوجّه إلى التسليم",
+          "action": "فتح الخريطة لنقطة التسليم"
+        },
+        "arrived_delivery": {
+          "label": "وصلت إلى الوجهة",
+          "action": "تأكيد الوصول"
+        },
+        "delivered": {
+          "label": "تم التسليم",
+          "action": "توقيع + صورة إثبات التسليم"
+        }
+      },
+      "openMaps": "فتح الخرائط",
+      "arrived": "لقد وصلت",
+      "pickupPhotoLabel": "صورة الاستلام",
+      "podPhotoLabel": "صورة إثبات التسليم",
+      "signatureLabel": "توقيع المستلم (صورة)",
+      "openMapsAria": "فتح الخرائط لهذه الخطوة",
+      "arrivedAria": "تأكيد وصولك إلى هذه النقطة",
+      "packageTypes": {
+        "DOCUMENT": "مستندات",
+        "SMALL": "صغير",
+        "MEDIUM": "متوسط",
+        "LARGE": "كبير"
+      },
+      "dialog": {
+        "title": "الإبلاغ عن مشكلة",
+        "description": "صف مشكلة التوصيل ليتمكن الدعم من المتابعة.",
+        "issueType": "نوع المشكلة",
+        "details": "التفاصيل",
+        "cancel": "إلغاء",
+        "submit": "إرسال البلاغ",
+        "validation": {
+          "noteRequired": "أدخل وصفًا موجزًا للمشكلة.",
+          "noteMax": "يجب ألا تتجاوز التفاصيل 2000 حرفًا."
+        },
+        "categories": {
+          "damaged": "طرد تالف",
+          "wrong_address": "عنوان خاطئ",
+          "recipient_unavailable": "المستلم غير متاح",
+          "other": "أخرى"
+        }
+      },
+      "a11y": {
+        "pickupPhotoPreview": "معاينة صورة الاستلام",
+        "podPhotoPreview": "معاينة صورة إثبات التسليم",
+        "signaturePreview": "معاينة توقيع المستلم"
+      }
+    },
+    "dashboard": {
+      "title": "لوحة السائق",
+      "subtitle": "أدر عمليات التوصيل وأرباحك.",
+      "online": "متصل",
+      "onlineAria": "التبديل بين الاتصال وعدم الاتصال",
+      "receivingOffers": "استقبال العروض",
+      "offlineBadge": "غير متصل",
+      "stats": {
+        "todayEarnings": "أرباح اليوم",
+        "todayEarningsHint": "قبل رسوم المنصة",
+        "completedDeliveries": "عمليات التسليم المكتملة",
+        "scopeToday": "اليوم",
+        "scopeWeek": "الأسبوع",
+        "sinceMidnight": "من منتصف الليل",
+        "last7Days": "آخر 7 أيام",
+        "activeOrder": "طلب نشط",
+        "inProgress": "قيد التنفيذ",
+        "noneNow": "لا يوجد حاليًا",
+        "rating": "التقييم",
+        "reviewsCount": "{{count}} مراجعة"
+      },
+      "performance": {
+        "title": "الأداء",
+        "description": "آخر 30 يومًا (تجريبي)",
+        "acceptanceRate": "معدل القبول",
+        "completionRate": "معدل الإكمال",
+        "onTimeRate": "معدل الالتزام بالوقت"
+      },
+      "heatMap": {
+        "title": "خريطة الطلب",
+        "description": "مناطق ازدحام (معاينة)",
+        "placeholder": "معاينة طبقة الحرارة — اربط واجهة التحليلات لعرض المناطق النشطة مباشرة."
+      },
+      "tabs": {
+        "available": "الطلبات المتاحة",
+        "active": "التوصيل النشط",
+        "history": "السجل",
+        "earnings": "الأرباح"
+      },
+      "verification": {
+        "title": "إجراء مطلوب: المستندات",
+        "body": "{{documents}} — حدّثها للبقاء مؤهلاً للتوصيل.",
+        "cta": "مراجعة المستندات"
+      },
+      "documents": {
+        "d1": "رخصة القيادة",
+        "d2": "تسجيل المركبة",
+        "d3": "التأمين"
+      },
+      "mobile": {
+        "home": "الرئيسية",
+        "active": "نشط",
+        "history": "السجل",
+        "earn": "الأرباح",
+        "more": "المزيد",
+        "sheetTitle": "المزيد",
+        "vehicleDocs": "المركبة والمستندات",
+        "ratingsReviews": "التقييمات والمراجعات",
+        "support": "الدعم",
+        "settings": "الإعدادات"
+      },
+      "sticky": {
+        "onDelivery": "قيد التوصيل",
+        "details": "التفاصيل",
+        "routeFromTo": "من {{pickup}} إلى {{drop}}"
+      },
+      "available": {
+        "offlineTitle": "أنت غير متصل",
+        "offlineBody": "فعّل الاتصال من أعلى الصفحة لاستقبال عروض الطلبات.",
+        "refreshing": "جارٍ التحديث…",
+        "updatedAt": "تم التحديث {{time}}",
+        "nearbyRequests": "طلبات قريبة",
+        "errorPrefix": "خطأ",
+        "listView": "عرض القائمة",
+        "mapView": "عرض الخريطة",
+        "mapTitle": "خريطة جغرافية",
+        "mapBody": "معاينة الخريطة لعرض {{count}} عرض (تجريبي). اربط حزمة خرائط للعرض المباشر.",
+        "mapBody_plural": "معاينة الخريطة لعرض {{count}} عروض (تجريبي). اربط حزمة خرائط للعرض المباشر.",
+        "empty": "لا توجد عروض حاليًا. تحقق لاحقًا.",
+        "senderRating": "{{rating}} المرسل",
+        "acceptIn": "اقبل خلال",
+        "distanceKm": "{{distance}} كم",
+        "eta": "الوقت المتوقع {{minutes}} د",
+        "accept": "قبول",
+        "decline": "رفض",
+        "countdownSeconds": "{{count}}ث"
+      },
+      "history": {
+        "title": "عمليات التسليم المكتملة",
+        "from": "من",
+        "to": "إلى",
+        "exportCsv": "تصدير CSV",
+        "emptyRange": "لا توجد صفوف في النطاق.",
+        "table": {
+          "date": "التاريخ",
+          "trackingId": "رقم التتبع",
+          "route": "المسار",
+          "earnings": "الأرباح",
+          "rating": "التقييم",
+          "status": "الحالة"
+        },
+        "csv": {
+          "date": "التاريخ",
+          "trackingId": "رقم التتبع",
+          "route": "المسار",
+          "earnings": "الأرباح",
+          "rating": "التقييم",
+          "status": "الحالة"
+        }
+      },
+      "earnings": {
+        "weeklyTitle": "الأرباح الأسبوعية",
+        "weeklyDescription": "آخر 7 أيام (دينار عراقي)",
+        "loadingChart": "جارٍ تحميل الرسم…",
+        "chartSeriesName": "الأرباح",
+        "breakdownTitle": "التفصيل (هذا الأسبوع)",
+        "baseFare": "الأجرة الأساسية",
+        "distanceBonuses": "مكافآت المسافة",
+        "tips": "الإكراميات",
+        "total": "الإجمالي",
+        "payoutTitle": "الدفع",
+        "payoutWallet": "رصيد محفظتك",
+        "currentBalance": "الرصيد الحالي",
+        "nextPayoutLead": "الدفع التالي:",
+        "requestPayout": "طلب سحب الرصيد",
+        "transactionsTitle": "سجل المعاملات",
+        "weekdays": {
+          "Mon": "إثنين",
+          "Tue": "ثلاثاء",
+          "Wed": "أربعاء",
+          "Thu": "خميس",
+          "Fri": "جمعة",
+          "Sat": "سبت",
+          "Sun": "أحد"
+        }
+      }
+    },
+    "vehicle": {
+      "title": "المركبة والمستندات",
+      "subtitle": "حافظ على أوراقك محدثة للاستمرار في العمل.",
+      "docStatus": {
+        "verified": "مُوثَّق",
+        "pending": "قيد المراجعة",
+        "expired": "منتهٍ",
+        "missing": "ناقص"
+      },
+      "expiresOn": "ينتهي {{date}}",
+      "noExpiry": "لا يوجد تاريخ انتهاء في الملف",
+      "uploadTitle": "رفع أو استبدال المستندات",
+      "uploadHint": "PDF أو صورة، بحد أقصى 10 ميجابايت لكل ملف (تجريبي — لا يُخزَّن)",
+      "submit": "إرسال للتحقق",
+      "verifiedPerks": "يحصل السائقون الموثَّقون على أولوية في المسارات المميزة ومضاعفات أرباح أعلى."
+    },
+    "ratings": {
+      "title": "التقييمات والمراجعات",
+      "subtitle": "ملاحظات المرسلين بعد التسليم.",
+      "trackingDate": "{{code}} · {{date}}"
+    },
+    "support": {
+      "title": "الدعم",
+      "subtitle": "مساعدة السائقين على شبكة طير السعد.",
+      "lineTitle": "خط دعم السائقين",
+      "lineHint": "على مدار الساعة أثناء التوصيل النشط",
+      "body": "للمشكلات العاجلة (حادث، سلامة، أو نزاع مع المستلم)، اتصل بالخط ذي الأولوية من هاتفك المسجَّل.",
+      "emailSupport": "البريد للدعم"
+    },
+    "settings": {
+      "title": "الإعدادات",
+      "subtitle": "تطبيق الملاحة والتنبيهات والتوفر.",
+      "navTitle": "الملاحة",
+      "navAppLabel": "تطبيق الخرائط المفضل",
+      "mapsGoogle": "خرائط Google",
+      "mapsWaze": "Waze",
+      "mapsApple": "خرائط Apple",
+      "notifTitle": "الإشعارات",
+      "notifDesc": "التحكم في تنبيهات العروض",
+      "pushOffers": "إشعار فوري للعروض الجديدة",
+      "pushOffersAria": "تبديل الإشعارات الفورية لعروض التوصيل الجديدة",
+      "availabilityTitle": "التوفر الافتراضي",
+      "availabilityDesc": "يتزامن مع مفتاح الاتصال في لوحة التحكم",
+      "startOnline": "بدء الاتصال عند فتح التطبيق",
+      "startOnlineAria": "تبديل بدء الاتصال تلقائيًا عند فتح التطبيق"
+    }
+  },
+  "settings": {
+    "title": "الإعدادات",
+    "subtitle": "الملف الشخصي والإشعارات وتفضيلات اللغة.",
+    "profile": "الملف الشخصي",
+    "profileDesc": "تفاصيل حسابك",
+    "name": "الاسم",
+    "phone": "الهاتف",
+    "notifications": "الإشعارات",
+    "notificationsDesc": "إدارة كيفية التواصل معك (قريبًا)",
+    "notificationsBody": "ستتوفر مفاتيح الإشعارات الفورية والبريد في تحديث لاحق.",
+    "language": "اللغة",
+    "displayLanguage": "لغة العرض"
+  },
+  "toasts": {
+    "signedIn": "تم تسجيل الدخول",
+    "accountCreated": "تم إنشاء الحساب",
+    "signedOut": "تم تسجيل الخروج",
+    "sessionExpired": "انتهت الجلسة — يُرجى تسجيل الدخول مجددًا.",
+    "forbidden": "ليست لديك صلاحية لهذا الإجراء.",
+    "serverError": "حدث خطأ، يُرجى المحاولة مرة أخرى.",
+    "networkError": "فُقد الاتصال — تحقق من الشبكة.",
+    "requestFailed": "فشل الطلب",
+    "orderCancelled": "تم إلغاء الطلب",
+    "thanksFeedback": "شكرًا على ملاحظاتك",
+    "addressSaved": "تم حفظ العنوان",
+    "addressUpdated": "تم تحديث العنوان",
+    "addressRemoved": "تم حذف العنوان",
+    "paymentMethodAdded": "تمت إضافة طريقة الدفع",
+    "removed": "تمت الإزالة",
+    "couldNotAcceptOrder": "تعذّر قبول الطلب",
+    "couldNotDecline": "تعذّر الرفض",
+    "offerDeclined": "تم رفض العرض",
+    "realtimeRejected": "رُفض الاتصال الفوري — يُرجى تسجيل الدخول مجددًا.",
+    "pickupPhotoRequired": "أضف صورة الاستلام أولًا",
+    "signaturePhotoRequired": "مطلوب توقيع المستلم وصورة التسليم",
+    "deliveryCompleted": "اكتمل التسليم — أحسنت!",
+    "reportSent": "تم إرسال البلاغ: {{category}}",
+    "enterLast4": "أدخل آخر 4 أرقام",
+    "labelAddressRequired": "التسمية والعنوان مطلوبان",
+    "citiesLoadError": "تعذّر تحميل المدن",
+    "cityAdded": "تمت إضافة المدينة",
+    "cityCreateError": "تعذّر إنشاء المدينة — تأكد أنك مسجّل كمسؤول",
+    "zoneSavedDemo": "تم حفظ {{name}} (تجريبي)",
+    "promoCreated": "تم إنشاء {{code}}",
+    "bulkPayoutDemo": "تمت جدولة الدفع الجماعي (تجريبي)",
+    "refundPanelDemo": "لوحة الاسترداد (تجريبي)",
+    "exportStartedDemo": "بدأ التصدير (تجريبي)",
+    "pricingSavedDemo": "تم حفظ التسعير (تجريبي)",
+    "orderLoadError": "تعذّر تحميل الطلب",
+    "selectStarRating": "اختر تقييمًا بالنجوم",
+    "fixValidation": "صحّح أخطاء التحقق",
+    "draftSaved": "تم حفظ المسودة",
+    "acceptTermsFix": "يرجى قبول الشروط وإصلاح الأخطاء",
+    "acceptTermsPlace": "اقبل الشروط لإرسال الطلب",
+    "orderPlacedSuccess": "تم إرسال الطلب بنجاح",
+    "documentsSubmittedDemo": "تم إرسال المستندات للمراجعة (تجريبي)",
+    "reassignDemo": "مسار إعادة التعيين (تجريبي)",
+    "refundFlowDemo": "مسار الاسترداد (تجريبي)",
+    "markDisputeDemo": "تم وضع علامة نزاع (تجريبي)",
+    "orderCancelledDemo": "تم إلغاء الطلب (تجريبي)",
+    "broadcastDemo": "تمت جدولة البث (تجريبي)",
+    "messageSentDemo": "تم إرسال الرسالة (تجريبي)",
+    "userSuspendedDemo": "تم تعليق المستخدم (تجريبي)",
+    "bulkExportDemo": "تمت جدولة التصدير الجماعي (تجريبي)",
+    "noteSaved": "تم حفظ الملاحظة",
+    "userBannedDemo": "تم حظر المستخدم (تجريبي)",
+    "roleSet": "تم تعيين الدور إلى {{role}}",
+    "payoutRequestDemo": "تم إرسال طلب التحويل (تجريبي)",
+    "finishDeliveryFirst": "أنهِ التوصيل الحالي قبل قبول عرض جديد.",
+    "offerAccepted": "تم قبول العرض — انتقل إلى نقطة الاستلام",
+    "csvExported": "تم تصدير CSV",
+    "searchQueued": "بحث: {{query}}",
+    "searchWireDescription": "سيتم الربط بـ GET /admin/search لاحقًا.",
+    "decisionRecorded": "تم تسجيل القرار: {{decision}}",
+    "approvedDriverDemo": "تمت الموافقة على {{name}} (تجريبي)",
+    "driverSuspendedDemo": "تم تعليق السائق (تجريبي)",
+    "driverRejected": "تم الرفض {{name}}: {{reason}}",
+    "driverMessageDemo": "تم إرسال الرسالة (تجريبي)"
+  },
+  "errors": {
+    "generic": "حدث خطأ ما",
+    "viewCrashed": "تعطّلت هذه الشاشة",
+    "tryAgain": "إعادة المحاولة"
+  },
+  "notFound": {
+    "title": "الصفحة غير موجودة",
+    "description": "لا يطابق عنوان الرابط أي مسار في التطبيق.",
+    "backToDashboard": "العودة إلى لوحة التحكم"
+  },
+  "admin": {
+    "permissionDenied": "الوصول مرفوض",
+    "permissionDeniedBody": "دورك ({{role}}) لا يتيح عرض هذا القسم.",
+    "nav": {
+      "overview": "نظرة عامة",
+      "users": "المستخدمون (المرسلون)",
+      "drivers": "السائقون",
+      "orders": "الطلبات",
+      "payments": "المدفوعات والمالية",
+      "disputes": "النزاعات والبلاغات",
+      "reviews": "المراجعات والتقييمات",
+      "analytics": "التحليلات",
+      "promotions": "العروض والقسائم",
+      "serviceAreas": "مناطق الخدمة",
+      "pricing": "إعدادات التسعير",
+      "notifications": "الإشعارات والبث",
+      "audit": "سجل التدقيق",
+      "roles": "إدارة الأدوار",
+      "settings": "الإعدادات",
+      "support": "تذاكر الدعم"
+    },
+    "shell": {
+      "sidebarSectionTitle": "لوحة المشرف",
+      "brandSubtitle": "وحدة تحكم المشرف",
+      "mobileSheetTitle": "تنقل المشرف",
+      "mobileSheetDescription": "تصفح أقسام المشرف وإجراءات الحساب.",
+      "breadcrumbAria": "مسار التنقل",
+      "breadcrumbHome": "رئيسية المشرف",
+      "breadcrumbSep": "/",
+      "userMenuTriggerAria": "قائمة الحساب",
+      "userMenuProfile": "الملف الشخصي",
+      "userMenuSettings": "إعدادات المشرف",
+      "userMenuSignOut": "تسجيل الخروج",
+      "roleLabelAdmin": "مسؤول",
+      "header": {
+        "searchPlaceholder": "ابحث عن مستخدمين أو سائقين أو طلبات بالمعرّف…",
+        "searchAria": "بحث عام",
+        "toggleTheme": "تبديل السمة",
+        "notificationsAria": "الإشعارات",
+        "alerts": "التنبيهات",
+        "alertDriverApp": "طلب سائق جديد",
+        "alertDriverAppDesc": "قيد المراجعة — متقدم جديد",
+        "alertDispute": "نزاع مُبلّغ عنه",
+        "alertDisputeDesc": "أولوية عالية — disp1",
+        "signOut": "تسجيل الخروج"
+      }
+    },
+    "serviceAreas": {
+      "title": "مناطق الخدمة",
+      "subtitle": "تحديد التغطية والتسعير لكل منطقة ومدن التوصيل.",
+      "citiesTitle": "المدن (مباشر)",
+      "citiesDesc": "تظهر المدن في نماذج تسجيل الدخول والتسجيل. المدن الجديدة تصبح فورًا للمرسلين والسائقين.",
+      "cityName": "اسم المدينة",
+      "country": "الدولة",
+      "cityPlaceholder": "مثال: بغداد",
+      "countryPlaceholder": "العراق",
+      "addCity": "إضافة مدينة",
+      "refreshTitle": "تحديث القائمة",
+      "loading": "جاري تحميل المدن…",
+      "emptyCities": "لا توجد مدن نشطة بعد.",
+      "coverageTitle": "خريطة التغطية",
+      "coverageDesc": "أدمج Mapbox أو Google Maps — ارسم مضلعات لتفعيل التوصيل.",
+      "mapPlaceholder": "معاينة مكوّن الخريطة — اضبط مفتاح API في الإعدادات.",
+      "zoneEconomics": "الاقتصاد لكل منطقة",
+      "baseFare": "أجرة أساسية",
+      "perKm": "لكل كم",
+      "surgeMultiplier": "مضاعف الذروة",
+      "hours": "الساعات",
+      "hours247": "24/7",
+      "hoursCustom": "مخصص",
+      "saveZone": "حفظ المنطقة"
+    },
+    "promotions": {
+      "title": "العروض والقسائم",
+      "subtitle": "إنشاء رموز خصم ومراقبتها.",
+      "newTitle": "عرض جديد",
+      "newDesc": "جميع الحقول تُتحقق قبل الحفظ.",
+      "code": "الرمز",
+      "discountType": "نوع الخصم",
+      "discountPercent": "نسبة مئوية",
+      "discountFixed": "مبلغ ثابت",
+      "value": "القيمة",
+      "minOrder": "الحد الأدنى للطلب",
+      "usageLimit": "حد الاستخدام",
+      "expiry": "انتهاء الصلاحية",
+      "audience": "الجمهور",
+      "audienceAll": "كل المرسلين",
+      "audienceNew": "الطلب الأول فقط",
+      "audienceReferral": "مكافأة إحالة",
+      "previewLabel": "معاينة:",
+      "previewPercent": "−{{v}}% على الطلبات المؤهلة",
+      "previewFixed": "−{{amount}} على الطلبات المؤهلة",
+      "performanceTitle": "الأداء",
+      "performanceDesc": "الاستخدامات وتواريخ الانتهاء (تجريبي)",
+      "usesEnds": "{{uses}} استخدام · ينتهي {{ends}}",
+      "savePromotion": "حفظ العرض",
+      "validation": {
+        "codeMin": "يجب أن يكون الرمز حرفين على الأقل.",
+        "codeMax": "يجب ألا يتجاوز الرمز 32 حرفًا.",
+        "valuePositive": "أدخل قيمة موجبة.",
+        "usagePositive": "يجب أن يكون حد الاستخدام عددًا صحيحًا موجبًا.",
+        "expiresRequired": "اختر تاريخ انتهاء الصلاحية."
+      }
+    },
+    "disputes": {
+      "title": "النزاعات والبلاغات",
+      "subtitle": "حل المشكلات بالأدلة وقرارات واضحة.",
+      "searchPlaceholder": "ابحث بالنوع أو معرّف الطلب أو النزاع…",
+      "emptyTitle": "لا توجد نزاعات مفتوحة",
+      "emptyDesc": "عمل رائع — أو اربط واجهة النزاعات.",
+      "orderPrefix": "طلب",
+      "reported": "تاريخ الإبلاغ:",
+      "assigned": "المُكلَّف:",
+      "unassigned": "غير مُكلَّف",
+      "openDetail": "فتح التفاصيل",
+      "orderField": "الطلب:",
+      "conversation": "المحادثة",
+      "evidence": "الأدلة",
+      "evidencePhoto1": "صورة 1",
+      "evidencePhoto2": "صورة 2",
+      "evidenceProof": "إثبات",
+      "decision": "القرار",
+      "outcome": "النتيجة",
+      "outcomeNoAction": "لا إجراء",
+      "outcomeSender": "لصالح المرسل",
+      "outcomeDriver": "لصالح السائق",
+      "outcomePartial": "استرداد جزئي",
+      "outcomeFull": "استرداد كامل",
+      "internalNotes": "ملاحظات داخلية",
+      "submitDecision": "إرسال القرار",
+      "priority": { "high": "عالية", "medium": "متوسطة", "low": "منخفضة" },
+      "validation": { "noteMin": "أدخل 3 أحرف على الأقل في الملاحظات." }
+    },
+    "drivers": {
+      "title": "السائقون",
+      "subtitle": "تشغيل الأسطول والتحقق والأداء.",
+      "tabAll": "كل السائقين",
+      "tabPending": "طلبات قيد المراجعة",
+      "searchPlaceholder": "ابحث بالاسم أو المدينة أو المركبة أو المعرّف…",
+      "emptyPendingTitle": "لا توجد طلبات معلقة",
+      "emptyPendingDesc": "تسجيلات السائقين الجديدة ستظهر هنا لمراجعة المستندات.",
+      "tableDriver": "السائق",
+      "tableVehicle": "المركبة",
+      "tableCity": "المدينة",
+      "tableDocuments": "المستندات",
+      "tableActions": "إجراءات",
+      "approve": "موافقة",
+      "reject": "رفض",
+      "viewDetails": "عرض التفاصيل",
+      "sendMessage": "إرسال رسالة",
+      "suspend": "تعليق",
+      "sheetTitle": "ملف السائق",
+      "name": "الاسم",
+      "vehicle": "المركبة",
+      "city": "المدينة",
+      "status": "الحالة",
+      "verification": "التحقق",
+      "documents": "المستندات",
+      "expiresOn": "ينتهي {{date}}",
+      "performance": "الأداء",
+      "performanceLine": "توصيلات: {{deliveries}} · التقييم: {{rating}} · الأرباح: {{earnings}}",
+      "suspendTitle": "تعليق {{name}}؟",
+      "suspendDesc": "سيُزال السائق من التجمع حتى يُعاد تفعيله.",
+      "suspendConfirm": "تعليق السائق",
+      "rejectTitle": "رفض الطلب",
+      "rejectReasonPlaceholder": "سبب الرفض",
+      "cancel": "إلغاء",
+      "submitRejection": "إرسال الرفض",
+      "columns": {
+        "name": "الاسم",
+        "vehicle": "المركبة",
+        "city": "المدينة",
+        "status": "الحالة",
+        "verification": "التحقق",
+        "deliveries": "التوصيلات",
+        "rating": "التقييم",
+        "earnings": "الأرباح"
+      },
+      "verificationState": {
+        "verified": "مُتحقق",
+        "pending": "قيد الانتظار",
+        "rejected": "مرفوض"
+      },
+      "driverStatus": {
+        "online": "متصل",
+        "offline": "غير متصل",
+        "on_delivery": "في توصيل",
+        "suspended": "مُعلَّق"
+      },
+      "documentsMock": {
+        "license": "رخصة القيادة",
+        "vehicleReg": "تسجيل المركبة",
+        "insurance": "التأمين"
+      },
+      "validation": { "rejectReasonMin": "أدخل سببًا (3 أحرف على الأقل)." }
+    },
+    "users": {
+      "title": "المستخدمون (المرسلون)",
+      "subtitle": "إدارة حسابات المرسلين والإنفاق.",
+      "searchPlaceholder": "ابحث بالاسم أو البريد أو الهاتف أو المعرّف…",
+      "filterAll": "كل الحالات",
+      "filterActive": "نشط",
+      "filterSuspended": "مُعلَّق",
+      "filterBanned": "محظور",
+      "bulkExport": "تصدير جماعي",
+      "viewDetails": "عرض التفاصيل",
+      "sheetTitle": "ملف المستخدم",
+      "ordersSpent": "الطلبات / الإنفاق:",
+      "orderHistory": "سجل الطلبات",
+      "orderHistoryWire": "اربط بـ GET /admin/users/:id/orders",
+      "adminNote": "ملاحظة المشرف",
+      "saveNote": "حفظ الملاحظة",
+      "banUser": "حظر المستخدم",
+      "issueRefund": "إصدار استرداد",
+      "banTitle": "حظر {{name}}؟",
+      "banDesc": "يمكن التراجع عن هذا الإجراء من سجل التدقيق.",
+      "banConfirm": "تأكيد الحظر",
+      "sendMessage": "إرسال رسالة",
+      "suspend": "تعليق",
+      "columns": {
+        "name": "الاسم",
+        "email": "البريد",
+        "phone": "الهاتف",
+        "orders": "الطلبات",
+        "spent": "الإنفاق",
+        "joined": "تاريخ الانضمام",
+        "status": "الحالة"
+      },
+      "userStatus": { "active": "نشط", "suspended": "مُعلَّق", "banned": "محظور" },
+      "validation": { "noteMax": "يجب ألا تتجاوز الملاحظة 2000 حرف." }
+    },
+    "payments": {
+      "title": "المدفوعات والمالية",
+      "subtitle": "الإيرادات والعمولات والمدفوعات والاستردادات.",
+      "totalRevenue": "إجمالي الإيرادات",
+      "platformCommission": "عمولة المنصة",
+      "driverPayoutsOwed": "مدفوعات السائقين المستحقة",
+      "refundsIssued": "الاستردادات الصادرة",
+      "refresh": "تحديث",
+      "processPayouts": "معالجة مدفوعات السائقين",
+      "refundsPanel": "لوحة الاستردادات",
+      "reportDaily": "تقرير يومي",
+      "reportWeekly": "تقرير أسبوعي",
+      "reportMonthly": "تقرير شهري",
+      "exportFinancials": "تصدير البيانات المالية",
+      "transactionsTitle": "المعاملات",
+      "transactionsDesc": "قائمة مفلترة — اربط بـ GET /admin/transactions",
+      "columns": { "date": "التاريخ", "type": "النوع", "amount": "المبلغ", "party": "الطرف", "status": "الحالة" }
+    },
+    "pricing": {
+      "title": "إعدادات التسعير",
+      "subtitle": "قواعد عامة — لمشرف رئيسي فقط.",
+      "tariffTitle": "التعرفة",
+      "tariffDesc": "أجرة أساسية، مسافة، وزن، ذروة، حد أدنى",
+      "packageType": "نوع الطرد",
+      "pkgStandard": "عادي",
+      "pkgExpress": "سريع",
+      "pkgFragile": "هش",
+      "baseFare": "أجرة أساسية",
+      "perKm": "لكل كم",
+      "perKg": "لكل كغ",
+      "minFare": "الحد الأدنى للأجرة",
+      "peakSurge": "مضاعف ذروة",
+      "previewTitle": "معاينة مباشرة",
+      "previewLine": "مثال {{km}} كم، {{kg}} كغ → تقدير {{total}} (بعد الذروة)",
+      "savePricing": "حفظ التسعير",
+      "validation": {
+        "nonNegative": "يجب أن يكون صفرًا أو أكبر.",
+        "surgeMin": "يجب أن يكون المضاعف 1 على الأقل."
+      }
+    },
+    "notifications": {
+      "title": "الإشعارات والبث",
+      "subtitle": "إرسال إعلانات داخل التطبيق للمستخدمين.",
+      "composeTitle": "إنشاء بث",
+      "composeDesc": "يُتحقق قبل الإرسال.",
+      "audience": "الجمهور",
+      "audienceSenders": "كل المرسلين",
+      "audienceDrivers": "كل السائقين",
+      "audienceBoth": "الجميع",
+      "titleField": "العنوان",
+      "message": "الرسالة",
+      "send": "إرسال البث",
+      "validation": {
+        "titleMin": "يجب أن يكون العنوان 3 أحرف على الأقل.",
+        "titleMax": "يجب ألا يتجاوز العنوان 200 حرف.",
+        "bodyMin": "يجب أن تكون الرسالة 10 أحرف على الأقل.",
+        "bodyMax": "يجب ألا تتجاوز الرسالة 2000 حرف."
+      }
+    },
+    "appSettings": {
+      "title": "الإعدادات",
+      "subtitle": "تفضيلات المشرف (تجريبي: محاكاة الدور الفرعي).",
+      "simTitle": "دور المشرف المُحاكى",
+      "simDesc": "حتى تتوفر مطالبات JWT، اختر دورًا فرعيًا لاختبار أذونات الوصول. يُخزَّن في sessionStorage.",
+      "subrole": "الدور الفرعي",
+      "roleSuper": "مشرف رئيسي",
+      "roleSupport": "مشرف دعم",
+      "roleFinance": "مشرف مالي",
+      "roleReadOnly": "قراءة فقط",
+      "reload": "أعد التحميل لتطبيق التنقل"
+    },
+    "overview": {
+      "title": "لوحة المشرف",
+      "subtitle": "نظرة عامة على المنصة والإدارة.",
+      "loadingKpis": "جاري تحميل المؤشرات…",
+      "sendersTitle": "إجمالي المستخدمين (المرسلون)",
+      "sendersHint": "كل حسابات المرسلين",
+      "driversTitle": "السائقون النشطون",
+      "driversHint": "متصلون الآن / الإجمالي",
+      "ordersToday": "طلبات اليوم",
+      "revenueToday": "إيرادات اليوم",
+      "pendingDisputes": "نزاعات معلقة",
+      "openCases": "قضايا مفتوحة",
+      "platformRating": "تقييم المنصة",
+      "avgReviews": "متوسط كل التقييمات",
+      "trendUp": "+{{value}}% مقارنة بالأمس",
+      "trendDown": "{{value}}% مقارنة بالأمس",
+      "ordersOverTime": "الطلبات عبر الزمن",
+      "volumeTrend": "اتجاه الحجم",
+      "tabDay": "يوم",
+      "tabWeek": "أسبوع",
+      "tabMonth": "شهر",
+      "orderStatus": "حالة الطلب",
+      "distribution": "التوزيع",
+      "revenueByCity": "الإيرادات حسب المدينة",
+      "revenueMock": "دينار عراقي (تجريبي)",
+      "recentActivity": "النشاط الأخير",
+      "activityFeed": "تغذية محدَّثة (استطلاع)",
+      "rawStats": "واجهة الإحصاءات الخام",
+      "fromStatsApi": "من GET /stats",
+      "activityKind": {
+        "order": "طلب",
+        "signup": "تسجيل",
+        "driver_app": "طلب سائق",
+        "flag": "تنبيه"
+      }
+    },
+    "audit": {
+      "title": "سجل التدقيق",
+      "subtitle": "سجل غير قابل للتعديل لإجراءات الصلاحيات.",
+      "searchPlaceholder": "ابحث عن مشرف أو إجراء أو كيان…",
+      "columns": { "when": "متى", "admin": "المشرف", "action": "الإجراء", "entity": "الكيان" }
+    },
+    "roles": {
+      "title": "إدارة الأدوار",
+      "subtitle": "مستخدمو المشرفين ومستويات الأذونات (بيانات تجريبية).",
+      "cardTitle": "مشرفو المنصة",
+      "cardDesc": "يمكن للمشرف الرئيسي دعوة أدوار مالية ودعم",
+      "columns": { "name": "الاسم", "email": "البريد", "permission": "الإذن", "edit": "تعديل" },
+      "roleLabels": {
+        "super_admin": "مشرف رئيسي",
+        "support_admin": "مشرف دعم",
+        "finance_admin": "مشرف مالي",
+        "read_only": "قراءة فقط"
+      }
+    },
+    "analytics": {
+      "title": "التحليلات",
+      "subtitle": "قمع التحويل، الاستخدام، المسارات، والاحتفاظ (نافذة {{range}}).",
+      "range7": "آخر 7 أيام",
+      "range30": "آخر 30 يومًا",
+      "range90": "آخر 90 يومًا",
+      "funnelTitle": "قمع التحويل",
+      "funnelDesc": "رحلة المرسل (تجريبي)",
+      "utilTitle": "استخدام السائقين بالساعة",
+      "utilDesc": "حصة السعة المتصلة (تجريبي)",
+      "routesTitle": "أبرز المسارات",
+      "routesDesc": "أزواج منشأ → وجهة",
+      "churnTitle": "مخاطر التسرب",
+      "churnDesc": "نسبة شهرية (تجريبي)",
+      "heatmapTitle": "خريطة حرارية للطلبات",
+      "heatmapDesc": "شدة اليوم × الساعة (تجريبي)",
+      "funnelVisit": "زيارة",
+      "funnelSignup": "تسجيل",
+      "funnelFirstOrder": "أول طلب",
+      "funnelRepeat": "تكرار",
+      "tabGrid": "شبكة",
+      "tabArea": "مساحة"
+    },
+    "reviews": {
+      "title": "التقييمات والمراجعات",
+      "subtitle": "إشراف على الملاحظات ومتابعة جودة المنصة.",
+      "cardTitle": "كل المراجعات",
+      "cardDesc": "اربط بـ GET /admin/reviews",
+      "columns": { "order": "الطلب", "driver": "السائق", "rating": "التقييم", "comment": "التعليق", "date": "التاريخ" }
+    },
+    "support": {
+      "title": "تذاكر الدعم",
+      "subtitle": "اربط بمكتب المساعدة أو CRM.",
+      "statusOpen": "مفتوح",
+      "statusWaiting": "في الانتظار",
+      "priorityHigh": "عالية",
+      "priorityMedium": "متوسطة"
+    },
+    "ordersPage": {
+      "title": "الطلبات",
+      "subtitle": "سجل الطلبات الكامل مع المرشحات والتصدير.",
+      "refresh": "تحديث",
+      "exportCsv": "تصدير CSV",
+      "searchPlaceholder": "ابحث بالمعرّف أو التتبع أو المرسل أو السائق…",
+      "allStatuses": "كل الحالات",
+      "allCities": "كل المدن",
+      "minAmount": "الحد الأدنى",
+      "maxAmount": "الحد الأقصى",
+      "loading": "جاري تحميل الطلبات…",
+      "emptyTitle": "لا توجد طلبات مطابقة",
+      "emptyHint": "عدّل المرشحات أو حدّث بعد نشاط جديد.",
+      "sheetTitle": "طلب {{code}}",
+      "timeline": "الجدول الزمني",
+      "created": "تاريخ الإنشاء",
+      "status": "الحالة",
+      "payment": "الدفع",
+      "timelineCreated": "أُنشئ · {{at}}",
+      "timelineStatus": "الحالة · {{status}}",
+      "timelinePayment": "الدفع · {{payment}}",
+      "mapPreview": "معاينة الخريطة — سيتم ربط مسار التوصيل لاحقًا.",
+      "sender": "المرسل",
+      "driver": "السائق",
+      "pickup": "الاستلام",
+      "dropoff": "التسليم",
+      "communications": "التواصل",
+      "chatPlaceholder": "سيظهر سجل الدردشة هنا.",
+      "cancelTitle": "إلغاء الطلب {{code}}؟",
+      "cancelDescription": "سيتم إشعار المرسل. استخدم أدوات الاسترداد إذا تم قبض المبلغ.",
+      "cancelConfirm": "إلغاء الطلب",
+      "dash": "—",
+      "columns": {
+        "id": "المعرّف",
+        "tracking": "التتبع",
+        "sender": "المرسل",
+        "driver": "السائق",
+        "route": "المسار",
+        "routePattern": "{{city}}: استلام → تسليم",
+        "status": "الحالة",
+        "amount": "المبلغ",
+        "created": "أُنشئ",
+        "delivered": "تم التسليم"
+      },
+      "actions": {
+        "viewDetails": "عرض التفاصيل",
+        "reassignDriver": "إعادة تعيين سائق",
+        "issueRefund": "إصدار استرداد",
+        "markDispute": "تعليم كنزاع",
+        "cancelOrder": "إلغاء الطلب"
+      }
+    }
+  },
+  "orders": {
+    "detailSheet": {
+      "title": "تفاصيل الطلب",
+      "noOrderSelected": "لم يُحدَّد طلب.",
+      "timelineTitle": "الجدول الزمني للتتبع",
+      "timeline": {
+        "events": {
+          "PENDING": "تم إنشاء الطلب",
+          "ASSIGNED": "تم تعيين السائق",
+          "PICKED_UP": "تم الاستلام",
+          "IN_TRANSIT": "قيد التوصيل",
+          "DELIVERED": "تم التسليم"
+        },
+        "cancelledNotice": "تم إلغاء هذا الطلب.",
+        "pending": "قيد الانتظار",
+        "dash": "—"
+      },
+      "map": {
+        "title": "خريطة مباشرة (معاينة)",
+        "body": "سيظهر موقع السائق هنا عند توفره."
+      },
+      "driver": {
+        "rating": "تقييم السائق: {{rating}}",
+        "chat": "مراسلة",
+        "call": "اتصال",
+        "avatarAlt": "صورة السائق",
+        "chatAria": "مراسلة السائق",
+        "callAria": "الاتصال بالسائق"
+      },
+      "package": {
+        "title": "الطرد",
+        "type": "النوع",
+        "description": "الوصف",
+        "category": "التصنيف",
+        "pickup": "الاستلام",
+        "delivery": "التوصيل",
+        "recipient": "المستلم",
+        "destination": "الوجهة",
+        "window": "النافذة الزمنية"
+      },
+      "cancelOrder": "إلغاء الطلب",
+      "rating": {
+        "title": "قيّم التوصيل",
+        "commentLabel": "تعليق (اختياري)",
+        "submit": "إرسال التقييم",
+        "starLabel": "تقييم {{count}} من 5 نجوم"
+      }
+    }
+  },
+  "orderStatus": {
+    "draft": "مسودة",
+    "pending": "قيد الانتظار",
+    "assigned": "مُعيَّن",
+    "picked_up": "تم الاستلام",
+    "in_transit": "قيد النقل",
+    "delivered": "تم التسليم",
+    "cancelled": "ملغى",
+    "disputed": "نزاع"
+  },
+  "orderTimeline": {
+    "cancelled": "تم إلغاء الطلب",
+    "disputeOpen": "نزاع مفتوح"
+  },
+  "meta": {
+    "title": "طير السعد"
+  }
+}

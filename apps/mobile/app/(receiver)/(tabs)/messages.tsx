@@ -1,0 +1,18 @@
+import { useTranslation } from 'react-i18next';
+import { Text, View } from 'react-native';
+
+import { Screen } from '@/components/ui/Screen';
+
+export default function ReceiverMessagesPlaceholderScreen() {
+  const { t } = useTranslation();
+
+  return (
+    <Screen className="justify-center px-6 pb-28 pt-8">
+      <Text className="text-center text-xl font-semibold text-ink">{t('receiver.messagesTitle')}</Text>
+      <Text className="mt-4 text-center text-base leading-7 text-inkSoft">{t('receiver.messagesEmpty')}</Text>
+      <View className="mt-10 rounded-2xl border border-border bg-bg px-5 py-6">
+        <Text className="text-center text-sm leading-6 text-inkSoft">{t('receiver.messagesFootnote')}</Text>
+      </View>
+    </Screen>
+  );
+}

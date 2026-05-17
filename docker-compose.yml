@@ -1,0 +1,20 @@
+# Mongo + Redis on default ports matching .env.example (27017 / 6379).
+# Usage from repo root: `pnpm services` — then `pnpm dev`
+
+services:
+  mongo:
+    image: mongo:7
+    ports:
+      - '27017:27017'
+    volumes:
+      - tayralsaad_mongo_data:/data/db
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - '6379:6379'
+    restart: unless-stopped
+
+volumes:
+  tayralsaad_mongo_data:

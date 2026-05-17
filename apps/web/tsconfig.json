@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+    "moduleResolution": "bundler",
+    "strict": true,
+    "jsx": "react-jsx",
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "types": ["vite/client"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@tayralsaad/types": ["../../packages/types/src/index.ts"],
+      "@tayralsaad/utils": ["../../packages/utils/src/index.ts"],
+      "@tayralsaad/i18n": ["../../packages/i18n/src/index.ts"]
+    }
+  },
+  "include": ["src", "vite.config.ts"]
+}

@@ -1,0 +1,98 @@
+# .cursorrules — طير السعد · Tayr Al-Saad
+
+You are working on **Tayr Al-Saad (طير السعد)**, a bilingual (Arabic-first / English) P2P courier delivery platform for the Iraqi market. Built by Utu. Monorepo with React Native (Expo), React (Vite), and Node/Express + MongoDB.
+
+## Identity / brand
+- Display name AR: `طير السعد` · Latin: `Tayr Al-Saad`
+- Bundle/package ID: `iq.utu.tayralsaad`
+- Tagline AR: `أمانتك بأمان`
+- Tagline EN: `Trusted in flight, delivered on time`
+
+## Stack — do not substitute
+- Mobile: React Native + Expo SDK 51+ (managed), Expo Router, NativeWind, Zustand, TanStack Query, react-hook-form + zod, i18next, react-native-maps, Socket.IO client, expo-secure-store
+- Web: React + Vite, Tailwind + shadcn/ui, same state libs
+- Backend: Node 20+, Express, Mongoose, JWT auth (phone OTP), Socket.IO server, BullMQ + Redis, Cloudinary, Pino, Sentry
+- Monorepo: pnpm workspaces + Turborepo
+
+## Architecture rules
+
+1. **Shared types live in `packages/types`.** If you create a new entity in `apps/api`, immediately mirror its TypeScript type in `packages/types` and import it on the client. No duplicated `interface Shipment` in two places.
+
+2. **Status enums are English keys only.** `pending | assigned | picked_up | in_transit | delivered | cancelled | disputed`. Stored as-is in MongoDB. Translated at render time via `t('status.picked_up')`.
+
+3. **All UI strings come from `packages/i18n/{en,ar}.json`.** Never hardcode visible text. If you need a new string, add it to BOTH files. Arabic is the source of truth; English is the translation.
+
+4. **Default language is Arabic.** App opens in AR unless `Localization.locale` starts with `en`.
+
+5. **Currency is IQD, always.** Use `formatIQD(amount)` from `packages/utils`. Never `${amount} IQD` or `${amount} د.ع` inline. Display amounts as `10,000 د.ع` in AR and `10,000 IQD` in EN.
+
+6. **Iraqi context, not Western placeholders.** Cities: Baghdad, Basra, Erbil, Mosul, Najaf, Karbala, Sulaymaniyah, Kirkuk, Duhok, Hilla, Diwaniyah, Nasiriyah. Phone format: `+964 7XX XXX XXXX`. Real Iraqi names in mock data.
+
+## Code style
+
+- TypeScript everywhere. `strict: true`.
+- Components: function components only, named export, one component per file. Filename matches component (`ShipmentCard.tsx`).
+- Hooks: prefix `use`, located in `hooks/` adjacent to feature.
+- API calls: TanStack Query mutations/queries in `lib/queries/*.ts`. Never `fetch` inside a component.
+- Forms: react-hook-form + zod schema. Schemas live in `lib/schemas/*.ts` so they can be reused on the server.
+- Styling: NativeWind utility classes. Custom one-offs go in `tokens` package, not component files.
+- Imports order: react/rn first, third-party second, `@tayralsaad/*` workspace packages third, local relative last.
+
+## RTL rules (this is where most apps fail)
+
+- Use `start` / `end` everywhere, **never** `left` / `right`.
+- `flex-row` flips automatically under RTL — let it. Don't manually reverse with `flex-row-reverse`.
+- Icons that imply direction (arrows, chevrons) must mirror under RTL — use a `<DirectionalIcon>` helper.
+- Numbers (tracking codes, phone numbers, prices) are LTR even inside Arabic text. Wrap with `<Bidi dir="ltr">` or insert `\u200E`.
+- When in doubt, test the screen in both directions before claiming it's done.
+
+## Visual rules
+
+- Headings use **Fraunces** (Latin) / **Tajawal** (Arabic) — defined in tokens.
+- Body uses **Inter** (Latin) / **Tajawal** (Arabic).
+- No drop shadows except for the bottom nav. Use 1px borders in `--border` color for separation.
+- No gradients except very subtle ones on primary CTAs.
+- Cards: 12px radius, 1px border, white background on warm off-white page bg.
+- No emoji in production UI. No lorem ipsum.
+
+## Forbidden patterns
+
+- ❌ `localStorage` / `sessionStorage` in React Native (use `expo-secure-store` or `AsyncStorage`)
+- ❌ Hardcoded strings like `"Add to cart"` or `"إضافة"`
+- ❌ `console.log` left in committed code (use Pino on server, remove on client before commit)
+- ❌ `any` type without a `// TODO` comment explaining
+- ❌ Inline color values (`#2F4A5C`) — always use tokens
+- ❌ Date formatting via `toLocaleDateString` without locale — use the shared `formatDate(date, locale)` util
+- ❌ Storing passwords (this app has none — phone OTP only)
+- ❌ Calling Google Maps APIs from the client without a backend proxy (API key leak)
+
+## Required patterns
+
+- ✅ Every screen has a loading state, an empty state, and an error state.
+- ✅ Every mutation shows optimistic feedback or a spinner — never a frozen button.
+- ✅ Every form field has both labels in both languages.
+- ✅ Every API endpoint has a zod schema for input validation.
+- ✅ Every list is virtualized (`FlashList` or `FlatList` with `getItemLayout`) if it can exceed 50 items.
+- ✅ Every navigation transition between sender/driver mode reloads the app to re-init i18n and role guards.
+
+## When asked to add a feature
+
+1. Add/update the type in `packages/types`.
+2. Add the API route + Mongoose model + zod schema in `apps/api`.
+3. Add the TanStack Query hook in `apps/mobile/lib/queries`.
+4. Build the screen with loading/empty/error states.
+5. Add translation keys to both `en.json` and `ar.json`.
+6. Test in both LTR and RTL before declaring done.
+
+## When asked for a quick fix
+
+- Don't refactor unrelated code.
+- Don't introduce new dependencies without flagging them in the response.
+- Don't change the design system tokens.
+
+## Output format when generating code
+
+- One file per response unless explicitly told otherwise.
+- Show the full file, not diffs (Cursor handles diffing).
+- Above the code, in 2-3 lines: what the file does and what it depends on.
+- After the code, list any new translation keys, new dependencies, or follow-up tasks.

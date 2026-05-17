@@ -1,0 +1,71 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* طير السعد (Tair Al Saad): shadcn + light blue & light brown */
+@layer base {
+  :root {
+    --background: 210 45% 97%;
+    --foreground: 28 22% 18%;
+
+    --card: 40 35% 99%;
+    --card-foreground: 28 22% 18%;
+
+    --popover: 40 40% 99%;
+    --popover-foreground: 28 22% 18%;
+
+    /* #2563eb */
+    --primary: 221 83% 53%;
+    --primary-foreground: 210 55% 99%;
+
+    --secondary: 35 36% 90%;
+    --secondary-foreground: 28 28% 22%;
+
+    --muted: 210 30% 93%;
+    --muted-foreground: 28 14% 42%;
+
+    --accent: 32 38% 88%;
+    --accent-foreground: 28 32% 20%;
+
+    --destructive: 0 72% 45%;
+    --destructive-foreground: 210 50% 98%;
+
+    --border: 35 28% 86%;
+    --input: 210 32% 91%;
+    --ring: 204 65% 45%;
+    --radius: 0.625rem;
+  }
+
+  .dark {
+    --background: 222 24% 12%;
+    --foreground: 210 40% 96%;
+    --card: 222 22% 14%;
+    --card-foreground: 210 40% 96%;
+    --popover: 222 22% 14%;
+    --popover-foreground: 210 40% 96%;
+    --primary: 221 83% 53%;
+    --primary-foreground: 210 55% 99%;
+    --secondary: 217 19% 20%;
+    --secondary-foreground: 210 40% 92%;
+    --muted: 217 19% 18%;
+    --muted-foreground: 215 16% 72%;
+    --accent: 217 19% 22%;
+    --accent-foreground: 210 40% 96%;
+    --destructive: 0 62% 42%;
+    --destructive-foreground: 210 50% 98%;
+    --border: 217 19% 22%;
+    --input: 217 19% 22%;
+    --ring: 221 83% 48%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+}

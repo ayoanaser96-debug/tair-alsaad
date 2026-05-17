@@ -1,0 +1,1003 @@
+{
+  "app": {
+    "name": "Tair Al Saad",
+    "tagline": "Delivery dashboard · smartgateapp.com"
+  },
+  "language": {
+    "label": "Language",
+    "english": "English",
+    "arabic": "العربية"
+  },
+  "auth": {
+    "welcomeBack": "Welcome back",
+    "cardDescription": "Sign in with phone or email, or create an account. The Admin role opens the admin dashboard after sign-in or registration.",
+    "signInTab": "Sign in",
+    "registerTab": "Register",
+    "phoneOrEmail": "Phone or email",
+    "phoneOrEmailPlaceholder": "+964… or you@domain.com",
+    "password": "Password",
+    "signIn": "Sign in",
+    "fullName": "Full name",
+    "phone": "Phone",
+    "role": "Role",
+    "roleSender": "Sender",
+    "roleDriver": "Driver",
+    "roleAdmin": "Admin",
+    "cityOptional": "City (optional)",
+    "selectCity": "Select a city",
+    "createAccount": "Create account",
+    "validation": {
+      "phone": {
+        "required": "Enter your phone number or email.",
+        "minLogin": "Use at least 3 characters.",
+        "minRegister": "Use at least 5 characters for your phone number."
+      },
+      "password": {
+        "required": "Enter your password.",
+        "minRegister": "Password must be at least 8 characters."
+      },
+      "name": {
+        "required": "Enter your full name."
+      }
+    }
+  },
+  "nav": {
+    "senderDashboard": "Dashboard",
+    "senderOrders": "My Orders",
+    "senderCreate": "Create Order",
+    "senderAddresses": "Saved Addresses",
+    "senderPayments": "Payment Methods",
+    "senderSupport": "Support / Help",
+    "senderSettings": "Settings",
+    "driverDashboard": "Dashboard",
+    "driverAvailable": "Available orders",
+    "driverDeliveries": "My deliveries",
+    "driverEarnings": "Earnings",
+    "driverVehicle": "Vehicle & documents",
+    "driverRatings": "Ratings & reviews",
+    "driverSupport": "Support",
+    "driverSettings": "Settings"
+  },
+  "dashboard": {
+    "pingApi": "Ping API",
+    "signOut": "Sign out",
+    "system": "System",
+    "dbConnected": "Database connected",
+    "dbCheck": "Check database",
+    "apiPending": "API…",
+    "openMenu": "Open menu",
+    "signOutShort": "Out",
+    "badgeAdmin": "Admin",
+    "badgeSender": "sender",
+    "badgeDriver": "driver",
+    "unknownRole": "Unknown role."
+  },
+  "sender": {
+    "dashboard": {
+      "title": "Sender dashboard",
+      "subtitle": "Track packages you have created and their status.",
+      "createOrderCta": "Create New Order",
+      "stats": {
+        "totalOrders": "Total orders",
+        "inTransit": "In transit",
+        "delivered": "Delivered",
+        "pendingPickup": "Pending pickup",
+        "vsPrevious": "vs previous"
+      },
+      "tabs": {
+        "active": "Active",
+        "completed": "Completed",
+        "cancelled": "Cancelled",
+        "drafts": "Drafts"
+      },
+      "orders": {
+        "title": "Orders",
+        "subtitle": "Search, filter, and manage your shipments",
+        "searchPlaceholder": "Tracking ID or recipient…",
+        "searchClearAria": "Clear search",
+        "emptyTitle": "No orders yet",
+        "emptyBody": "When you create a shipment, it will show up here with live status updates.",
+        "emptyCta": "Create your first order",
+        "pagination": "Page {{page}} of {{totalPages}} · {{count}} orders",
+        "previous": "Previous",
+        "next": "Next",
+        "table": {
+          "trackingId": "Tracking ID",
+          "recipient": "Recipient",
+          "destination": "Destination",
+          "status": "Status",
+          "driver": "Driver",
+          "created": "Created",
+          "amount": "Amount"
+        },
+        "actionsMenuAria": "Row actions",
+        "view": "View",
+        "cancel": "Cancel",
+        "rate": "Rate",
+        "help": "Help"
+      },
+      "filters": {
+        "status": "Status",
+        "from": "From",
+        "to": "To",
+        "sort": "Sort",
+        "allStatuses": "All statuses",
+        "all": "All",
+        "newestFirst": "Newest first",
+        "oldestFirst": "Oldest first",
+        "amountHigh": "Amount (high)",
+        "amountLow": "Amount (low)"
+      }
+    }
+  },
+  "driver": {
+    "activeDelivery": {
+      "empty": {
+        "title": "No active delivery",
+        "description": "Accept an offer from the Available tab to start a route."
+      },
+      "estimatedPayout": "{{amount}} estimated payout",
+      "mapPlaceholder": {
+        "title": "Live route map (placeholder)",
+        "hint": "Connect Mapbox / Google Maps for turn-by-turn directions."
+      },
+      "pickup": "Pickup",
+      "dropoff": "Drop-off",
+      "callSender": "Call sender",
+      "chatSender": "Message sender",
+      "callRecipient": "Call recipient",
+      "chatRecipient": "Message recipient",
+      "reportIssue": "Report an issue",
+      "stepsTitle": "Delivery steps",
+      "stepsSubtitle": "Complete each step in order.",
+      "steps": {
+        "navigate_pickup": {
+          "label": "Navigate to pickup",
+          "action": "Open map to pickup"
+        },
+        "arrived_pickup": {
+          "label": "Arrived at pickup",
+          "action": "Confirm arrival"
+        },
+        "picked_up": {
+          "label": "Package picked up",
+          "action": "Photo confirmation"
+        },
+        "navigate_delivery": {
+          "label": "Navigate to delivery",
+          "action": "Open map to drop-off"
+        },
+        "arrived_delivery": {
+          "label": "Arrived at destination",
+          "action": "Confirm arrival"
+        },
+        "delivered": {
+          "label": "Delivered",
+          "action": "Signature + POD photo"
+        }
+      },
+      "openMaps": "Open maps",
+      "arrived": "I've arrived",
+      "pickupPhotoLabel": "Pickup photo",
+      "podPhotoLabel": "Proof of delivery photo",
+      "signatureLabel": "Recipient signature (image)",
+      "openMapsAria": "Open maps for this step",
+      "arrivedAria": "Confirm you have arrived at this stop",
+      "packageTypes": {
+        "DOCUMENT": "Documents",
+        "SMALL": "Small",
+        "MEDIUM": "Medium",
+        "LARGE": "Large"
+      },
+      "dialog": {
+        "title": "Report an issue",
+        "description": "Describe the delivery issue so support can follow up.",
+        "issueType": "Issue type",
+        "details": "Details",
+        "cancel": "Cancel",
+        "submit": "Submit report",
+        "validation": {
+          "noteRequired": "Enter a short description of the issue.",
+          "noteMax": "Details must be at most 2000 characters."
+        },
+        "categories": {
+          "damaged": "Damaged package",
+          "wrong_address": "Wrong address",
+          "recipient_unavailable": "Recipient unavailable",
+          "other": "Other"
+        }
+      },
+      "a11y": {
+        "pickupPhotoPreview": "Pickup photo preview",
+        "podPhotoPreview": "Proof of delivery photo preview",
+        "signaturePreview": "Recipient signature preview"
+      }
+    },
+    "dashboard": {
+      "title": "Driver dashboard",
+      "subtitle": "Manage your deliveries and earnings.",
+      "online": "Online",
+      "onlineAria": "Go online or offline",
+      "receivingOffers": "Receiving offers",
+      "offlineBadge": "Offline",
+      "stats": {
+        "todayEarnings": "Today's earnings",
+        "todayEarningsHint": "Before platform fees",
+        "completedDeliveries": "Completed deliveries",
+        "scopeToday": "Today",
+        "scopeWeek": "Week",
+        "sinceMidnight": "Since midnight",
+        "last7Days": "Last 7 days",
+        "activeOrder": "Active order",
+        "inProgress": "In progress",
+        "noneNow": "None right now",
+        "rating": "Rating",
+        "reviewsCount": "{{count}} reviews"
+      },
+      "performance": {
+        "title": "Performance",
+        "description": "Last 30 days (mock)",
+        "acceptanceRate": "Acceptance rate",
+        "completionRate": "Completion rate",
+        "onTimeRate": "On-time rate"
+      },
+      "heatMap": {
+        "title": "Demand heat map",
+        "description": "High-traffic zones (placeholder)",
+        "placeholder": "Heat overlay preview — connect analytics API for live hot zones."
+      },
+      "tabs": {
+        "available": "Available orders",
+        "active": "Active delivery",
+        "history": "History",
+        "earnings": "Earnings"
+      },
+      "verification": {
+        "title": "Action required: documents",
+        "body": "{{documents}} — update to stay eligible for deliveries.",
+        "cta": "Review documents"
+      },
+      "documents": {
+        "d1": "Driver's license",
+        "d2": "Vehicle registration",
+        "d3": "Insurance"
+      },
+      "mobile": {
+        "home": "Home",
+        "active": "Active",
+        "history": "History",
+        "earn": "Earn",
+        "more": "More",
+        "sheetTitle": "More",
+        "vehicleDocs": "Vehicle & documents",
+        "ratingsReviews": "Ratings & reviews",
+        "support": "Support",
+        "settings": "Settings"
+      },
+      "sticky": {
+        "onDelivery": "On delivery",
+        "details": "Details",
+        "routeFromTo": "From {{pickup}} to {{drop}}"
+      },
+      "available": {
+        "offlineTitle": "You are offline",
+        "offlineBody": "Go online in the header to receive new order offers.",
+        "refreshing": "Refreshing…",
+        "updatedAt": "Updated {{time}}",
+        "nearbyRequests": "Nearby requests",
+        "errorPrefix": "Error",
+        "listView": "List view",
+        "mapView": "Map view",
+        "mapTitle": "Geographic map",
+        "mapBody": "Showing {{count}} offer on the map (placeholder). Connect a maps SDK for a live view.",
+        "mapBody_plural": "Showing {{count}} offers on the map (placeholder). Connect a maps SDK for a live view.",
+        "empty": "No offers right now. Check back soon.",
+        "senderRating": "{{rating}} sender",
+        "acceptIn": "Accept in",
+        "distanceKm": "{{distance}} km",
+        "eta": "ETA {{minutes}} min",
+        "accept": "Accept",
+        "decline": "Decline",
+        "countdownSeconds": "{{count}}s"
+      },
+      "history": {
+        "title": "Completed deliveries",
+        "from": "From",
+        "to": "To",
+        "exportCsv": "Export CSV",
+        "emptyRange": "No rows in range.",
+        "table": {
+          "date": "Date",
+          "trackingId": "Tracking ID",
+          "route": "Route",
+          "earnings": "Earnings",
+          "rating": "Rating",
+          "status": "Status"
+        },
+        "csv": {
+          "date": "Date",
+          "trackingId": "Tracking ID",
+          "route": "Route",
+          "earnings": "Earnings",
+          "rating": "Rating",
+          "status": "Status"
+        }
+      },
+      "earnings": {
+        "weeklyTitle": "Weekly earnings",
+        "weeklyDescription": "Last 7 days (IQD)",
+        "loadingChart": "Loading chart…",
+        "chartSeriesName": "Earnings",
+        "breakdownTitle": "Breakdown (this week)",
+        "baseFare": "Base fare",
+        "distanceBonuses": "Distance bonuses",
+        "tips": "Tips",
+        "total": "Total",
+        "payoutTitle": "Payout",
+        "payoutWallet": "Your wallet balance",
+        "currentBalance": "Current balance",
+        "nextPayoutLead": "Next payout:",
+        "requestPayout": "Request payout",
+        "transactionsTitle": "Transaction history",
+        "weekdays": {
+          "Mon": "Mon",
+          "Tue": "Tue",
+          "Wed": "Wed",
+          "Thu": "Thu",
+          "Fri": "Fri",
+          "Sat": "Sat",
+          "Sun": "Sun"
+        }
+      }
+    },
+    "vehicle": {
+      "title": "Vehicle & documents",
+      "subtitle": "Keep your paperwork current to stay on the road.",
+      "docStatus": {
+        "verified": "Verified",
+        "pending": "Pending",
+        "expired": "Expired",
+        "missing": "Missing"
+      },
+      "expiresOn": "Expires {{date}}",
+      "noExpiry": "No expiry on file",
+      "uploadTitle": "Upload or replace documents",
+      "uploadHint": "PDF or image, max 10 MB each (demo — not stored)",
+      "submit": "Submit for verification",
+      "verifiedPerks": "Verified drivers get priority access to premium routes and higher earnings multipliers."
+    },
+    "ratings": {
+      "title": "Ratings & reviews",
+      "subtitle": "Feedback from senders after delivery.",
+      "trackingDate": "{{code}} · {{date}}"
+    },
+    "support": {
+      "title": "Support",
+      "subtitle": "Help for drivers on the Tair Al Saad (طير السعد) network.",
+      "lineTitle": "Driver support line",
+      "lineHint": "24/7 for active deliveries",
+      "body": "For urgent issues (accident, safety, or recipient dispute), call the priority line from your registered phone.",
+      "emailSupport": "Email support"
+    },
+    "settings": {
+      "title": "Settings",
+      "subtitle": "Navigation app, alerts, and availability.",
+      "navTitle": "Navigation",
+      "navAppLabel": "Preferred maps app",
+      "mapsGoogle": "Google Maps",
+      "mapsWaze": "Waze",
+      "mapsApple": "Apple Maps",
+      "notifTitle": "Notifications",
+      "notifDesc": "Control offer alerts",
+      "pushOffers": "Push for new offers",
+      "pushOffersAria": "Toggle push notifications for new delivery offers",
+      "availabilityTitle": "Default availability",
+      "availabilityDesc": "Syncs with dashboard online toggle",
+      "startOnline": "Start online when opening app",
+      "startOnlineAria": "Toggle starting online when you open the app"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Profile, notifications, and language preferences.",
+    "profile": "Profile",
+    "profileDesc": "Your account details",
+    "name": "Name",
+    "phone": "Phone",
+    "notifications": "Notifications",
+    "notificationsDesc": "Manage how we reach you (coming soon)",
+    "notificationsBody": "Push and email toggles will be available in a future update.",
+    "language": "Language",
+    "displayLanguage": "Display language"
+  },
+  "toasts": {
+    "signedIn": "Signed in",
+    "accountCreated": "Account created",
+    "signedOut": "Signed out",
+    "sessionExpired": "Session expired — please sign in again.",
+    "forbidden": "You don't have permission for this action.",
+    "serverError": "Something went wrong, please try again.",
+    "networkError": "Connection lost — check your network.",
+    "requestFailed": "Request failed",
+    "orderCancelled": "Order cancelled",
+    "thanksFeedback": "Thanks for your feedback",
+    "addressSaved": "Address saved",
+    "addressUpdated": "Address updated",
+    "addressRemoved": "Address removed",
+    "paymentMethodAdded": "Payment method added",
+    "removed": "Removed",
+    "couldNotAcceptOrder": "Could not accept order",
+    "couldNotDecline": "Could not decline",
+    "offerDeclined": "Offer declined",
+    "realtimeRejected": "Realtime connection rejected — please sign in again.",
+    "pickupPhotoRequired": "Add a pickup photo first",
+    "signaturePhotoRequired": "Recipient signature and delivery photo required",
+    "deliveryCompleted": "Delivery completed — great job!",
+    "reportSent": "Report sent: {{category}}",
+    "enterLast4": "Enter last 4 digits",
+    "labelAddressRequired": "Label and address are required",
+    "citiesLoadError": "Could not load cities",
+    "cityAdded": "City added",
+    "cityCreateError": "Could not create city — check you are signed in as admin",
+    "zoneSavedDemo": "Saved {{name}} (demo)",
+    "promoCreated": "Created {{code}}",
+    "bulkPayoutDemo": "Bulk payout queued (demo)",
+    "refundPanelDemo": "Refund panel (demo)",
+    "exportStartedDemo": "Export started (demo)",
+    "pricingSavedDemo": "Pricing saved (demo)",
+    "orderLoadError": "Could not load order",
+    "selectStarRating": "Select a star rating",
+    "fixValidation": "Fix validation errors",
+    "draftSaved": "Draft saved",
+    "acceptTermsFix": "Please accept terms and fix errors",
+    "acceptTermsPlace": "Accept terms to place order",
+    "orderPlacedSuccess": "Order placed successfully",
+    "documentsSubmittedDemo": "Documents submitted for review (demo)",
+    "reassignDemo": "Reassign flow (demo)",
+    "refundFlowDemo": "Refund flow (demo)",
+    "markDisputeDemo": "Marked as dispute (demo)",
+    "orderCancelledDemo": "Order cancelled (demo)",
+    "broadcastDemo": "Broadcast queued (demo)",
+    "messageSentDemo": "Message sent (demo)",
+    "userSuspendedDemo": "User suspended (demo)",
+    "bulkExportDemo": "Bulk export queued (demo)",
+    "noteSaved": "Note saved",
+    "userBannedDemo": "User banned (demo)",
+    "roleSet": "Role set to {{role}}",
+    "payoutRequestDemo": "Payout request submitted (demo)",
+    "finishDeliveryFirst": "Finish your current delivery before accepting a new offer.",
+    "offerAccepted": "Offer accepted — navigate to pickup",
+    "csvExported": "CSV exported",
+    "searchQueued": "Search: {{query}}",
+    "searchWireDescription": "Wire to GET /admin/search when available.",
+    "decisionRecorded": "Decision recorded: {{decision}}",
+    "approvedDriverDemo": "Approved {{name}} (demo)",
+    "driverSuspendedDemo": "Driver suspended (demo)",
+    "driverRejected": "Rejected {{name}}: {{reason}}",
+    "driverMessageDemo": "Message sent (demo)"
+  },
+  "errors": {
+    "generic": "Something went wrong",
+    "viewCrashed": "This view crashed",
+    "tryAgain": "Try again"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The URL does not match any route in this app.",
+    "backToDashboard": "Back to dashboard"
+  },
+  "admin": {
+    "permissionDenied": "Access denied",
+    "permissionDeniedBody": "Your role ({{role}}) cannot view this section.",
+    "nav": {
+      "overview": "Overview",
+      "users": "Users (Senders)",
+      "drivers": "Drivers",
+      "orders": "Orders",
+      "payments": "Payments & Finance",
+      "disputes": "Disputes & Reports",
+      "reviews": "Reviews & Ratings",
+      "analytics": "Analytics",
+      "promotions": "Promotions & Coupons",
+      "serviceAreas": "Service Areas",
+      "pricing": "Pricing Configuration",
+      "notifications": "Notifications & Broadcasts",
+      "audit": "Audit Log",
+      "roles": "Role Management",
+      "settings": "Settings",
+      "support": "Support Tickets"
+    },
+    "shell": {
+      "sidebarSectionTitle": "Admin panel",
+      "brandSubtitle": "Admin console",
+      "mobileSheetTitle": "Admin navigation",
+      "mobileSheetDescription": "Browse admin sections and account actions.",
+      "breadcrumbAria": "Breadcrumb",
+      "breadcrumbHome": "Admin home",
+      "breadcrumbSep": "/",
+      "userMenuTriggerAria": "Account menu",
+      "userMenuProfile": "Profile",
+      "userMenuSettings": "Admin settings",
+      "userMenuSignOut": "Sign out",
+      "roleLabelAdmin": "Administrator",
+      "header": {
+        "searchPlaceholder": "Search users, drivers, orders by ID…",
+        "searchAria": "Global search",
+        "toggleTheme": "Toggle theme",
+        "notificationsAria": "Notifications",
+        "alerts": "Alerts",
+        "alertDriverApp": "New driver application",
+        "alertDriverAppDesc": "Pending review — New Applicant",
+        "alertDispute": "Flagged dispute",
+        "alertDisputeDesc": "High priority — disp1",
+        "signOut": "Sign out"
+      }
+    },
+    "serviceAreas": {
+      "title": "Service areas",
+      "subtitle": "Define coverage, pricing per zone, and delivery cities.",
+      "citiesTitle": "Cities (live)",
+      "citiesDesc": "Cities appear on the login/register forms. New cities are active immediately for senders and drivers.",
+      "cityName": "City name",
+      "country": "Country",
+      "cityPlaceholder": "e.g. Malacca",
+      "countryPlaceholder": "Malaysia",
+      "addCity": "Add city",
+      "refreshTitle": "Refresh list",
+      "loading": "Loading cities…",
+      "emptyCities": "No active cities yet.",
+      "coverageTitle": "Coverage map",
+      "coverageDesc": "Embed Mapbox / Google Maps — draw polygons to enable delivery.",
+      "mapPlaceholder": "Map component placeholder — configure API key in settings.",
+      "zoneEconomics": "Per-zone economics",
+      "baseFare": "Base fare",
+      "perKm": "Per km",
+      "surgeMultiplier": "Surge multiplier",
+      "hours": "Hours",
+      "hours247": "24/7",
+      "hoursCustom": "Custom",
+      "saveZone": "Save zone"
+    },
+    "promotions": {
+      "title": "Promotions & coupons",
+      "subtitle": "Create and monitor discount codes.",
+      "newTitle": "New promotion",
+      "newDesc": "All fields validated before save.",
+      "code": "Code",
+      "discountType": "Discount type",
+      "discountPercent": "Percentage",
+      "discountFixed": "Fixed amount",
+      "value": "Value",
+      "minOrder": "Min order",
+      "usageLimit": "Usage limit",
+      "expiry": "Expiry",
+      "audience": "Audience",
+      "audienceAll": "All senders",
+      "audienceNew": "First order only",
+      "audienceReferral": "Referral bonus",
+      "previewLabel": "Preview:",
+      "previewPercent": "−{{v}}% on eligible orders",
+      "previewFixed": "−{{amount}} on eligible orders",
+      "performanceTitle": "Performance",
+      "performanceDesc": "Uses and end dates (demo)",
+      "usesEnds": "{{uses}} uses · ends {{ends}}",
+      "savePromotion": "Save promotion",
+      "validation": {
+        "codeMin": "Code must be at least 2 characters.",
+        "codeMax": "Code must be at most 32 characters.",
+        "valuePositive": "Enter a positive value.",
+        "usagePositive": "Usage limit must be a positive whole number.",
+        "expiresRequired": "Choose an expiry date."
+      }
+    },
+    "disputes": {
+      "title": "Disputes & reports",
+      "subtitle": "Resolve issues with evidence and clear decisions.",
+      "searchPlaceholder": "Search type, order ID, dispute ID…",
+      "emptyTitle": "No open disputes",
+      "emptyDesc": "Great work — or connect the disputes API.",
+      "orderPrefix": "Order",
+      "reported": "Reported:",
+      "assigned": "Assigned:",
+      "unassigned": "Unassigned",
+      "openDetail": "Open detail",
+      "orderField": "Order:",
+      "conversation": "Conversation",
+      "evidence": "Evidence",
+      "evidencePhoto1": "Photo 1",
+      "evidencePhoto2": "Photo 2",
+      "evidenceProof": "Proof",
+      "decision": "Decision",
+      "outcome": "Outcome",
+      "outcomeNoAction": "No action",
+      "outcomeSender": "In favor of sender",
+      "outcomeDriver": "In favor of driver",
+      "outcomePartial": "Partial refund",
+      "outcomeFull": "Full refund",
+      "internalNotes": "Internal notes",
+      "submitDecision": "Submit decision",
+      "priority": { "high": "High", "medium": "Medium", "low": "Low" },
+      "validation": { "noteMin": "Enter at least 3 characters of notes." }
+    },
+    "drivers": {
+      "title": "Drivers",
+      "subtitle": "Fleet operations, verification, and performance.",
+      "tabAll": "All drivers",
+      "tabPending": "Pending applications",
+      "searchPlaceholder": "Search name, city, vehicle, ID…",
+      "emptyPendingTitle": "No pending applications",
+      "emptyPendingDesc": "New driver signups will appear here for document review.",
+      "tableDriver": "Driver",
+      "tableVehicle": "Vehicle",
+      "tableCity": "City",
+      "tableDocuments": "Documents",
+      "tableActions": "Actions",
+      "approve": "Approve",
+      "reject": "Reject",
+      "viewDetails": "View details",
+      "sendMessage": "Send message",
+      "suspend": "Suspend",
+      "sheetTitle": "Driver profile",
+      "name": "Name",
+      "vehicle": "Vehicle",
+      "city": "City",
+      "status": "Status",
+      "verification": "Verification",
+      "documents": "Documents",
+      "expiresOn": "expires {{date}}",
+      "performance": "Performance",
+      "performanceLine": "Deliveries: {{deliveries}} · Rating: {{rating}} · Earnings: {{earnings}}",
+      "suspendTitle": "Suspend {{name}}?",
+      "suspendDesc": "The driver will be removed from the pool until reinstated.",
+      "suspendConfirm": "Suspend driver",
+      "rejectTitle": "Reject application",
+      "rejectReasonPlaceholder": "Reason for rejection",
+      "cancel": "Cancel",
+      "submitRejection": "Submit rejection",
+      "columns": {
+        "name": "Name",
+        "vehicle": "Vehicle",
+        "city": "City",
+        "status": "Status",
+        "verification": "Verification",
+        "deliveries": "Deliveries",
+        "rating": "Rating",
+        "earnings": "Earnings"
+      },
+      "verificationState": {
+        "verified": "Verified",
+        "pending": "Pending",
+        "rejected": "Rejected"
+      },
+      "driverStatus": {
+        "online": "Online",
+        "offline": "Offline",
+        "on_delivery": "On delivery",
+        "suspended": "Suspended"
+      },
+      "documentsMock": {
+        "license": "Driving license",
+        "vehicleReg": "Vehicle registration",
+        "insurance": "Insurance"
+      },
+      "validation": { "rejectReasonMin": "Enter a reason (at least 3 characters)." }
+    },
+    "users": {
+      "title": "Users (senders)",
+      "subtitle": "Manage sender accounts and spending.",
+      "searchPlaceholder": "Search name, email, phone, ID…",
+      "filterAll": "All statuses",
+      "filterActive": "Active",
+      "filterSuspended": "Suspended",
+      "filterBanned": "Banned",
+      "bulkExport": "Bulk export",
+      "viewDetails": "View details",
+      "sheetTitle": "User profile",
+      "ordersSpent": "Orders / Spent:",
+      "orderHistory": "Order history",
+      "orderHistoryWire": "Connect to GET /admin/users/:id/orders",
+      "adminNote": "Admin note",
+      "saveNote": "Save note",
+      "banUser": "Ban user",
+      "issueRefund": "Issue refund",
+      "banTitle": "Ban {{name}}?",
+      "banDesc": "This action can be reversed from the audit log.",
+      "banConfirm": "Confirm ban",
+      "sendMessage": "Send message",
+      "suspend": "Suspend",
+      "columns": {
+        "name": "Name",
+        "email": "Email",
+        "phone": "Phone",
+        "orders": "Orders",
+        "spent": "Spent",
+        "joined": "Joined",
+        "status": "Status"
+      },
+      "userStatus": { "active": "Active", "suspended": "Suspended", "banned": "Banned" },
+      "validation": { "noteMax": "Note must be at most 2000 characters." }
+    },
+    "payments": {
+      "title": "Payments & finance",
+      "subtitle": "Revenue, commissions, payouts, and refunds.",
+      "totalRevenue": "Total revenue",
+      "platformCommission": "Platform commission",
+      "driverPayoutsOwed": "Driver payouts owed",
+      "refundsIssued": "Refunds issued",
+      "refresh": "Refresh",
+      "processPayouts": "Process driver payouts",
+      "refundsPanel": "Refunds panel",
+      "reportDaily": "Daily report",
+      "reportWeekly": "Weekly report",
+      "reportMonthly": "Monthly report",
+      "exportFinancials": "Export financials",
+      "transactionsTitle": "Transactions",
+      "transactionsDesc": "Filtered list — wire to GET /admin/transactions",
+      "columns": { "date": "Date", "type": "Type", "amount": "Amount", "party": "Party", "status": "Status" }
+    },
+    "pricing": {
+      "title": "Pricing configuration",
+      "subtitle": "Global rules — super admin only.",
+      "tariffTitle": "Tariff",
+      "tariffDesc": "Base fare, distance, weight, surge, minimum",
+      "packageType": "Package type",
+      "pkgStandard": "Standard",
+      "pkgExpress": "Express",
+      "pkgFragile": "Fragile",
+      "baseFare": "Base fare",
+      "perKm": "Per km",
+      "perKg": "Per kg",
+      "minFare": "Minimum fare",
+      "peakSurge": "Peak surge multiplier",
+      "previewTitle": "Live preview",
+      "previewLine": "Example {{km}} km, {{kg}} kg → estimated {{total}} (after surge)",
+      "savePricing": "Save pricing",
+      "validation": {
+        "nonNegative": "Must be zero or greater.",
+        "surgeMin": "Surge must be at least 1."
+      }
+    },
+    "notifications": {
+      "title": "Notifications & broadcasts",
+      "subtitle": "Push in-app announcements to users.",
+      "composeTitle": "Compose broadcast",
+      "composeDesc": "Validates before send.",
+      "audience": "Audience",
+      "audienceSenders": "All senders",
+      "audienceDrivers": "All drivers",
+      "audienceBoth": "Everyone",
+      "titleField": "Title",
+      "message": "Message",
+      "send": "Send broadcast",
+      "validation": {
+        "titleMin": "Title must be at least 3 characters.",
+        "titleMax": "Title must be at most 200 characters.",
+        "bodyMin": "Message must be at least 10 characters.",
+        "bodyMax": "Message must be at most 2000 characters."
+      }
+    },
+    "appSettings": {
+      "title": "Settings",
+      "subtitle": "Admin preferences (demo: sub-role simulation).",
+      "simTitle": "Simulated admin role",
+      "simDesc": "Until JWT claims exist, pick a sub-role to test permission gates. Stored in sessionStorage.",
+      "subrole": "Sub-role",
+      "roleSuper": "Super admin",
+      "roleSupport": "Support admin",
+      "roleFinance": "Finance admin",
+      "roleReadOnly": "Read-only",
+      "reload": "Reload to apply navigation"
+    },
+    "overview": {
+      "title": "Admin dashboard",
+      "subtitle": "Platform overview and management.",
+      "loadingKpis": "Loading KPIs…",
+      "sendersTitle": "Total users (senders)",
+      "sendersHint": "All sender accounts",
+      "driversTitle": "Active drivers",
+      "driversHint": "Online now / total",
+      "ordersToday": "Orders today",
+      "revenueToday": "Revenue today",
+      "pendingDisputes": "Pending disputes",
+      "openCases": "Open cases",
+      "platformRating": "Platform rating",
+      "avgReviews": "Avg. all reviews",
+      "trendUp": "+{{value}}% vs yesterday",
+      "trendDown": "{{value}}% vs yesterday",
+      "ordersOverTime": "Orders over time",
+      "volumeTrend": "Volume trend",
+      "tabDay": "Day",
+      "tabWeek": "Week",
+      "tabMonth": "Month",
+      "orderStatus": "Order status",
+      "distribution": "Distribution",
+      "revenueByCity": "Revenue by city",
+      "revenueMock": "IQD (demo)",
+      "recentActivity": "Recent activity",
+      "activityFeed": "Live-updating feed (polling)",
+      "rawStats": "Raw stats API",
+      "fromStatsApi": "From GET /stats",
+      "activityKind": {
+        "order": "Order",
+        "signup": "Signup",
+        "driver_app": "Driver application",
+        "flag": "Flag"
+      }
+    },
+    "audit": {
+      "title": "Audit log",
+      "subtitle": "Immutable record of privileged actions.",
+      "searchPlaceholder": "Search admin, action, entity…",
+      "columns": { "when": "When", "admin": "Admin", "action": "Action", "entity": "Entity" }
+    },
+    "roles": {
+      "title": "Role management",
+      "subtitle": "Admin users and permission levels (demo data).",
+      "cardTitle": "Platform admins",
+      "cardDesc": "Super admin can invite finance and support roles",
+      "columns": { "name": "Name", "email": "Email", "permission": "Permission", "edit": "Edit" },
+      "roleLabels": {
+        "super_admin": "Super admin",
+        "support_admin": "Support admin",
+        "finance_admin": "Finance admin",
+        "read_only": "Read-only"
+      }
+    },
+    "analytics": {
+      "title": "Analytics",
+      "subtitle": "Funnel, utilization, routes, and retention ({{range}} window).",
+      "range7": "Last 7 days",
+      "range30": "Last 30 days",
+      "range90": "Last 90 days",
+      "funnelTitle": "Conversion funnel",
+      "funnelDesc": "Sender journey (mock)",
+      "utilTitle": "Driver utilization by hour",
+      "utilDesc": "Share of online capacity (mock)",
+      "routesTitle": "Top routes",
+      "routesDesc": "Origin → destination pairs",
+      "churnTitle": "Churn risk",
+      "churnDesc": "Monthly % (mock)",
+      "heatmapTitle": "Order heatmap",
+      "heatmapDesc": "Day × hour intensity (mock)",
+      "funnelVisit": "Visit",
+      "funnelSignup": "Signup",
+      "funnelFirstOrder": "First order",
+      "funnelRepeat": "Repeat",
+      "tabGrid": "Grid",
+      "tabArea": "Area"
+    },
+    "reviews": {
+      "title": "Reviews & ratings",
+      "subtitle": "Moderate feedback and track platform quality.",
+      "cardTitle": "All reviews",
+      "cardDesc": "Connect to GET /admin/reviews",
+      "columns": { "order": "Order", "driver": "Driver", "rating": "Rating", "comment": "Comment", "date": "Date" }
+    },
+    "support": {
+      "title": "Support tickets",
+      "subtitle": "Connect to your helpdesk or CRM.",
+      "statusOpen": "open",
+      "statusWaiting": "waiting",
+      "priorityHigh": "high",
+      "priorityMedium": "medium"
+    },
+    "ordersPage": {
+      "title": "Orders",
+      "subtitle": "Full order book with filters and exports.",
+      "refresh": "Refresh",
+      "exportCsv": "Export CSV",
+      "searchPlaceholder": "Search ID, tracking, sender, driver…",
+      "allStatuses": "All statuses",
+      "allCities": "All cities",
+      "minAmount": "Min amount",
+      "maxAmount": "Max amount",
+      "loading": "Loading orders…",
+      "emptyTitle": "No orders match",
+      "emptyHint": "Adjust filters or refresh after new activity.",
+      "sheetTitle": "Order {{code}}",
+      "timeline": "Timeline",
+      "created": "Created",
+      "status": "Status",
+      "payment": "Payment",
+      "timelineCreated": "Created · {{at}}",
+      "timelineStatus": "Status · {{status}}",
+      "timelinePayment": "Payment · {{payment}}",
+      "mapPreview": "Map preview — wire to route polyline when available.",
+      "sender": "Sender",
+      "driver": "Driver",
+      "pickup": "Pickup",
+      "dropoff": "Drop-off",
+      "communications": "Communications",
+      "chatPlaceholder": "In-app chat history would load here.",
+      "cancelTitle": "Cancel order {{code}}?",
+      "cancelDescription": "The sender will be notified. Use refund tools if payment was captured.",
+      "cancelConfirm": "Cancel order",
+      "dash": "—",
+      "columns": {
+        "id": "ID",
+        "tracking": "Tracking",
+        "sender": "Sender",
+        "driver": "Driver",
+        "route": "Route",
+        "routePattern": "{{city}}: pickup → drop",
+        "status": "Status",
+        "amount": "Amount",
+        "created": "Created",
+        "delivered": "Delivered"
+      },
+      "actions": {
+        "viewDetails": "View details",
+        "reassignDriver": "Reassign driver",
+        "issueRefund": "Issue refund",
+        "markDispute": "Mark dispute",
+        "cancelOrder": "Cancel order"
+      }
+    }
+  },
+  "orders": {
+    "detailSheet": {
+      "title": "Order details",
+      "noOrderSelected": "No order selected.",
+      "timelineTitle": "Tracking timeline",
+      "timeline": {
+        "events": {
+          "PENDING": "Order placed",
+          "ASSIGNED": "Driver assigned",
+          "PICKED_UP": "Picked up",
+          "IN_TRANSIT": "Out for delivery",
+          "DELIVERED": "Delivered"
+        },
+        "cancelledNotice": "This order was cancelled.",
+        "pending": "Pending",
+        "dash": "—"
+      },
+      "map": {
+        "title": "Live map (placeholder)",
+        "body": "Driver location will appear here when available."
+      },
+      "driver": {
+        "rating": "Driver rating: {{rating}}",
+        "chat": "Message",
+        "call": "Call",
+        "avatarAlt": "Driver photo",
+        "chatAria": "Message driver",
+        "callAria": "Call driver"
+      },
+      "package": {
+        "title": "Package",
+        "type": "Type",
+        "description": "Description",
+        "category": "Category",
+        "pickup": "Pickup",
+        "delivery": "Delivery",
+        "recipient": "Recipient",
+        "destination": "Destination",
+        "window": "Window"
+      },
+      "cancelOrder": "Cancel order",
+      "rating": {
+        "title": "Rate your delivery",
+        "commentLabel": "Comment (optional)",
+        "submit": "Submit review",
+        "starLabel": "Rate {{count}} out of 5 stars"
+      }
+    }
+  },
+  "orderStatus": {
+    "draft": "Draft",
+    "pending": "Pending",
+    "assigned": "Assigned",
+    "picked_up": "Picked up",
+    "in_transit": "In transit",
+    "delivered": "Delivered",
+    "cancelled": "Cancelled",
+    "disputed": "Disputed"
+  },
+  "orderTimeline": {
+    "cancelled": "Order cancelled",
+    "disputeOpen": "Dispute open"
+  },
+  "meta": {
+    "title": "Tair Al Saad · طير السعد"
+  }
+}

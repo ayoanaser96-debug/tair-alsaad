@@ -1,0 +1,27 @@
+{
+  "name": "tayralsaad",
+  "version": "0.0.0",
+  "private": true,
+  "packageManager": "pnpm@9.14.4",
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "services": "docker compose up -d",
+    "services:stop": "docker compose down",
+    "services:logs": "docker compose logs -f",
+    "db:seed": "pnpm --filter @tayralsaad/api run seed",
+    "setup": "node scripts/dev-setup.mjs",
+    "free:5173": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/free-port.ps1 5173",
+    "free:27017": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/free-port.ps1 27017",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.15.0",
+    "@typescript-eslint/parser": "^8.15.0",
+    "eslint": "^8.57.1",
+    "prettier": "^3.3.3",
+    "turbo": "^2.3.3",
+    "typescript": "^5.6.3"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "cli": {
+    "version": ">= 13.2.0"
+  },
+  "build": {
+    "production": {
+      "android": {
+        "buildType": "app-bundle"
+      },
+      "ios": {
+        "resourceClass": "m-medium"
+      },
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://api.tayralsaad.iq/api/v1",
+        "EXPO_PUBLIC_WEB_URL": "https://tayralsaad.iq"
+      }
+    },
+    "preview": {
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      }
+    },
+    "production-smartgate": {
+      "extends": "production",
+      "android": {
+        "buildType": "app-bundle"
+      },
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://api.smartgateapp.com/api/v1",
+        "EXPO_PUBLIC_WEB_URL": "https://smartgateapp.com"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}
