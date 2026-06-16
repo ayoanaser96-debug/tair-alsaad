@@ -1,0 +1,21 @@
+{
+  "terminal.integrated.env.windows": {
+    "Path": "${workspaceFolder};C:\\Program Files\\nodejs;C:\\Users\\PE21485\\AppData\\Roaming\\npm;${env:Path}"
+  },
+  "terminal.integrated.profiles.windows": {
+    "PowerShell": {
+      "source": "PowerShell",
+      "icon": "terminal-powershell",
+      "args": ["-NoExit", "-ExecutionPolicy", "Bypass"]
+    },
+    "Command Prompt": {
+      "path": [
+        "${env:windir}\\Sysnative\\cmd.exe",
+        "${env:windir}\\System32\\cmd.exe"
+      ],
+      "args": [],
+      "icon": "terminal-cmd"
+    }
+  },
+  "terminal.integrated.defaultProfile.windows": "PowerShell"
+}

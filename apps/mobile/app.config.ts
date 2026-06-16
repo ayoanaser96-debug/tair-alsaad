@@ -29,21 +29,26 @@ const config: ExpoConfig = {
     ],
   ],
   extra: {
+    eas: {
+      projectId: '1fb8cc6b-624b-47bc-9e7c-2710d2452d1f',
+    },
     apiUrl:
       process.env.EXPO_PUBLIC_API_URL ??
-      (__DEV__ ? 'http://127.0.0.1:4001/api/v1' : 'https://api.tayralsaad.iq/api/v1'),
+      (process.env.NODE_ENV !== 'production' ? 'http://127.0.0.1:4001/api/v1' : 'https://api.tayralsaad.iq/api/v1'),
     sentryDsn: process.env.EXPO_PUBLIC_SENTRY_DSN ?? '',
-    easProjectId: process.env.EXPO_PUBLIC_EAS_PROJECT_ID ?? '',
+    easProjectId: process.env.EXPO_PUBLIC_EAS_PROJECT_ID ?? '1fb8cc6b-624b-47bc-9e7c-2710d2452d1f',
     webPublicUrl:
       process.env.EXPO_PUBLIC_WEB_URL ??
-      (__DEV__ ? 'http://localhost:5173' : 'https://tayralsaad.iq'),
+      (process.env.NODE_ENV !== 'production' ? 'http://localhost:5173' : 'https://tayralsaad.iq'),
   },
   ios: {
     supportsTablet: true,
-    bundleIdentifier: 'iq.tayralsaad.mobile',
+    bundleIdentifier: 'com.ayoo96.tayralsaad',
   },
   android: {
-    package: 'iq.tayralsaad.mobile',
+    package: 'com.ayoo96.tayralsaad',
+    compileSdkVersion: 35,
+    targetSdkVersion: 35,
     intentFilters: [
       {
         action: 'VIEW',

@@ -1,4 +1,4 @@
-package iq.tayralsaad.mobile
+package com.ayoo96.tayralsaad
 import expo.modules.splashscreen.SplashScreenManager
 
 import android.os.Build

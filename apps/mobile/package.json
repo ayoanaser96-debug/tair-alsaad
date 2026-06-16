@@ -2,7 +2,7 @@
   "name": "@tayralsaad/mobile",
   "version": "0.0.0",
   "private": true,
-  "main": "expo-router/entry",
+  "main": "index.js",
   "scripts": {
     "codegen:tokens": "node ./scripts/generate-tailwind-theme.mjs",
     "prestart": "node ./scripts/generate-tailwind-theme.mjs",
@@ -18,11 +18,11 @@
     "android:bundle:release": "cd android && gradlew.bat bundleRelease"
   },
   "dependencies": {
+    "@babel/runtime": "7.29.7",
     "@expo/vector-icons": "~14.0.4",
     "@react-native-async-storage/async-storage": "2.1.2",
     "@react-native-community/datetimepicker": "8.2.0",
     "@react-navigation/native": "^7.0.14",
-    "@sentry/react-native": "^8.11.1",
     "@tanstack/react-query": "^5.62.15",
     "@tayralsaad/i18n": "workspace:*",
     "@tayralsaad/tokens": "workspace:*",
@@ -48,17 +48,20 @@
     "react-dom": "18.3.1",
     "react-i18next": "^15.4.0",
     "react-native": "0.76.6",
+    "react-native-css-interop": "0.2.5",
     "react-native-gesture-handler": "~2.20.2",
     "react-native-maps": "1.18.0",
     "react-native-reanimated": "~3.16.7",
     "react-native-safe-area-context": "4.12.0",
     "react-native-screens": "~4.4.0",
+    "react-native-worklets-core": "^1.6.3",
     "socket.io-client": "^4.8.1",
     "tailwindcss": "^3.4.17",
     "zustand": "^5.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.26.10",
+    "@babel/plugin-transform-react-jsx": "^7.29.7",
     "@types/node": "^22.13.5",
     "@types/react": "~18.3.18",
     "babel-plugin-module-resolver": "^5.0.2",

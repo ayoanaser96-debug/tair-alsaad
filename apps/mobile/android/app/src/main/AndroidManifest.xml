@@ -28,7 +28,14 @@
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="tayralsaad"/>
-        <data android:scheme="iq.tayralsaad.mobile"/>
+        <data android:scheme="com.ayoo96.tayralsaad"/>
+      </intent-filter>
+      <intent-filter android:autoVerify="true" data-generated="true">
+        <action android:name="android.intent.action.VIEW"/>
+        <data android:scheme="https" android:host="smartgateapp.com" android:pathPrefix="/open"/>
+        <data android:scheme="https" android:host="www.smartgateapp.com" android:pathPrefix="/open"/>
+        <category android:name="android.intent.category.BROWSABLE"/>
+        <category android:name="android.intent.category.DEFAULT"/>
       </intent-filter>
     </activity>
   </application>

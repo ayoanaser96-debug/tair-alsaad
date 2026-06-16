@@ -1,4 +1,4 @@
-package iq.tayralsaad.mobile
+package com.ayoo96.tayralsaad
 
 import android.app.Application
 import android.content.res.Configuration

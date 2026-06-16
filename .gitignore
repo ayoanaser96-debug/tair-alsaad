@@ -10,3 +10,5 @@ coverage
 .expo
 web-build
 *.tsbuildinfo
+*.jks
+PLAYSTORE-UPLOAD-KEY-*.jks
