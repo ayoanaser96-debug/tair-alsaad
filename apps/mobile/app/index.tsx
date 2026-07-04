@@ -1,6 +1,9 @@
+import { useState } from 'react';
+
 import { Redirect } from 'expo-router';
 
 import { authenticatedTabsHref } from '@/lib/loginIntent';
+import { BootSplash } from '@/screens/BootSplash';
 import { useAuthStore } from '@/stores/authStore';
 
 export default function RootIndex() {
@@ -8,13 +11,18 @@ export default function RootIndex() {
   const token = useAuthStore((s) => s.accessToken);
   const user = useAuthStore((s) => s.user);
   const appHome = useAuthStore((s) => s.appHomeSegment);
+  const [bootComplete, setBootComplete] = useState(false);
 
   if (!hydrated) {
     return null;
   }
 
+  if (!bootComplete) {
+    return <BootSplash sessionReady={hydrated} onComplete={() => setBootComplete(true)} />;
+  }
+
   if (!token || !user) {
-    return <Redirect href="/(auth)/login" />;
+    return <Redirect href="/welcome" />;
   }
 
   const apiRole = String(user.role ?? '').toLowerCase();

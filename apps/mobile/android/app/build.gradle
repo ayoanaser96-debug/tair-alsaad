@@ -4,12 +4,6 @@ apply plugin: "com.facebook.react"
 
 def projectRoot = rootDir.getAbsoluteFile().getParentFile().getAbsolutePath()
 
-def keystorePropertiesFile = rootProject.file("keystore.properties")
-def keystoreProperties = new Properties()
-if (keystorePropertiesFile.exists()) {
-    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-}
-
 /**
  * This is the configuration block to customize your React Native Android app.
  * By default you don't need to apply any configuration, just uncomment the lines you need.
@@ -86,24 +80,31 @@ def enableProguardInReleaseBuilds = (findProperty('android.enableProguardInRelea
  */
 def jscFlavor = 'org.webkit:android-jsc:+'
 
+def keystorePropertiesFile = rootProject.file('keystore.properties')
+def keystoreProperties = new Properties()
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
+def releaseStoreFile = keystoreProperties['storeFile'] ?: findProperty('MYAPP_UPLOAD_STORE_FILE') ?: 'tayralsaad-upload.jks'
+def releaseKeyAlias = keystoreProperties['keyAlias'] ?: findProperty('MYAPP_UPLOAD_KEY_ALIAS') ?: 'upload'
+def releaseStorePassword = keystoreProperties['storePassword'] ?: findProperty('MYAPP_UPLOAD_STORE_PASSWORD')
+def releaseKeyPassword = keystoreProperties['keyPassword'] ?: findProperty('MYAPP_UPLOAD_KEY_PASSWORD')
+def hasReleaseSigning = releaseStorePassword && releaseKeyPassword
+
 android {
     ndkVersion rootProject.ext.ndkVersion
 
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace 'com.ayoo96.tayralsaad'
-
-    buildFeatures {
-        buildConfig true
-    }
-
+    namespace 'iq.utu.tayralsaad'
     defaultConfig {
-        applicationId 'com.ayoo96.tayralsaad'
+        applicationId 'iq.utu.tayralsaad'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 2
-        versionName "1.1"
+        versionCode 6
+        versionName "1.0.3"
     }
     signingConfigs {
         debug {
@@ -113,11 +114,11 @@ android {
             keyPassword 'android'
         }
         release {
-            if (keystorePropertiesFile.exists()) {
-                storeFile file(keystoreProperties['storeFile'])
-                storePassword keystoreProperties['storePassword']
-                keyAlias keystoreProperties['keyAlias']
-                keyPassword keystoreProperties['keyPassword']
+            if (hasReleaseSigning) {
+                storeFile file(releaseStoreFile)
+                storePassword releaseStorePassword
+                keyAlias releaseKeyAlias
+                keyPassword releaseKeyPassword
             }
         }
     }
@@ -126,11 +127,14 @@ android {
             signingConfig signingConfigs.debug
         }
         release {
-            if (keystorePropertiesFile.exists()) {
-                signingConfig signingConfigs.release
-            } else {
-                signingConfig signingConfigs.debug
+            if (!hasReleaseSigning) {
+                throw new GradleException(
+                    'Release signing credentials missing. Create apps/mobile/android/keystore.properties ' +
+                    '(see keystore.properties.example) or set MYAPP_UPLOAD_STORE_PASSWORD and ' +
+                    'MYAPP_UPLOAD_KEY_PASSWORD in apps/mobile/android/gradle.properties.'
+                )
             }
+            signingConfig signingConfigs.release
             shrinkResources (findProperty('android.enableShrinkResourcesInReleaseBuilds')?.toBoolean() ?: false)
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"

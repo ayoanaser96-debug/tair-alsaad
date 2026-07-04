@@ -5,6 +5,7 @@ import { router } from 'expo-router';
 
 import { Screen } from '@/components/ui/Screen';
 import { authenticatedTabsHref } from '@/lib/loginIntent';
+import { shouldShowLocationPrePrompt } from '@/lib/location/permissionGate';
 import { queryClient } from '@/lib/queryClient';
 import type { AppHomeSegment } from '@/lib/secure';
 import { useAuthStore } from '@/stores/authStore';
@@ -21,6 +22,15 @@ export default function SelectRoleScreen() {
     if (segment === 'admin' && apiRole !== 'admin') return;
     if (segment === 'driver' && apiRole !== 'driver') return;
     await setRole(segment);
+
+    if (segment === 'sender' && (await shouldShowLocationPrePrompt())) {
+      router.replace({
+        pathname: '/location-permission',
+        params: { segment },
+      });
+      return;
+    }
+
     router.replace(authenticatedTabsHref(segment));
   };
 

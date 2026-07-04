@@ -13,6 +13,7 @@ export function buildMeRoutes(): Router {
   router.get('/me', authenticate, MeController.getMe);
   router.patch('/me', authenticate, validate('body', patchMeSchema), MeController.patchMe);
   router.post('/me/addresses', authenticate, validate('body', addressSchema), MeController.addAddress);
+  router.patch('/me/addresses/:id', authenticate, MeController.updateAddress);
   router.delete('/me/addresses/:id', authenticate, MeController.removeAddress);
 
   return router;

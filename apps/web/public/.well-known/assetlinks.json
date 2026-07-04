@@ -3,9 +3,9 @@
     "relation": ["delegate_permission/common.handle_all_urls"],
     "target": {
       "namespace": "android_app",
-      "package_name": "iq.tayralsaad.mobile",
+      "package_name": "iq.utu.tayralsaad",
       "sha256_cert_fingerprints": [
-        "00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00"
+        "C2:D6:82:D7:26:DF:1A:FD:F4:13:2D:92:88:F0:19:AA:EA:DD:B6:B9:04:57:87:E4:5E:17:0E:D8:F1:9C:95:5C"
       ]
     }
   }

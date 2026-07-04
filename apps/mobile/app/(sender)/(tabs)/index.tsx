@@ -1,142 +1,262 @@
-import { useMemo } from 'react';
-
-import { useTranslation } from 'react-i18next';
-import { Pressable, ScrollView, Text, View } from 'react-native';
-
-import { formatIQD } from '@tayralsaad/utils';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Image, Pressable, RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 
 import { router } from 'expo-router';
+import { useTranslation } from 'react-i18next';
+import Animated, { FadeIn } from 'react-native-reanimated';
 
-import { Screen } from '@/components/ui/Screen';
-import { mongoId, useMyShipmentsInfinite } from '@/queries/shipments';
+import { ActiveShipmentCard } from '@/components/sender/ActiveShipmentCard';
+import { RecentShipmentCard } from '@/components/sender/RecentShipmentCard';
+import { SenderHomeSkeleton } from '@/components/sender/SenderHomeSkeleton';
+import { AppText } from '@/components/ui/AppText';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { ErrorState } from '@/components/ui/ErrorState';
+import { ThemeScreen } from '@/components/ui/ThemeScreen';
+import type { DriverAssignedPayload } from '@/hooks/useShipmentLiveChannel';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useShipmentLiveChannel } from '@/hooks/useShipmentLiveChannel';
+import { useTheme } from '@/lib/theme';
+import { useMe } from '@/queries/me';
+import { mongoId, useMyShipmentsInfinite, useShipmentDetail } from '@/queries/shipments';
 import { useAuthStore } from '@/stores/authStore';
 
 function isActivePipe(status: string): boolean {
   return !['delivered', 'cancelled', 'disputed'].includes(status);
 }
 
+function firstName(name: string | undefined, fallback: string): string {
+  const trimmed = typeof name === 'string' ? name.trim() : '';
+  if (!trimmed) return fallback;
+  return trimmed.split(/\s+/)[0] ?? fallback;
+}
+
 export default function SenderHomeDashboardScreen() {
+  const theme = useTheme();
   const { t, i18n } = useTranslation();
   const locale = i18n.language.startsWith('en') ? 'en' : 'ar';
+  const reduced = useReducedMotion();
   const user = useAuthStore((s) => s.user);
+  const { data: me } = useMe();
 
-  const { data, isPending, isError } = useMyShipmentsInfinite();
+  const { data, isPending, isError, refetch, isRefetching } = useMyShipmentsInfinite();
 
   const flattened = useMemo(() => data?.pages.flatMap((p) => p.items) ?? [], [data?.pages]);
-  const activeOnes = useMemo(
-    () => flattened.filter((s) => isActivePipe(String(s.status ?? ''))).slice(0, 3),
+  const heroListItem = useMemo(
+    () => flattened.find((s) => isActivePipe(String(s.status ?? ''))),
     [flattened],
   );
+  const heroId = heroListItem ? mongoId(heroListItem) : '';
+  const { data: heroDetail } = useShipmentDetail(heroId || null);
+  const hero = heroDetail ?? heroListItem;
 
-  const recent = useMemo(() => flattened.slice(0, 5), [flattened]);
+  const recent = useMemo(() => flattened.slice(0, 3), [flattened]);
 
-  const greetingName = typeof user?.name === 'string' && user.name.trim() ? user.name.trim() : t('sender.dashboard.guestName');
+  const [liveDriver, setLiveDriver] = useState<DriverAssignedPayload['driver'] | null>(null);
+  const [liveEta, setLiveEta] = useState<number | undefined>(undefined);
+
+  useEffect(() => {
+    setLiveDriver(null);
+    setLiveEta(undefined);
+  }, [heroId]);
+
+  const onAssigned = useCallback((payload: DriverAssignedPayload) => {
+    setLiveDriver(payload.driver);
+  }, []);
+
+  const onDriverMove = useCallback(() => undefined, []);
+  const onEta = useCallback((etaMinutes: number) => {
+    setLiveEta(etaMinutes);
+  }, []);
+
+  useShipmentLiveChannel(hero?.trackingCode, heroId || null, onAssigned, onDriverMove, onEta);
+
+  const greetingName = firstName(user?.name, t('sender.dashboard.guestName'));
+  const locationLabel = useMemo(() => {
+    const addr = me?.defaultAddresses?.[0];
+    if (addr?.city && addr?.area) return `${addr.area} · ${addr.city}`;
+    return t('sender.home.defaultLocation');
+  }, [me?.defaultAddresses, t]);
+
+  const showEmpty = !isPending && !isError && flattened.length === 0;
+  const contentEntering = reduced ? undefined : FadeIn.duration(280);
 
   return (
-    <Screen className="flex-1 px-5 pb-28 pt-8">
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <Text className="text-2xl font-bold text-ink">{t('sender.dashboard.greeting', { name: greetingName })}</Text>
-
-        <View className="mt-6 rounded-2xl border border-border bg-surface px-5 py-5">
-          <Text className="text-xs uppercase text-inkSoft">{t('navigation.wallet')}</Text>
-          <Text className="mt-3 text-3xl font-bold text-primary">{formatIQD(0, locale)}</Text>
+    <ThemeScreen>
+      <ScrollView
+        contentContainerStyle={{
+          paddingHorizontal: theme.spacing.xl,
+          paddingTop: theme.spacing.xl,
+          paddingBottom: theme.spacing.xxxl + 88,
+          gap: theme.spacing.xl,
+        }}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefetching}
+            onRefresh={() => void refetch()}
+            tintColor={theme.colors.primary}
+            colors={[theme.colors.primary]}
+          />
+        }
+      >
+        <View style={styles.header}>
+          <View style={{ flex: 1, gap: theme.spacing.xs }}>
+            <AppText variant="title">{t('sender.home.greeting', { name: greetingName })}</AppText>
+            <AppText variant="body" color="inkMuted">
+              {locationLabel}
+            </AppText>
+          </View>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={t('navigation.myAccount')}
+            onPress={() => router.push('/(sender)/(tabs)/profile')}
+            style={[styles.avatarBtn, { borderColor: theme.colors.line, backgroundColor: theme.colors.surface }]}
+          >
+            {user?.avatarUrl ? (
+              <Image source={{ uri: user.avatarUrl }} style={styles.avatarImage} />
+            ) : (
+              <AppText variant="bodyBold" color="primary">
+                {greetingName.slice(0, 1)}
+              </AppText>
+            )}
+          </Pressable>
         </View>
 
-        <Text className="mt-10 text-lg font-semibold text-ink">{t('sender.dashboard.quickActions')}</Text>
-        <View className="mt-4 flex-row flex-wrap justify-between gap-y-4">
-          <Pressable
-            accessibilityRole="button"
-            className="w-[48%] rounded-2xl border border-border bg-bg px-4 py-5 active:opacity-80"
-            onPress={() => router.push('/(sender)/new')}
-          >
-            <Text className="text-center text-sm font-semibold text-ink">{t('sender.dashboard.actionSend')}</Text>
-          </Pressable>
-          <Pressable
-            accessibilityRole="button"
-            className="w-[48%] rounded-2xl border border-border bg-bg px-4 py-5 active:opacity-80"
-            onPress={() => router.push('/receiver-track')}
-          >
-            <Text className="text-center text-sm font-semibold text-ink">{t('sender.dashboard.actionTrack')}</Text>
-          </Pressable>
-          <Pressable
-            accessibilityRole="button"
-            className="w-[48%] rounded-2xl border border-border bg-bg px-4 py-5 active:opacity-80"
-            onPress={() => router.push('/(sender)/history')}
-          >
-            <Text className="text-center text-sm font-semibold text-ink">{t('sender.dashboard.actionHistory')}</Text>
-          </Pressable>
-          <Pressable
-            accessibilityRole="button"
-            className="w-[48%] rounded-2xl border border-border bg-bg px-4 py-5 active:opacity-80"
-            onPress={() => router.push('/(sender)/wallet')}
-          >
-            <Text className="text-center text-sm font-semibold text-ink">{t('navigation.wallet')}</Text>
-          </Pressable>
-        </View>
+        {isPending ? <SenderHomeSkeleton /> : null}
 
-        <Text className="mt-10 text-lg font-semibold text-ink">{t('sender.dashboard.activeShipments')}</Text>
-        {isPending ? (
-          <Text className="mt-4 text-sm text-inkSoft">{t('common.loading')}</Text>
-        ) : isError ? (
-          <Text className="mt-4 text-sm text-danger">{t('common.errorTitle')}</Text>
-        ) : activeOnes.length === 0 ? (
-          <Text className="mt-4 text-sm text-inkSoft">{t('common.emptyTitle')}</Text>
-        ) : (
-          activeOnes.map((item) => {
-            const sid = mongoId(item);
-            const st = String(item.status ?? '');
-            const ext = item as unknown as {
-              pickup?: { area?: string };
-              dropoff?: { area?: string };
-              etaMinutes?: number;
-              pricing?: { total?: number };
-            };
-            const eta = typeof ext.etaMinutes === 'number' ? ext.etaMinutes : undefined;
-            const total = typeof ext.pricing?.total === 'number' ? ext.pricing.total : 0;
+        {isError ? <ErrorState onRetry={() => void refetch()} /> : null}
 
-            return (
+        {showEmpty ? (
+          <EmptyState
+            title={t('sender.home.emptyTitle')}
+            subtitle={t('sender.home.emptySubtitle')}
+            actionLabel={t('sender.home.emptyAction')}
+            onAction={() => router.push('/(sender)/new')}
+          />
+        ) : null}
+
+        {!isPending && !isError && hero ? (
+          <Animated.View entering={contentEntering}>
+            <ActiveShipmentCard
+              shipment={hero}
+              locale={locale}
+              driver={liveDriver}
+              etaMinutes={liveEta}
+              onTrack={() => router.push(`/(sender)/shipments/${heroId}`)}
+            />
+          </Animated.View>
+        ) : null}
+
+        {!isPending && !isError && flattened.length > 0 ? (
+          <Animated.View entering={contentEntering} style={{ gap: theme.spacing.xl }}>
+            <View style={styles.quickActions}>
+              <QuickAction label={t('sender.home.actionSend')} onPress={() => router.push('/(sender)/new')} primary />
+              <QuickAction label={t('sender.home.actionEstimate')} onPress={() => router.push('/(sender)/new')} />
+              <QuickAction
+                label={t('sender.home.actionAddresses')}
+                onPress={() => router.push('/(sender)/saved-addresses')}
+              />
+            </View>
+
+            <View style={styles.sectionHeader}>
+              <AppText variant="title">{t('sender.dashboard.recentShipments')}</AppText>
               <Pressable
-                key={sid}
                 accessibilityRole="button"
-                className="mt-4 rounded-2xl border border-primary bg-surface px-4 py-4"
-                onPress={() => router.push(`/(sender)/shipments/${sid}`)}
+                accessibilityLabel={t('sender.home.viewAll')}
+                onPress={() => router.push('/(sender)/(tabs)/shipments')}
+                style={{ minHeight: 48, justifyContent: 'center' }}
               >
-                <Text className="text-xs font-semibold uppercase text-inkSoft">{item.trackingCode}</Text>
-                <Text className="mt-3 text-base font-semibold text-ink">{t(`status.${st}`, st)}</Text>
-                <Text className="mt-2 text-xs text-inkSoft">
-                  {ext.pickup?.area ?? ''} → {ext.dropoff?.area ?? ''}
-                </Text>
-                {typeof eta === 'number' ? (
-                  <Text className="mt-2 text-xs font-semibold text-primary">{t('track.etaMinutes', { minutes: eta })}</Text>
-                ) : null}
-                <Text className="mt-4 text-lg font-semibold text-primary">{formatIQD(total, locale)}</Text>
+                <AppText variant="body" color="primary">
+                  {t('sender.home.viewAll')}
+                </AppText>
               </Pressable>
-            );
-          })
-        )}
+            </View>
 
-        <Text className="mt-10 text-lg font-semibold text-ink">{t('sender.dashboard.recentShipments')}</Text>
-        {recent.length === 0 && !isPending ? (
-          <Text className="mt-4 text-sm text-inkSoft">{t('common.emptyTitle')}</Text>
-        ) : (
-          recent.map((item) => {
-            const sid = mongoId(item);
-            const st = String(item.status ?? '');
-
-            return (
-              <Pressable
-                key={`${sid}-recent`}
-                accessibilityRole="button"
-                className="mt-4 rounded-2xl border border-border bg-bg px-4 py-4 active:opacity-80"
-                onPress={() => router.push(`/(sender)/shipments/${sid}`)}
-              >
-                <Text className="text-xs font-semibold uppercase text-inkSoft">{item.trackingCode}</Text>
-                <Text className="mt-2 text-sm font-semibold text-ink">{t(`status.${st}`, st)}</Text>
-              </Pressable>
-            );
-          })
-        )}
+            <View style={{ gap: theme.spacing.md }}>
+              {recent.map((item) => {
+                const sid = mongoId(item);
+                return (
+                  <RecentShipmentCard
+                    key={sid}
+                    shipment={item}
+                    locale={locale}
+                    onPress={() => router.push(`/(sender)/shipments/${sid}`)}
+                  />
+                );
+              })}
+            </View>
+          </Animated.View>
+        ) : null}
       </ScrollView>
-    </Screen>
+    </ThemeScreen>
   );
 }
+
+function QuickAction({
+  label,
+  onPress,
+  primary = false,
+}: {
+  label: string;
+  onPress: () => void;
+  primary?: boolean;
+}) {
+  const theme = useTheme();
+
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      onPress={onPress}
+      style={[
+        styles.quickAction,
+        {
+          backgroundColor: primary ? theme.colors.primary : theme.colors.surface,
+          borderColor: primary ? theme.colors.primary : theme.colors.line,
+        },
+      ]}
+    >
+      <AppText variant="caption" color={primary ? 'white' : 'ink'} align="center">
+        {label}
+      </AppText>
+    </Pressable>
+  );
+}
+
+const styles = StyleSheet.create({
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  avatarBtn: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden',
+  },
+  avatarImage: {
+    width: 48,
+    height: 48,
+  },
+  quickActions: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  quickAction: {
+    flex: 1,
+    minHeight: 72,
+    borderWidth: 1,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 8,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+});

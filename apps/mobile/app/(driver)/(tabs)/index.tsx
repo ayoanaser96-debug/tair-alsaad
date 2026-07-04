@@ -33,8 +33,8 @@ function serviceTierLabel(t: (k: string) => string, tier: ServiceTier): string {
   switch (tier) {
     case 'express':
       return t('shipment.tierExpress');
-    case 'same_day':
-      return t('shipment.tierSameDay');
+    case 'standard':
+      return t('shipment.tierStandard');
     case 'scheduled':
       return t('shipment.tierScheduled');
     default:

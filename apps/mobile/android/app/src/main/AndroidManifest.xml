@@ -28,7 +28,7 @@
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="tayralsaad"/>
-        <data android:scheme="com.ayoo96.tayralsaad"/>
+        <data android:scheme="iq.utu.tayralsaad"/>
       </intent-filter>
       <intent-filter android:autoVerify="true" data-generated="true">
         <action android:name="android.intent.action.VIEW"/>

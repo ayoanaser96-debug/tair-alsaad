@@ -1,4 +1,6 @@
 import type { ShipmentStatus } from '@tayralsaad/types';
+import { formatDate } from '@tayralsaad/utils';
+import i18next from 'i18next';
 import type { TFunction } from 'i18next';
 
 import { Text, View } from 'react-native';
@@ -24,15 +26,12 @@ export function StatusTimeline(props: Props) {
   });
 
   const visible = [...sorted].reverse();
+  const locale = i18next.language?.startsWith('en') ? 'en' : 'ar';
 
   return (
     <View className="gap-3">
       {visible.map((row, ix) => {
-        const stamp =
-          typeof row.at === 'string' ? new Date(row.at) : row.at instanceof Date ? row.at : new Date(NaN);
-        const readable = Number.isFinite(stamp.getTime())
-          ? `${stamp.toLocaleDateString()} ${stamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`
-          : '—';
+        const readable = formatDate(row.at, locale, { withTime: true });
 
         return (
           <View key={`${String(row.status)}-${ix}-${readable}`} className="flex-row gap-3">

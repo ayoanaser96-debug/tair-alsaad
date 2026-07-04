@@ -4,6 +4,9 @@
       "eas": {
         "projectId": "1fb8cc6b-624b-47bc-9e7c-2710d2452d1f"
       }
+    },
+    "android": {
+      "package": "iq.utu.tayralsaad"
     }
   }
 }

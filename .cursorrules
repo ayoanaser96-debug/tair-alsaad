@@ -20,7 +20,7 @@ You are working on **Tayr Al-Saad (طير السعد)**, a bilingual (Arabic-fir
 
 2. **Status enums are English keys only.** `pending | assigned | picked_up | in_transit | delivered | cancelled | disputed`. Stored as-is in MongoDB. Translated at render time via `t('status.picked_up')`.
 
-3. **All UI strings come from `packages/i18n/{en,ar}.json`.** Never hardcode visible text. If you need a new string, add it to BOTH files. Arabic is the source of truth; English is the translation.
+3. **All UI strings come from `packages/i18n/src/locales/{en,ar}.json`.** Never hardcode visible text. If you need a new string, add it to BOTH files. Arabic is the source of truth; English is the translation.
 
 4. **Default language is Arabic.** App opens in AR unless `Localization.locale` starts with `en`.
 
@@ -88,7 +88,40 @@ You are working on **Tayr Al-Saad (طير السعد)**, a bilingual (Arabic-fir
 
 - Don't refactor unrelated code.
 - Don't introduce new dependencies without flagging them in the response.
-- Don't change the design system tokens.
+- Don't change the design system tokens unless doing an explicit visual-overhaul phase.
+
+## Sender app visual overhaul (Phases 0–8)
+
+You are working on the **sender** mobile app in `apps/mobile`. UI/UX overhaul only — keep API calls, auth, Socket.IO, and business logic intact; restyle around them.
+
+### HARD CONSTRAINTS — never violate
+
+1. **NEVER** run `expo prebuild`, `expo prebuild --clean`, or anything that regenerates `android/` or `ios/`. The `android/` folder has manual edits (kotlinVersion 1.9.25 in `gradle.properties` + `build.gradle` classpath, targetSdk/compileSdk 35, release signing via `keystore.properties` + `tayralsaad-upload.jks`). If native config is needed, STOP and output manual steps.
+2. Never modify `android/app/build.gradle`, `android/build.gradle`, `android/gradle.properties`, or `android/app/**` unless explicitly asked.
+3. Repo path is **`C:\t`** (short ASCII). Avoid deep paths that hit Windows 260-char limits.
+4. Do not touch backend, API contracts, or Socket.IO event names during UI phases.
+5. New native deps: prefer Expo SDK (`expo-linear-gradient`, `expo-haptics`, `expo-font`, `expo-splash-screen`). `react-native-reanimated` and `react-native-gesture-handler` are OK. Anything requiring manual Gradle/Pod changes: STOP and ask.
+
+### Language & RTL (overhaul voice)
+
+- Arabic primary, English secondary. Strings in **`packages/i18n/src/locales/{ar,en}.json`** — no hardcoded UI text.
+- Warm Iraqi register: "وين نوصّلها؟" not formal MSA.
+- RTL-first; logical properties (`paddingStart`/`paddingEnd`); direction icons flip in RTL.
+- IQD integer-only via `formatIQD()` from `@tayralsaad/utils`.
+
+### Overhaul design tokens (`apps/mobile/lib/theme/tokens.ts`)
+
+Colors: bg `#F8F3EA`, surface `#FFFFFF`, surfaceAlt `#F1E9DB`, ink `#2B2118`, inkMuted `#8A7A6A`, primary `#C4572E`, primaryDeep `#9E3F1D`, accent `#E0A62E`, success `#3E7C4F`, danger `#B23A2E`, line `#E5DACA`.
+
+Type: Display AR **Amiri Bold**, Display EN **Fraunces**, Body AR **IBM Plex Sans Arabic**, Body EN **Inter Tight**. Never use display fonts for body/buttons/inputs.
+
+Shape: card radius 18, button 16, input 14, sheet top 24. Spacing 4/8/12/16/24/32/48. Warm shadows (`shadowColor` `#5C3A20`, opacity 0.08–0.12).
+
+Bird motif (saffron gold): splash, welcome illustration, map courier marker, empty states only.
+
+### Motion
+
+- 150–250ms micro, 350–450ms screen. Button press: scale 0.97 + `Haptics.selectionAsync()`. Gate decorative animation behind `useReducedMotion`. Skeletons not full-screen spinners.
 
 ## Output format when generating code
 

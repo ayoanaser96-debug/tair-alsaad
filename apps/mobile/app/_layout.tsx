@@ -3,6 +3,7 @@ import '../global.css';
 import { useEffect, useMemo, useState } from 'react';
 
 import i18next, { initI18n } from '@/lib/i18n';
+import { useAppFonts } from '@/lib/fonts/useAppFonts';
 
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
@@ -23,6 +24,7 @@ void SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const router = useRouter();
   const hydrate = useAuthStore((s) => s.hydrate);
+  const { fontsLoaded, fontError } = useAppFonts();
   const [bootstrapReady, setBootstrapReady] = useState(false);
   const i18nextInstance = useMemo(() => i18next, []);
 
@@ -43,7 +45,6 @@ export default function RootLayout() {
       } finally {
         if (!cancelled) {
           setBootstrapReady(true);
-          await SplashScreen.hideAsync();
         }
       }
     })();
@@ -54,7 +55,17 @@ export default function RootLayout() {
     };
   }, [hydrate, router]);
 
-  if (!bootstrapReady) {
+  useEffect(() => {
+    if (bootstrapReady && fontsLoaded) {
+      void SplashScreen.hideAsync();
+    }
+  }, [bootstrapReady, fontsLoaded]);
+
+  if (!bootstrapReady || !fontsLoaded) {
+    return null;
+  }
+
+  if (fontError) {
     return null;
   }
 

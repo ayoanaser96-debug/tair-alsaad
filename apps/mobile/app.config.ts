@@ -4,9 +4,14 @@ const config: ExpoConfig = {
   name: 'طير السعد',
   slug: 'tayralsaad',
   scheme: 'tayralsaad',
-  version: '0.0.1',
+  version: '1.0.3',
   orientation: 'default',
   userInterfaceStyle: 'automatic',
+  backgroundColor: '#F8F3EA',
+  splash: {
+    backgroundColor: '#F8F3EA',
+    resizeMode: 'contain',
+  },
   newArchEnabled: true,
   platforms: ['ios', 'android'],
   plugins: [
@@ -43,10 +48,15 @@ const config: ExpoConfig = {
   },
   ios: {
     supportsTablet: true,
-    bundleIdentifier: 'com.ayoo96.tayralsaad',
+    bundleIdentifier: 'iq.utu.tayralsaad',
+    buildNumber: '5',
+    infoPlist: {
+      ITSAppUsesNonExemptEncryption: false,
+    },
   },
   android: {
-    package: 'com.ayoo96.tayralsaad',
+    package: 'iq.utu.tayralsaad',
+    versionCode: 6,
     compileSdkVersion: 35,
     targetSdkVersion: 35,
     intentFilters: [

@@ -1,21 +1,32 @@
 import { useMemo, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
-import { Alert, Pressable, Text, View } from 'react-native';
+import { Alert, KeyboardAvoidingView, Platform, Pressable, ScrollView, View } from 'react-native';
 
-import { Link, router } from 'expo-router';
+import { router } from 'expo-router';
 
 import { normalizePhone } from '@tayralsaad/utils';
 
-import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
-import { Screen } from '@/components/ui/Screen';
+import { AuthFooterLink, CountryCodeChip } from '@/components/auth/OtpCodeInput';
+import { AppText } from '@/components/ui/AppText';
+import { ThemeButton } from '@/components/ui/ThemeButton';
+import { ThemeInput } from '@/components/ui/ThemeInput';
+import { ThemeScreen } from '@/components/ui/ThemeScreen';
+import {
+  formatLocalPhoneDisplay,
+  isValidIraqiLocalPhone,
+  localizeDigits,
+  stripLocalPhoneDigits,
+} from '@/lib/auth/phoneFormat';
+import { displayVariantForLocale, useTheme } from '@/lib/theme';
 import { useRequestOtp } from '@/queries/auth';
 
 export default function LoginScreen() {
-  const { t } = useTranslation();
+  const theme = useTheme();
+  const { t, i18n } = useTranslation();
   const [local, setLocal] = useState('');
   const [errorText, setErrorText] = useState<string>();
+  const [attemptedSubmit, setAttemptedSubmit] = useState(false);
 
   const requestOtp = useRequestOtp({
     onError: (err) => {
@@ -30,12 +41,29 @@ export default function LoginScreen() {
     },
   });
 
-  const canSubmit = useMemo(() => local.replace(/\D/g, '').length >= 9, [local]);
+  const digits = stripLocalPhoneDigits(local);
+  const canSubmit = isValidIraqiLocalPhone(digits);
+
+  const inlineError = useMemo(() => {
+    if (errorText) return errorText;
+    if (!attemptedSubmit && digits.length === 0) return undefined;
+    if (digits.length > 0 && !digits.startsWith('7')) return t('auth.phoneMustStartWith7');
+    return undefined;
+  }, [attemptedSubmit, digits, errorText, t]);
 
   const submit = () => {
-    const digitsOnly = local.replace(/\D/g, '');
+    setAttemptedSubmit(true);
+    if (!canSubmit) {
+      if (!digits.startsWith('7')) {
+        setErrorText(t('auth.phoneMustStartWith7'));
+      } else {
+        setErrorText(t('errors.VALIDATION_FAILED'));
+      }
+      return;
+    }
+
     try {
-      const phone = normalizePhone(digitsOnly);
+      const phone = normalizePhone(`0${digits}`);
       setErrorText(undefined);
       requestOtp.mutate({ phone });
     } catch {
@@ -43,36 +71,75 @@ export default function LoginScreen() {
     }
   };
 
+  const placeholder = localizeDigits('7XX XXX XXXX', i18n.language);
+
   return (
-    <Screen className="justify-center px-5">
-      <View className="mb-10 items-center gap-2">
-        <Text className="text-center text-2xl font-bold text-ink">{t('common.appName')}</Text>
-        <Text className="text-center text-base text-inkSoft">{t('auth.phoneHint')}</Text>
-      </View>
+    <ThemeScreen>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{ flex: 1 }}
+      >
+        <ScrollView
+          contentContainerStyle={{
+            flexGrow: 1,
+            justifyContent: 'center',
+            paddingHorizontal: theme.spacing.xl,
+            paddingVertical: theme.spacing.xxl,
+            gap: theme.spacing.xl,
+          }}
+          keyboardShouldPersistTaps="handled"
+        >
+          <View style={{ gap: theme.spacing.sm }}>
+            <AppText variant={displayVariantForLocale(i18n.language)} align="center">
+              {t('auth.phoneScreenTitle')}
+            </AppText>
+            <AppText variant="body" color="inkMuted" align="center">
+              {t('auth.phoneScreenSubtitle')}
+            </AppText>
+          </View>
 
-      <Input
-        keyboardType="phone-pad"
-        label={t('auth.phoneTitle')}
-        accessibilityLabel={t('auth.phoneTitle')}
-        value={local}
-        onChangeText={setLocal}
-        maxLength={14}
-        error={errorText}
-        prefix={<Text className="pl-1 pr-1 text-lg font-medium text-ink">+964</Text>}
-        placeholder={t('placeholders.phoneLocal')}
-      />
+          <View style={{ gap: theme.spacing.sm }}>
+            <View style={{ flexDirection: 'row', alignItems: 'flex-start', gap: theme.spacing.sm }}>
+              <CountryCodeChip />
+              <View style={{ flex: 1 }}>
+                <ThemeInput
+                  keyboardType="phone-pad"
+                  accessibilityLabel={t('auth.phoneTitle')}
+                  value={local}
+                  onChangeText={(text) => {
+                    setLocal(formatLocalPhoneDisplay(text, i18n.language));
+                    setErrorText(undefined);
+                  }}
+                  maxLength={14}
+                  error={inlineError}
+                  placeholder={placeholder}
+                />
+              </View>
+            </View>
+          </View>
 
-      <View className="mt-10 gap-4">
-        <Button loading={requestOtp.isPending} disabled={!canSubmit} onPress={submit}>
-          {t('common.continue')}
-        </Button>
-        <Pressable onPress={() => router.push('/(auth)/receiver-track')} style={{ alignSelf: 'center' }}>
-          <Text className="text-center text-sm text-inkSoft">{t('track.receiverForSomeoneElse')}</Text>
-        </Pressable>
-        <Link href="/language" style={{ alignSelf: 'center', marginTop: 8 }}>
-          <Text className="text-base text-primary">{t('language.title')}</Text>
-        </Link>
-      </View>
-    </Screen>
+          <ThemeButton loading={requestOtp.isPending} disabled={!canSubmit} onPress={submit}>
+            {t('auth.sendCode')}
+          </ThemeButton>
+
+          {/* v2: Google / Apple sign-in — Apple required on iOS if Google is added (App Store 4.8) */}
+
+          <AuthFooterLink
+            label={t('track.receiverForSomeoneElse')}
+            onPress={() => router.push('/(auth)/receiver-track')}
+          />
+
+          <Pressable
+            accessibilityRole="button"
+            onPress={() => router.push('/language')}
+            style={{ minHeight: 48, alignItems: 'center', justifyContent: 'center' }}
+          >
+            <AppText variant="body" color="primary" align="center">
+              {t('language.title')}
+            </AppText>
+          </Pressable>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </ThemeScreen>
   );
 }

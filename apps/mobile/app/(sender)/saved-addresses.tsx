@@ -1,26 +1,81 @@
 import { useCallback, useState } from 'react';
-
-import { useTranslation } from 'react-i18next';
+import { Alert, KeyboardAvoidingView, Modal, Platform, ScrollView, StyleSheet, View } from 'react-native';
 
 import * as Location from 'expo-location';
-import { Alert, Modal, Pressable, ScrollView, Text, View } from 'react-native';
+import { router } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 
-import { AppHeader } from '@/components/AppHeader';
+import { CreateFlowHeader } from '@/components/sender/create/CreateFlowHeader';
+import { SavedAddressCard } from '@/components/sender/SavedAddressCard';
+import { SavedAddressSkeleton } from '@/components/sender/SavedAddressSkeleton';
 import { ShipmentRouteMap } from '@/components/shipment/ShipmentRouteMap';
-import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
-import { Screen } from '@/components/ui/Screen';
-import { useAddSavedAddressMutation, useDeleteSavedAddressMutation, useMe } from '@/queries/me';
+import { AppText } from '@/components/ui/AppText';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { ErrorState } from '@/components/ui/ErrorState';
+import { ThemeBottomSheet } from '@/components/ui/ThemeBottomSheet';
+import { ThemeButton } from '@/components/ui/ThemeButton';
+import { ThemeInput } from '@/components/ui/ThemeInput';
+import { ThemeScreen } from '@/components/ui/ThemeScreen';
+import { resolveAddressError } from '@/lib/addressErrors';
+import type { SavedAddressRow } from '@/lib/types';
+import { useTheme } from '@/lib/theme';
+import {
+  useAddSavedAddressMutation,
+  useDeleteSavedAddressMutation,
+  useMe,
+  useUpdateSavedAddressMutation,
+} from '@/queries/me';
 
 const DEFAULT_CENTER = { lat: 33.3152, lng: 44.3661 };
 
+function fillFormFromAddress(
+  addr: SavedAddressRow,
+  setters: {
+    setLabel: (v: string) => void;
+    setCity: (v: string) => void;
+    setArea: (v: string) => void;
+    setStreet: (v: string) => void;
+    setBuilding: (v: string) => void;
+    setNotes: (v: string) => void;
+    setLoc: (v: { lat: number; lng: number }) => void;
+  },
+) {
+  setters.setLabel(addr.label ?? '');
+  setters.setCity(addr.city);
+  setters.setArea(addr.area);
+  setters.setStreet(addr.street ?? '');
+  setters.setBuilding(addr.building ?? '');
+  setters.setNotes(addr.notes ?? '');
+  setters.setLoc(addr.location);
+}
+
 export default function SavedAddressesScreen() {
+  const theme = useTheme();
   const { t } = useTranslation();
-  const { data: me, isPending } = useMe();
+  const { data: me, isPending, isError, refetch } = useMe();
   const addMut = useAddSavedAddressMutation();
   const delMut = useDeleteSavedAddressMutation();
+  const updateMut = useUpdateSavedAddressMutation();
 
-  const [modalOpen, setModalOpen] = useState(false);
+  const showAddressError = useCallback(
+    (error: unknown, retry?: () => void) => {
+      const { key, retryable } = resolveAddressError(error);
+      if (retryable && retry) {
+        Alert.alert(t('common.errorTitle'), t(key), [
+          { text: t('common.cancel'), style: 'cancel' },
+          { text: t('common.retry'), onPress: retry },
+        ]);
+      } else {
+        Alert.alert(t('common.errorTitle'), t(key));
+      }
+    },
+    [t],
+  );
+
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState<SavedAddressRow | null>(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
+
   const [label, setLabel] = useState('');
   const [city, setCity] = useState('baghdad');
   const [area, setArea] = useState('');
@@ -37,7 +92,30 @@ export default function SavedAddressesScreen() {
     setBuilding('');
     setNotes('');
     setLoc(DEFAULT_CENTER);
+    setEditingId(null);
   }, []);
+
+  const openAdd = useCallback(() => {
+    resetForm();
+    setSheetOpen(true);
+  }, [resetForm]);
+
+  const openEdit = useCallback(
+    (addr: SavedAddressRow) => {
+      fillFormFromAddress(addr, {
+        setLabel,
+        setCity,
+        setArea,
+        setStreet,
+        setBuilding,
+        setNotes,
+        setLoc,
+      });
+      setEditingId(addr.serverId);
+      setSheetOpen(true);
+    },
+    [],
+  );
 
   async function fillGps() {
     const { status } = await Location.requestForegroundPermissionsAsync();
@@ -49,94 +127,133 @@ export default function SavedAddressesScreen() {
     setLoc({ lat: cur.coords.latitude, lng: cur.coords.longitude });
   }
 
-  async function submitAdd() {
+  async function submitSave() {
     if (!city.trim() || !area.trim()) {
-      Alert.alert(t('common.errorTitle'), '');
+      Alert.alert(t('common.errorTitle'), t('shipmentNew.addressRequired'));
       return;
     }
+    const payload = {
+      city: city.trim().toLowerCase(),
+      area: area.trim(),
+      location: loc,
+      ...(label.trim() ? { label: label.trim() } : {}),
+      ...(street.trim() ? { street: street.trim() } : {}),
+      ...(building.trim() ? { building: building.trim() } : {}),
+      ...(notes.trim() ? { notes: notes.trim() } : {}),
+    };
     try {
-      await addMut.mutateAsync({
-        city: city.trim().toLowerCase(),
-        area: area.trim(),
-        location: loc,
-        ...(label.trim() ? { label: label.trim() } : {}),
-        ...(street.trim() ? { street: street.trim() } : {}),
-        ...(building.trim() ? { building: building.trim() } : {}),
-        ...(notes.trim() ? { notes: notes.trim() } : {}),
-      });
+      if (editingId) {
+        await updateMut.mutateAsync({ serverId: editingId, patch: payload });
+      } else {
+        await addMut.mutateAsync(payload);
+      }
       Alert.alert('', t('shipmentNew.addressSaved'));
-      setModalOpen(false);
+      setSheetOpen(false);
       resetForm();
-    } catch {
-      Alert.alert(t('common.errorTitle'), t('errors.UNKNOWN'));
+    } catch (error) {
+      showAddressError(error, () => void submitSave());
+    }
+  }
+
+  async function confirmDelete() {
+    if (!deleteTarget) return;
+    try {
+      await delMut.mutateAsync(deleteTarget.serverId);
+      setDeleteTarget(null);
+    } catch (error) {
+      showAddressError(error, () => void confirmDelete());
     }
   }
 
   const rows = me?.defaultAddresses ?? [];
 
   return (
-    <Screen edges={['top']}>
-      <AppHeader title={t('shipmentNew.addressesTitle')} />
+    <ThemeScreen edges={['top']}>
+      <CreateFlowHeader title={t('shipmentNew.addressesTitle')} onBack={() => router.back()} />
 
-      {isPending ? (
-        <Text className="mt-12 text-center text-inkSoft">{t('common.loading')}</Text>
+      {isError ? (
+        <ErrorState onRetry={() => void refetch()} />
+      ) : isPending ? (
+        <View style={{ padding: theme.spacing.xl }}>
+          <SavedAddressSkeleton />
+        </View>
       ) : (
-        <ScrollView className="flex-1 px-5 pb-28">
-          <Text className="mt-6 text-sm text-inkSoft">{t('shipmentNew.addressesSubtitle')}</Text>
+        <ScrollView
+          contentContainerStyle={{
+            paddingHorizontal: theme.spacing.xl,
+            paddingTop: theme.spacing.lg,
+            paddingBottom: theme.spacing.xxxl,
+            gap: theme.spacing.lg,
+          }}
+        >
+          <AppText variant="body" color="inkMuted">
+            {t('shipmentNew.addressesSubtitle')}
+          </AppText>
 
-          <Button containerClassName="mt-8" variant="secondary" onPress={() => setModalOpen(true)}>
+          <ThemeButton variant="secondary" onPress={openAdd}>
             {t('shipmentNew.addAddress')}
-          </Button>
+          </ThemeButton>
 
           {rows.length === 0 ? (
-            <Text className="mt-16 text-center text-ink">{t('shipmentNew.addressNone')}</Text>
+            <EmptyState
+              title={t('shipmentNew.addressEmptyTitle')}
+              subtitle={t('shipmentNew.addressEmptySubtitle')}
+              actionLabel={t('shipmentNew.addAddress')}
+              onAction={openAdd}
+            />
           ) : (
-            <View className="mt-10 gap-4">
+            <View style={{ gap: theme.spacing.md }}>
               {rows.map((addr) => (
-                <View key={addr.serverId} className="rounded-2xl border border-border bg-surface px-4 py-4">
-                  <Text className="text-base font-semibold text-ink">
-                    {[addr.label, addr.city, addr.area].filter(Boolean).join(' · ') || `${addr.city} · ${addr.area}`}
-                  </Text>
-                  {addr.street ? <Text className="mt-2 text-xs text-inkSoft">{addr.street}</Text> : null}
-                  <Button
-                    containerClassName="mt-5"
-                    variant="ghost"
-                    size="sm"
-                    loading={delMut.isPending}
-                    onPress={() =>
-                      Alert.alert(t('shipmentNew.addressDeleteTitle'), t('shipmentNew.addressDeleteBody'), [
-                        { text: t('common.cancel'), style: 'cancel' },
-                        {
-                          text: t('common.delete'),
-                          style: 'destructive',
-                          onPress: () =>
-                            void delMut.mutateAsync(addr.serverId).catch(() => Alert.alert(t('common.errorTitle'), t('errors.UNKNOWN'))),
-                        },
-                      ])
-                    }
-                  >
-                    {t('common.delete')}
-                  </Button>
-                </View>
+                <SavedAddressCard
+                  key={addr.serverId}
+                  address={addr}
+                  onEdit={() => openEdit(addr)}
+                  onDelete={() => setDeleteTarget(addr)}
+                />
               ))}
             </View>
           )}
         </ScrollView>
       )}
 
-      <Modal visible={modalOpen} animationType="slide">
-        <Screen edges={['top']}>
-          <AppHeader
-            title={t('shipmentNew.addAddress')}
-            canGoBack={false}
-            right={
-              <Pressable accessibilityRole="button" hitSlop={10} onPress={() => setModalOpen(false)}>
-                <Text className="text-sm font-semibold text-primary">{t('common.close')}</Text>
-              </Pressable>
-            }
+      <ThemeBottomSheet
+        visible={Boolean(deleteTarget)}
+        onClose={() => setDeleteTarget(null)}
+        title={t('shipmentNew.addressDeleteTitle')}
+        subtitle={t('shipmentNew.addressDeleteBody')}
+      >
+        <View style={{ gap: theme.spacing.md }}>
+          <ThemeButton variant="danger" loading={delMut.isPending} onPress={() => void confirmDelete()}>
+            {t('common.delete')}
+          </ThemeButton>
+          <ThemeButton variant="ghost" onPress={() => setDeleteTarget(null)}>
+            {t('common.cancel')}
+          </ThemeButton>
+        </View>
+      </ThemeBottomSheet>
+
+      <Modal visible={sheetOpen} animationType="slide" onRequestClose={() => setSheetOpen(false)}>
+        <ThemeScreen edges={['top', 'bottom']}>
+          <CreateFlowHeader
+            title={editingId ? t('shipmentNew.addressEdit') : t('shipmentNew.addAddress')}
+            onClose={() => {
+              setSheetOpen(false);
+              resetForm();
+            }}
           />
-          <ScrollView className="flex-1 px-5 pb-24">
-            <View className="mt-4">
+          <KeyboardAvoidingView
+            style={styles.flex}
+            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+            keyboardVerticalOffset={8}
+          >
+            <ScrollView
+              contentContainerStyle={{
+                paddingHorizontal: theme.spacing.xl,
+                paddingBottom: theme.spacing.xxxl,
+                gap: theme.spacing.lg,
+              }}
+              keyboardShouldPersistTaps="handled"
+            >
               <ShipmentRouteMap
                 showRoute={false}
                 pickup={loc}
@@ -145,26 +262,29 @@ export default function SavedAddressesScreen() {
                 draggable="pickup"
                 onMove={(_which, coord) => setLoc(coord)}
               />
-            </View>
-            <Button containerClassName="mt-6" variant="secondary" size="sm" onPress={() => void fillGps()}>
-              {t('shipmentNew.useLocation')}
-            </Button>
 
-            <View className="mt-10 gap-4">
-              <Input label={t('shipmentNew.addressOptionalLabel')} value={label} onChangeText={setLabel} />
-              <Input label={t('shipmentNew.city')} value={city} onChangeText={setCity} />
-              <Input label={t('shipmentNew.area')} value={area} onChangeText={setArea} />
-              <Input label={t('shipmentNew.street')} value={street} onChangeText={setStreet} />
-              <Input label={t('shipmentNew.building')} value={building} onChangeText={setBuilding} />
-              <Input label={t('shipmentNew.notes')} value={notes} onChangeText={setNotes} />
-            </View>
+              <ThemeButton variant="secondary" onPress={() => void fillGps()}>
+                {t('shipmentNew.useLocation')}
+              </ThemeButton>
 
-            <Button containerClassName="mt-12" loading={addMut.isPending} onPress={() => void submitAdd()}>
-              {t('common.save')}
-            </Button>
-          </ScrollView>
-        </Screen>
+              <ThemeInput label={t('shipmentNew.addressOptionalLabel')} value={label} onChangeText={setLabel} />
+              <ThemeInput label={t('shipmentNew.city')} value={city} onChangeText={setCity} />
+              <ThemeInput label={t('shipmentNew.area')} value={area} onChangeText={setArea} />
+              <ThemeInput label={t('shipmentNew.street')} value={street} onChangeText={setStreet} />
+              <ThemeInput label={t('shipmentNew.building')} value={building} onChangeText={setBuilding} />
+              <ThemeInput label={t('shipmentNew.notes')} value={notes} onChangeText={setNotes} multiline />
+
+              <ThemeButton loading={addMut.isPending || updateMut.isPending} onPress={() => void submitSave()}>
+                {t('common.save')}
+              </ThemeButton>
+            </ScrollView>
+          </KeyboardAvoidingView>
+        </ThemeScreen>
       </Modal>
-    </Screen>
+    </ThemeScreen>
   );
 }
+
+const styles = StyleSheet.create({
+  flex: { flex: 1 },
+});

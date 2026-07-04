@@ -3,15 +3,18 @@ export type PreferredLanguage = 'ar' | 'en';
 
 export type ShipmentStatus =
   | 'pending'
-  | 'accepted'
+  | 'assigned'
+  | 'arrived_pickup'
   | 'picked_up'
   | 'in_transit'
+  | 'arrived_dropoff'
   | 'delivered'
   | 'cancelled'
   | 'disputed';
 
-export type ServiceTier = 'express' | 'same_day' | 'scheduled';
-export type PackageType = 'document' | 'box' | 'fragile' | 'other';
+export type PaymentStatus = 'pending' | 'authorized' | 'captured' | 'failed' | 'refunded';
+export type PackageType = 'envelope' | 'small' | 'medium' | 'large' | 'fragile' | 'cold';
+export type ServiceTier = 'standard' | 'express' | 'scheduled';
 export type WeightTier = 'light' | 'medium' | 'heavy';
 export type PaymentMethod = 'cash_on_delivery' | 'zaincash' | 'fastpay' | 'fib' | 'asia_hawala';
 
@@ -26,19 +29,88 @@ export type Address = {
   location: { lat: number; lng: number };
 };
 
+export type ShipmentPricing = {
+  base: number;
+  distance: number;
+  surcharge: number;
+  surge: number;
+  total: number;
+  driverPayout: number;
+};
+
+export type ShipmentPackage = {
+  type: PackageType;
+  weightTier: WeightTier;
+  description?: string;
+  declaredValue?: number;
+};
+
+export type ShipmentReceiver = {
+  name: string;
+  phone: string;
+};
+
+export type ShipmentPayment = {
+  method: PaymentMethod;
+  status: PaymentStatus;
+  providerRef?: string;
+  paidAt?: string;
+};
+
+export type ShipmentProofs = {
+  pickupPhotoUrl?: string;
+  deliveryPhotoUrl?: string;
+  signatureUrl?: string;
+};
+
+export type ShipmentRating = {
+  stars: 1 | 2 | 3 | 4 | 5;
+  comment?: string;
+  at: string;
+};
+
+export type ShipmentStatusHistoryEntry = {
+  status: ShipmentStatus;
+  at: string;
+  by?: string;
+  location?: { lat: number; lng: number };
+};
+
+export type ShipmentDispute = {
+  reason?: string;
+  photoUrls?: string[];
+  openedAt?: string;
+  resolution?: string;
+  refundAmount?: number;
+  resolvedAt?: string;
+  resolved?: boolean;
+};
+
+/** Shipment document returned by `/shipments` API (Mongoose lean JSON). */
 export type Shipment = {
-  id: string;
-  trackingCode?: string;
-  status: ShipmentStatus | string;
-  serviceTier?: ServiceTier | string;
-  paymentMethod?: PaymentMethod | string;
-  amount?: number;
-  senderName?: string;
-  senderPhone?: string;
-  recipientName?: string;
-  recipientPhone?: string;
-  pickupAddress?: Address;
-  dropoffAddress?: Address;
+  id?: string;
+  _id?: string;
+  trackingCode: string;
+  senderId?: string;
+  driverId?: string;
+  pickup: Address;
+  dropoff: Address;
+  receiver: ShipmentReceiver;
+  package: ShipmentPackage;
+  service: ServiceTier;
+  scheduledFor?: string;
+  pricing: ShipmentPricing;
+  payment: ShipmentPayment;
+  status: ShipmentStatus;
+  statusHistory: ShipmentStatusHistoryEntry[];
+  pickupOtp?: string;
+  deliveryOtp?: string;
+  proofs?: ShipmentProofs;
+  rating?: ShipmentRating;
+  cancelledReason?: string;
+  cancelledAt?: string;
+  dispute?: ShipmentDispute;
+  etaMinutes?: number;
   createdAt?: string;
   updatedAt?: string;
 };

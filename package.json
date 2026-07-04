@@ -14,7 +14,9 @@
     "free:5173": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/free-port.ps1 5173",
     "free:27017": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/free-port.ps1 27017",
     "lint": "turbo run lint",
-    "typecheck": "turbo run typecheck"
+    "typecheck": "turbo run typecheck",
+    "android": "expo run:android",
+    "ios": "expo run:ios"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^8.15.0",
@@ -26,7 +28,10 @@
   },
   "dependencies": {
     "@sentry/react-native": "^8.14.0",
-    "react-native-worklets-core": "^1.6.3"
+    "react-native-worklets-core": "^1.6.3",
+    "expo": "~52.0.49",
+    "react": "18.3.1",
+    "react-native": "0.76.9"
   },
   "pnpm": {
     "hoistPattern": [

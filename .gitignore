@@ -12,3 +12,4 @@ web-build
 *.tsbuildinfo
 *.jks
 PLAYSTORE-UPLOAD-KEY-*.jks
+keystore.properties

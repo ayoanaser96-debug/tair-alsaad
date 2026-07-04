@@ -1,0 +1,68 @@
+# Mobile typecheck baseline (pre Phase 5.5)
+# Generated: 2026-07-04
+# Command: cd apps/mobile && pnpm run typecheck
+# Error count: 58
+
+app.config.ts(60,5): error TS2353: Object literal may only specify known properties, and 'compileSdkVersion' does not exist in type 'Android'.
+app/(admin)/(tabs)/index.tsx(43,95): error TS2554: Expected 1 arguments, but got 2.
+app/(driver)/(tabs)/active.tsx(168,77): error TS2339: Property 'pricing' does not exist on type 'Shipment'.
+app/(driver)/(tabs)/active.tsx(168,99): error TS2554: Expected 1 arguments, but got 2.
+app/(driver)/(tabs)/active.tsx(172,23): error TS2339: Property 'pickup' does not exist on type 'Shipment'.
+app/(driver)/(tabs)/active.tsx(173,24): error TS2339: Property 'dropoff' does not exist on type 'Shipment'.
+app/(driver)/(tabs)/active.tsx(180,42): error TS2339: Property 'statusHistory' does not exist on type 'Shipment'.
+app/(driver)/(tabs)/active.tsx(180,61): error TS7006: Parameter 'e' implicitly has an 'any' type.
+app/(driver)/(tabs)/earnings.tsx(33,95): error TS2554: Expected 1 arguments, but got 2.
+app/(driver)/(tabs)/earnings.tsx(37,98): error TS2554: Expected 1 arguments, but got 2.
+app/(driver)/(tabs)/earnings.tsx(41,96): error TS2554: Expected 1 arguments, but got 2.
+app/(driver)/(tabs)/index.tsx(155,63): error TS2345: Argument of type 'TFunction<"translation", undefined>' is not assignable to parameter of type '(k: string, ...args: unknown[]) => string'.
+app/(driver)/(tabs)/index.tsx(156,81): error TS2339: Property 'service' does not exist on type 'Shipment'.
+app/(driver)/(tabs)/index.tsx(158,24): error TS2339: Property 'pickup' does not exist on type 'Shipment'.
+app/(driver)/(tabs)/index.tsx(158,74): error TS2339: Property 'pickup' does not exist on type 'Shipment'.
+app/(driver)/(tabs)/index.tsx(159,62): error TS2339: Property 'pickup' does not exist on type 'Shipment'.
+app/(driver)/(tabs)/index.tsx(163,27): error TS2339: Property 'pricing' does not exist on type 'Shipment'.
+app/(driver)/(tabs)/index.tsx(163,55): error TS2554: Expected 1 arguments, but got 2.
+app/(driver)/(tabs)/index.tsx(234,104): error TS2554: Expected 1 arguments, but got 2.
+app/(driver)/(tabs)/index.tsx(265,90): error TS2554: Expected 1 arguments, but got 2.
+app/(driver)/accept/[id].tsx(106,20): error TS2339: Property 'pickup' does not exist on type 'Shipment'.
+app/(driver)/accept/[id].tsx(106,49): error TS2339: Property 'dropoff' does not exist on type 'Shipment'.
+app/(driver)/accept/[id].tsx(108,83): error TS2339: Property 'pricing' does not exist on type 'Shipment'.
+app/(driver)/accept/[id].tsx(108,105): error TS2554: Expected 1 arguments, but got 2.
+app/(receiver)/(tabs)/history.tsx(58,87): error TS2554: Expected 1 arguments, but got 2.
+app/(receiver)/(tabs)/home.tsx(132,86): error TS2554: Expected 1 arguments, but got 2.
+app/(receiver)/tracking/[id].tsx(140,75): error TS2554: Expected 1 arguments, but got 2.
+app/(sender)/(tabs)/index.tsx(42,80): error TS2554: Expected 1 arguments, but got 2.
+app/(sender)/(tabs)/index.tsx(112,93): error TS2554: Expected 1 arguments, but got 2.
+app/(sender)/history.tsx(55,87): error TS2554: Expected 1 arguments, but got 2.
+app/(sender)/new/package.tsx(16,35): error TS2322: Type '"envelope"' is not assignable to type 'PackageType'.
+app/(sender)/new/package.tsx(16,47): error TS2322: Type '"small"' is not assignable to type 'PackageType'.
+app/(sender)/new/package.tsx(16,56): error TS2322: Type '"medium"' is not assignable to type 'PackageType'.
+app/(sender)/new/package.tsx(16,66): error TS2322: Type '"large"' is not assignable to type 'PackageType'.
+app/(sender)/new/package.tsx(16,86): error TS2322: Type '"cold"' is not assignable to type 'PackageType'.
+app/(sender)/new/review.tsx(56,44): error TS2345: Argument of type 'DraftShipmentStateSlice' is not assignable to parameter of type '{ pickup: Address; dropoff: Address; package: DraftShipmentPackage; service: ServiceSlice; scheduledForIso: string | null; receiver: DraftReceiver; paymentMethod: PaymentMethod; }'.
+app/(sender)/new/review.tsx(97,98): error TS2554: Expected 1 arguments, but got 2.
+app/(sender)/new/review.tsx(98,106): error TS2554: Expected 1 arguments, but got 2.
+app/(sender)/new/review.tsx(100,110): error TS2554: Expected 1 arguments, but got 2.
+app/(sender)/new/review.tsx(103,100): error TS2554: Expected 1 arguments, but got 2.
+app/(sender)/new/service.tsx(18,31): error TS2322: Type '"standard"' is not assignable to type 'ServiceTier'.
+app/(sender)/new/service.tsx(42,5): error TS2353: Object literal may only specify known properties, and 'standard' does not exist in type 'Record<ServiceTier, string>'.
+app/(sender)/shipments/[id].tsx(40,40): error TS2367: This comparison appears to be unintentional because the types '"accepted" | "picked_up" | "in_transit" | "delivered" | "cancelled" | "disputed"' and '"assigned"' have no overlap.
+app/(sender)/shipments/[id].tsx(111,48): error TS2345: Argument of type 'string' is not assignable to parameter of type 'ShipmentStatus'.
+app/(sender)/shipments/[id].tsx(140,86): error TS2339: Property 'pricing' does not exist on type 'Shipment'.
+app/(sender)/shipments/[id].tsx(140,101): error TS2554: Expected 1 arguments, but got 2.
+app/(sender)/shipments/[id].tsx(144,32): error TS2339: Property 'pickup' does not exist on type 'Shipment'.
+app/(sender)/shipments/[id].tsx(145,33): error TS2339: Property 'dropoff' does not exist on type 'Shipment'.
+app/(sender)/shipments/[id].tsx(181,51): error TS2339: Property 'statusHistory' does not exist on type 'Shipment'.
+app/(sender)/shipments/[id].tsx(181,70): error TS7006: Parameter 'entry' implicitly has an 'any' type.
+app/(sender)/shipments/[id].tsx(184,34): error TS2345: Argument of type 'string' is not assignable to parameter of type 'ShipmentStatus'.
+app/(sender)/shipments/[id].tsx(195,22): error TS2339: Property 'rating' does not exist on type 'Shipment'.
+app/(sender)/shipments/[id].tsx(199,40): error TS2339: Property 'rating' does not exist on type 'Shipment'.
+app/(sender)/shipments/[id].tsx(200,44): error TS2339: Property 'rating' does not exist on type 'Shipment'.
+app/(sender)/shipments/[id].tsx(202,27): error TS2339: Property 'rating' does not exist on type 'Shipment'.
+app/(sender)/shipments/[id].tsx(202,98): error TS2339: Property 'rating' does not exist on type 'Shipment'.
+components/driver/IncomingOfferModal.tsx(131,87): error TS2554: Expected 1 arguments, but got 2.
+hooks/useDebouncedShipmentQuote.ts(30,7): error TS2322: Type 'ServiceTier' is not assignable to type 'ServiceSlice'.
+hooks/useDebouncedShipmentQuote.ts(30,7): error TS2322: Type 'ServiceTier' is not assignable to type 'ServiceSlice'.
+stores/draftShipmentStore.ts(76,5): error TS2322: Type '"small"' is not assignable to type 'PackageType'.
+stores/draftShipmentStore.ts(84,5): error TS2322: Type '"standard"' is not assignable to type 'ServiceTier'.
+../../packages/i18n/src/index.ts(1,36): error TS2823: Import attributes are only supported when the '--module' option is set to 'esnext', 'nodenext', or 'preserve'.
+../../packages/i18n/src/index.ts(2,36): error TS2823: Import attributes are only supported when the '--module' option is set to 'esnext', or 'preserve'.
