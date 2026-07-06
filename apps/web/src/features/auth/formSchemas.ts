@@ -22,7 +22,7 @@ export function createRegisterFormSchema(t: TFunction) {
       .string()
       .min(1, { message: t("auth.validation.password.required") })
       .min(8, { message: t("auth.validation.password.minRegister") }),
-    role: z.enum(["SENDER", "DRIVER", "ADMIN"]),
+    role: z.enum(["SENDER", "DRIVER"]),
     cityId: z.string().optional(),
   });
 }

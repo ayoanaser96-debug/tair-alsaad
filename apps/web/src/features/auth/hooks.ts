@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 import i18n from "@/i18n/config";
-import { fetchMeApi, loginApi, refreshTokens, registerApi } from "@/features/auth/api";
+import { adminLoginApi, fetchMeApi, loginApi, refreshTokens, registerApi } from "@/features/auth/api";
 import type { LoginInput, MeUser, RegisterInput } from "@/features/auth/schemas";
 import { useAuthStore } from "@/features/auth/store";
 import { ME_KEY } from "@/features/auth/keys";
@@ -43,7 +43,12 @@ export function useLogin() {
   const setSession = useAuthStore((s) => s.setSession);
 
   return useMutation({
-    mutationFn: (input: LoginInput) => loginApi(input),
+    // An email in the identifier field means the single admin credential login
+    // (email + password). Anything else is the phone OTP flow.
+    mutationFn: (input: LoginInput) =>
+      input.phone.includes("@")
+        ? adminLoginApi(input.phone, input.password)
+        : loginApi(input),
     onSuccess: async (data) => {
       setSession(data);
       await qc.invalidateQueries({ queryKey: ME_KEY });

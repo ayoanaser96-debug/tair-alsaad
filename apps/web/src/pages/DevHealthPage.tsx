@@ -33,7 +33,7 @@ export function DevHealthPage() {
     void ping();
   }, [ping]);
 
-  const dbOk = health?.ok && health.database === "connected";
+  const dbOk = health?.ok && health.db === "up";
 
   return (
     <div className="mx-auto max-w-lg space-y-4">
@@ -67,7 +67,7 @@ export function DevHealthPage() {
               </div>
               <div className="flex justify-between gap-4">
                 <dt className="text-muted-foreground">Database</dt>
-                <dd className={dbOk ? "text-emerald-700" : "text-amber-800"}>{health.database ?? "unknown"}</dd>
+                <dd className={dbOk ? "text-emerald-700" : "text-amber-800"}>{health.db ?? "unknown"}</dd>
               </div>
             </dl>
           ) : null}

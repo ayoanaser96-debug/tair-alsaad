@@ -2,7 +2,7 @@ import { normalizePhone } from '@tayralsaad/utils';
 import type { Request, Response } from 'express';
 
 import { env } from '../config/env.js';
-import { revokeRefreshTokens, issueAuthTokens, rotateRefreshToken, signupOrUpsertVerifiedUser } from '../services/authService.js';
+import { adminEmailPasswordLogin, revokeRefreshTokens, issueAuthTokens, rotateRefreshToken, signupOrUpsertVerifiedUser } from '../services/authService.js';
 import { consumeOtp, requestOtp } from '../services/otpService.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { sendOk } from '../utils/apiResponse.js';
@@ -33,9 +33,30 @@ export const verifyOtpController = asyncHandler(async (req: Request, res: Respon
   const user = await signupOrUpsertVerifiedUser({
     phone: normalized,
     name: req.body.name,
+    role: req.body.role,
     logger: req.logger,
   });
 
+  const tokens = await issueAuthTokens({
+    user: {
+      id: user.id ?? user._id.toString(),
+      role: user.role,
+      preferredLanguage: user.preferredLanguage,
+    },
+  });
+  sendOk(res, {
+    user,
+    accessToken: tokens.accessToken,
+    refreshToken: tokens.refreshToken,
+    expiresIn: tokens.expiresIn,
+  });
+});
+
+export const adminLoginController = asyncHandler(async (req: Request, res: Response) => {
+  const user = await adminEmailPasswordLogin({
+    email: req.body.email,
+    password: req.body.password,
+  });
   const tokens = await issueAuthTokens({
     user: {
       id: user.id ?? user._id.toString(),

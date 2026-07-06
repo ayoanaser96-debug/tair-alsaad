@@ -4,5 +4,5 @@ RUN corepack enable
 COPY . .
 RUN pnpm install --frozen-lockfile
 ENV NODE_ENV=production
-EXPOSE 4001
+EXPOSE 4000
 CMD ["npx", "tsx", "apps/api/src/server.ts"]

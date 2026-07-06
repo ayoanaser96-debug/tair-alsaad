@@ -1,0 +1,18 @@
+# Netlify config for the Tayr Al-Saad web app (apps/web).
+# In the Netlify UI set "Base directory" to apps/web so these paths resolve.
+
+[build]
+  # Monorepo build from the repo root via pnpm/turbo, publishing this app's dist.
+  command = "pnpm --filter @tayralsaad/web build"
+  publish = "dist"
+
+[build.environment]
+  # Pnpm workspace install needs the repo root; Netlify auto-detects pnpm from the lockfile.
+  NODE_VERSION = "20"
+
+# SPA fallback: every unknown path serves index.html so React Router deep links
+# (e.g. /track/TS-XXXX, /dashboard/...) don't 404 on refresh or direct hit.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

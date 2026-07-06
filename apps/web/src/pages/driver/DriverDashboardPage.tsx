@@ -14,6 +14,7 @@ import { useSearchParams } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
+import { FEATURES } from "@/config/features";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useDriverOnline } from "@/hooks/driver/useDriverOnline";
 import { formatAppCurrency } from "@/lib/format";
@@ -101,6 +102,8 @@ export function DriverDashboardPage() {
         </div>
       </div>
 
+      {FEATURES.driverStats ? (
+      <>
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <Card className="border-border/80 shadow-md">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -208,6 +211,8 @@ export function DriverDashboardPage() {
           </CardContent>
         </Card>
       </div>
+      </>
+      ) : null}
 
       <Tabs value={tab} onValueChange={setTab} className="space-y-4">
         <TabsList className="grid h-auto w-full max-w-4xl grid-cols-2 gap-1 bg-muted/80 p-1 sm:grid-cols-4">

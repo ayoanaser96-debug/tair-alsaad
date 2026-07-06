@@ -6,12 +6,11 @@ import i18n from "@/i18n/config";
 
 import {
   cancelOrderApi,
-  createOrderApi,
+  createShipmentApi,
   createPaymentMethodApi,
   createSavedAddressApi,
   deletePaymentMethodApi,
   deleteSavedAddressApi,
-  estimateOrderApi,
   fetchNotificationsApi,
   fetchPaymentMethodsApi,
   fetchSavedAddressesApi,
@@ -23,13 +22,14 @@ import {
   updateSavedAddressApi,
   type SenderOrderListParams,
 } from "@/features/orders/api";
-import type { EstimateOrderInput, OrderDetail, SenderOrderList } from "@/features/orders/schemas";
+import type { CreateShipmentInput } from "@/features/orders/createSchemas";
+import type { OrderDetail, SenderOrderList } from "@/features/orders/schemas";
 import { updateSavedAddressBodySchema } from "@/features/orders/schemas";
 import { useAuthStore } from "@/features/auth/store";
 
-const root = ["orders"] as const;
+const root = ["shipments"] as const;
 
-/** Stable query key factory for sender + shared order resources. */
+/** Stable query key factory for sender shipment resources (API: /shipments/*). */
 export const orderKeys = {
   all: root,
   sender: {
@@ -71,27 +71,21 @@ export function useSenderStatsQuery() {
 export function useSenderOrderQuery(orderId: string | null, open: boolean) {
   const token = useAuthStore((s) => s.accessToken);
   return useQuery({
-    queryKey: orderId ? orderKeys.detail(orderId) : ["orders", "detail", "none"],
+    queryKey: orderId ? orderKeys.detail(orderId) : ["shipments", "detail", "none"],
     queryFn: () => fetchSenderOrderApi(orderId!),
     enabled: !!token && !!orderId && open,
     retry: 1,
   });
 }
 
-export function useEstimateOrderMutation() {
-  return useMutation({
-    mutationFn: (body: EstimateOrderInput) => estimateOrderApi(body),
-  });
-}
-
 export function useCreateOrderMutation() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (body: Record<string, unknown>) => createOrderApi(body),
+    mutationFn: (body: CreateShipmentInput) => createShipmentApi(body),
     onSuccess: () => {
       void qc.invalidateQueries({ queryKey: orderKeys.sender.root() });
     },
-    onError: (e: Error) => toast.error(e.message || i18n.t("toasts.requestFailed")),
+    // Errors are surfaced by CreateOrderForm.submit() with a contextual toast.
   });
 }
 

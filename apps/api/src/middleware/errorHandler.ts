@@ -7,6 +7,8 @@ import { rootLogger } from './requestLogger.js';
 import { sendFail } from '../utils/apiResponse.js';
 import { HttpError } from '../utils/httpError.js';
 
+// The 4th arg is required for Express to treat this as error-handling middleware.
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function errorHandler(err: unknown, req: Request, res: Response, _next: NextFunction) {
   const log = req.logger ?? rootLogger;
 

@@ -121,13 +121,16 @@ export function AdminOrdersPage() {
         accessorKey: "sender",
         header: t("admin.ordersPage.columns.sender"),
         id: "sender",
-        cell: ({ row }) => row.original.sender.name,
+        // TODO: needs API population. Shipment docs don't embed sender/driver names,
+        // so render an em-dash rather than a blank/placeholder when unpopulated.
+        cell: ({ row }) => row.original.sender.name || t("admin.ordersPage.dash"),
       },
       {
         accessorKey: "driver",
         header: t("admin.ordersPage.columns.driver"),
         id: "driver",
-        cell: ({ row }) => row.original.driver?.name ?? t("admin.ordersPage.dash"),
+        // TODO: needs API population (driver name not embedded on the shipment doc).
+        cell: ({ row }) => row.original.driver?.name || t("admin.ordersPage.dash"),
       },
       {
         id: "route",
@@ -310,12 +313,16 @@ export function AdminOrdersPage() {
                 </div>
                 <p>
                   <span className="text-muted-foreground">{t("admin.ordersPage.sender")}: </span>
-                  {selected.sender.name} ({selected.sender.phone})
+                  {/* TODO: needs API population — name/phone not embedded on the shipment doc. */}
+                  {selected.sender.name || selected.sender.phone
+                    ? `${selected.sender.name || t("admin.ordersPage.dash")}${selected.sender.phone ? ` (${selected.sender.phone})` : ""}`
+                    : t("admin.ordersPage.dash")}
                 </p>
                 <p>
                   <span className="text-muted-foreground">{t("admin.ordersPage.driver")}: </span>
-                  {selected.driver
-                    ? `${selected.driver.name} (${selected.driver.phone})`
+                  {/* TODO: needs API population — driver name/phone not embedded on the shipment doc. */}
+                  {selected.driver && (selected.driver.name || selected.driver.phone)
+                    ? `${selected.driver.name || t("admin.ordersPage.dash")}${selected.driver.phone ? ` (${selected.driver.phone})` : ""}`
                     : t("admin.ordersPage.dash")}
                 </p>
                 <p>

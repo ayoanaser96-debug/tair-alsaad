@@ -87,24 +87,6 @@ export type OrderDetail = z.infer<typeof orderDetailSchema>;
 export type SenderOrderList = z.infer<typeof senderOrderListSchema>;
 export type SenderStats = z.infer<typeof senderStatsSchema>;
 
-export const estimateRequestSchema = z.object({
-  packageType: z.string(),
-  weightKg: z.number().optional(),
-  declaredValue: z.number().optional(),
-  deliveryWindow: z.string().nullable().optional(),
-});
-export type EstimateOrderInput = z.infer<typeof estimateRequestSchema>;
-
-export const estimateResponseSchema = z.object({
-  total: z.number(),
-  breakdown: z.array(
-    z.object({
-      label: z.string(),
-      amount: z.number(),
-    }),
-  ),
-});
-
 export const rateOrderBodySchema = z.object({
   rating: z.number(),
   comment: z.string(),

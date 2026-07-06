@@ -31,6 +31,8 @@ export async function sendWhatsAppText(env: Env, toPhoneDigitsOnly: string, body
         type: 'text',
         text: { preview_url: true, body },
       }),
+      // Never let a hung provider block the worker/request indefinitely.
+      signal: AbortSignal.timeout(8000),
     });
 
     const json = (await res.json().catch(() => ({}))) as Record<string, unknown>;

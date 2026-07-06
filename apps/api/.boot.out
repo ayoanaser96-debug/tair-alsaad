@@ -1,0 +1,4 @@
+◇ injected env (14) from ..\..\.env // tip: ⌘ enable debugging { debug: true }
+{"level":30,"time":1783276299387,"pid":5116,"hostname":"ayoa","msg":"MongoDB connected"}
+{"level":30,"time":1783276299387,"pid":5116,"hostname":"ayoa","msg":"[notifications.worker] skipping (no Redis)"}
+{"level":30,"time":1783276299395,"pid":5116,"hostname":"ayoa","msg":"[api] listening on http://0.0.0.0:4055"}

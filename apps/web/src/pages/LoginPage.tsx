@@ -167,7 +167,6 @@ function AuthRegisterForm({ cities }: { cities: City[] }) {
         <NativeSelect id="auth-reg-role" {...form.register("role")}>
           <option value="SENDER">{t("auth.roleSender")}</option>
           <option value="DRIVER">{t("auth.roleDriver")}</option>
-          <option value="ADMIN">{t("auth.roleAdmin")}</option>
         </NativeSelect>
       </div>
       <div className="space-y-2">
@@ -247,9 +246,9 @@ export function LoginPage() {
           </CardContent>
         </Card>
         <p className="text-center text-sm text-muted-foreground">
-          Receiving a package?{" "}
+          {t("track.receiverPrompt")}{" "}
           <Link to="/track" className="font-semibold text-primary underline-offset-4 hover:underline">
-            Open receiver tracking
+            {t("track.openTracking")}
           </Link>
         </p>
       </div>

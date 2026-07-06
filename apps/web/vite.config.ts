@@ -16,4 +16,10 @@ export default defineConfig({
     port: 5173,
     host: true,
   },
+  build: {
+    // Route-level React.lazy already isolates page bundles (admin, charts, dev, MSW).
+    // The remaining entry chunk is the shared core (React, Router, Query, i18n, axios,
+    // socket.io) loaded on every page; bump the warning ceiling to reflect that.
+    chunkSizeWarningLimit: 700,
+  },
 });

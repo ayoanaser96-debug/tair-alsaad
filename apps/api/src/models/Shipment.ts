@@ -186,6 +186,10 @@ const shipmentSchema = new Schema(
 );
 
 shipmentSchema.index({ 'pickup.city': 1, status: 1 });
+// Sender "my shipments" list (filter by sender + optional status, newest first).
+shipmentSchema.index({ senderId: 1, status: 1, createdAt: -1 });
+// Driver's assigned/active shipments and driver-scoped status queries.
+shipmentSchema.index({ driverId: 1, status: 1, updatedAt: -1 });
 
 export type ShipmentDocRaw = InferRawDocType<typeof shipmentSchema>;
 export type ShipmentDocument = HydratedDocument<ShipmentDocRaw>;

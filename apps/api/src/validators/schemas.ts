@@ -26,10 +26,19 @@ export const otpVerifySchema = z.object({
   phone: z.string(),
   code: z.string().length(4),
   name: z.string().trim().optional(),
+  // Optional role for brand-new signups only. Existing accounts keep their role.
+  // Admin is intentionally excluded: it can never be self-registered and is
+  // provisioned by staff/seed only.
+  role: z.enum(['sender', 'driver']).optional(),
 });
 
 export const refreshSchema = z.object({
   refreshToken: z.string().min(10),
+});
+
+export const adminLoginSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(1),
 });
 
 export const patchMeSchema = z.object({

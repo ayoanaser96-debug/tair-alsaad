@@ -1,4 +1,4 @@
-import { apiRequest, apiRequestUnchecked } from "@/lib/api/client";
+import { apiRequestUnchecked } from "@/lib/api/client";
 import {
   authResponseSchema,
   meResponseSchema,
@@ -97,6 +97,8 @@ export async function registerApi(body: RegisterInput): Promise<AuthResponse> {
       name: body.name,
       phone,
       code,
+      // API honors role only for brand-new signups; existing accounts keep theirs.
+      role: body.role.toLowerCase(),
     },
   });
   const verifyData = unwrapOk<{
@@ -111,12 +113,31 @@ export async function registerApi(body: RegisterInput): Promise<AuthResponse> {
   });
 }
 
+export async function adminLoginApi(email: string, password: string): Promise<AuthResponse> {
+  const verifyRes = await apiRequestUnchecked<unknown>({
+    method: "POST",
+    url: "/auth/admin/login",
+    data: { email: email.trim(), password },
+  });
+  const verifyData = unwrapOk<{
+    user: BackendUser;
+    accessToken: string;
+    refreshToken: string;
+  }>(verifyRes);
+  return authResponseSchema.parse({
+    user: mapBackendUser(verifyData.user),
+    accessToken: verifyData.accessToken,
+    refreshToken: verifyData.refreshToken,
+  });
+}
+
 export async function refreshTokens(refreshToken: string): Promise<{ accessToken: string; refreshToken: string }> {
-  return apiRequest(tokensResponseSchema, {
+  const raw = await apiRequestUnchecked<unknown>({
     method: "POST",
     url: "/auth/refresh",
     data: { refreshToken },
   });
+  return tokensResponseSchema.parse(unwrapOk(raw));
 }
 
 /** Uses Axios auth interceptor (Bearer from store). */

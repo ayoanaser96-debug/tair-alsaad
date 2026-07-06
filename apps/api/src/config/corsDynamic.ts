@@ -16,19 +16,28 @@ function devOriginAllowed(origin: string): boolean {
   return localhostDev.test(origin) || privateLanDev.test(origin);
 }
 
+/** Parse the comma-separated CORS_ORIGIN allow-list into normalized origins. */
+export function corsAllowList(): string[] {
+  return env.CORS_ORIGIN.split(',')
+    .map((o) => o.trim().replace(/\/$/, ''))
+    .filter(Boolean);
+}
+
 /**
- * Production: locked to `CORS_ORIGIN`.
- * Non-production: `CORS_ORIGIN` plus localhost / LAN IPs so Vite (`--host`) works from other devices.
+ * Production: locked to the CORS_ORIGIN allow-list (comma-separated web + admin domains).
+ * Non-production: allow-list plus localhost / LAN IPs so Vite (`--host`) works from other devices.
+ * Requests with no Origin header (native mobile app, curl, server-to-server) are always allowed.
  */
 export function dynamicHttpCorsOrigin(): CorsOptions['origin'] {
-  if (env.NODE_ENV === 'production') return env.CORS_ORIGIN;
-  const primary = env.CORS_ORIGIN;
+  const allow = corsAllowList();
+  const isProd = env.NODE_ENV === 'production';
   return (origin, cb) => {
     if (!origin) {
       cb(null, true);
       return;
     }
-    if (origin === primary || devOriginAllowed(origin)) {
+    const normalized = origin.replace(/\/$/, '');
+    if (allow.includes(normalized) || (!isProd && devOriginAllowed(normalized))) {
       cb(null, true);
       return;
     }
@@ -38,6 +47,6 @@ export function dynamicHttpCorsOrigin(): CorsOptions['origin'] {
 
 /** Same rules as Express CORS for Socket.IO */
 export function dynamicSocketIoCorsOrigin(): string | boolean | RegExp | (string | RegExp)[] {
-  if (env.NODE_ENV === 'production') return env.CORS_ORIGIN;
+  if (env.NODE_ENV === 'production') return corsAllowList();
   return [localhostDev, privateLanDev];
 }

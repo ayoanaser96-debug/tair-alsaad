@@ -1,5 +1,6 @@
 import { MapPin } from "lucide-react";
 import * as React from "react";
+import { useTranslation } from "react-i18next";
 
 import { cn } from "@/lib/utils";
 
@@ -48,6 +49,7 @@ export function TrackingMap({
   driverLabel,
   className,
 }: TrackingMapProps) {
+  const { t } = useTranslation();
   const frameSrc = React.useMemo(() => {
     const pts: LatLng[] = [];
     if (pickupCoords) pts.push(pickupCoords);
@@ -63,7 +65,7 @@ export function TrackingMap({
     <div className={cn("space-y-3", className)}>
       {frameSrc ? (
         <iframe
-          title="Live shipment map"
+          title={t("track.map.frameTitle")}
           className="h-[320px] w-full rounded-xl border bg-muted shadow-sm"
           sandbox="allow-scripts allow-same-origin"
           referrerPolicy="no-referrer-when-downgrade"
@@ -76,14 +78,14 @@ export function TrackingMap({
             "relative flex aspect-[16/10] w-full flex-col justify-between overflow-hidden rounded-xl border bg-muted/40 p-4 text-sm",
           )}
           role="img"
-          aria-label={`Map preview from ${pickupLabel} to ${dropLabel}`}
+          aria-label={t("track.map.previewAria", { pickup: pickupLabel, dropoff: dropLabel })}
         >
           <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,hsl(var(--primary)/0.08)_0%,transparent_40%,hsl(var(--primary)/0.06)_100%)]" />
           <div className="relative z-[1] flex flex-1 flex-col justify-between">
             <div className="flex items-start gap-2 rounded-lg border bg-card/95 px-3 py-2 shadow-sm">
               <MapPin className="mt-0.5 h-4 w-4 text-primary" />
               <div>
-                <p className="text-xs font-medium text-muted-foreground">Pickup</p>
+                <p className="text-xs font-medium text-muted-foreground">{t("track.map.pickup")}</p>
                 <p className="leading-snug">{pickupLabel}</p>
               </div>
             </div>
@@ -97,27 +99,27 @@ export function TrackingMap({
             <div className="flex items-start gap-2 rounded-lg border bg-card/95 px-3 py-2 shadow-sm">
               <MapPin className="mt-0.5 h-4 w-4 text-emerald-600" />
               <div>
-                <p className="text-xs font-medium text-muted-foreground">Drop-off</p>
+                <p className="text-xs font-medium text-muted-foreground">{t("track.map.dropoff")}</p>
                 <p className="leading-snug">{dropLabel}</p>
               </div>
             </div>
           </div>
-          <p className="relative z-[1] mt-2 text-center text-xs text-muted-foreground">Add coordinates server-side for full map preview</p>
+          <p className="relative z-[1] mt-2 text-center text-xs text-muted-foreground">{t("track.map.needCoords")}</p>
         </div>
       )}
 
       <div className="grid gap-2 text-xs text-muted-foreground sm:grid-cols-2">
         <div className="rounded-lg border bg-card px-3 py-2">
-          <p className="font-semibold text-foreground text-sm">Pickup</p>
+          <p className="font-semibold text-foreground text-sm">{t("track.map.pickup")}</p>
           <p>{pickupLabel}</p>
         </div>
         <div className="rounded-lg border bg-card px-3 py-2">
-          <p className="font-semibold text-foreground text-sm">Drop-off</p>
+          <p className="font-semibold text-foreground text-sm">{t("track.map.dropoff")}</p>
           <p>{dropLabel}</p>
         </div>
         {driverCoords ? (
           <div className="rounded-lg border bg-primary/5 px-3 py-2 sm:col-span-2">
-            <p className="font-semibold text-foreground text-sm">Driver pin</p>
+            <p className="font-semibold text-foreground text-sm">{t("track.map.driverPin")}</p>
             <p>
               {driverLabel ?? `${driverCoords.lat.toFixed(5)}, ${driverCoords.lng.toFixed(5)}`}
             </p>

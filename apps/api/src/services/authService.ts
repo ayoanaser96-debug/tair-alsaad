@@ -1,4 +1,4 @@
-import { randomUUID } from 'node:crypto';
+import { randomUUID, timingSafeEqual } from 'node:crypto';
 
 import type { PreferredLanguage, Role } from '@tayralsaad/types';
 
@@ -114,16 +114,18 @@ export async function revokeRefreshTokens(userId: string): Promise<void> {
 export async function signupOrUpsertVerifiedUser(params: {
   phone: string;
   name?: string;
+  role?: 'sender' | 'driver';
   logger?: Logger;
 }) {
   const normalizedName = params.name?.trim();
 
   let user = await UserModel.findOne({ phone: params.phone });
   if (!user) {
+    // Role is only honored on first signup; existing accounts keep their role.
     user = await UserModel.create({
       phone: params.phone,
       name: normalizedName ?? 'مستخدم طير السعد',
-      role: 'sender',
+      role: params.role ?? 'sender',
       preferredLanguage: 'ar',
       defaultAddresses: [],
     });
@@ -132,5 +134,35 @@ export async function signupOrUpsertVerifiedUser(params: {
   if (normalizedName) user.name = normalizedName;
   await user.save();
   params.logger?.debug({ userId: user.id }, '[auth] Upsert verified user profile');
+  return user;
+}
+
+/** Constant-time string compare that never throws on length mismatch. */
+function safeEqual(a: string, b: string): boolean {
+  const bufA = Buffer.from(a);
+  const bufB = Buffer.from(b);
+  if (bufA.length !== bufB.length) return false;
+  return timingSafeEqual(bufA, bufB);
+}
+
+/**
+ * Single bootstrap admin login: validates email + password against env and
+ * returns (upserting if needed) the one admin user document. No OTP involved.
+ */
+export async function adminEmailPasswordLogin(params: { email: string; password: string }) {
+  const emailOk = safeEqual(params.email.trim().toLowerCase(), env.ADMIN_EMAIL.trim().toLowerCase());
+  const passOk = safeEqual(params.password, env.ADMIN_PASSWORD);
+  if (!emailOk || !passOk) {
+    throw new UnauthorizedError('UNAUTHORIZED', 'بيانات الدخول غير صحيحة', 'Invalid admin credentials.');
+  }
+
+  const user = await UserModel.findOneAndUpdate(
+    { phone: env.ADMIN_PHONE },
+    {
+      $set: { role: 'admin', name: 'مسؤول النظام' },
+      $setOnInsert: { phone: env.ADMIN_PHONE, preferredLanguage: 'ar' },
+    },
+    { new: true, upsert: true },
+  );
   return user;
 }

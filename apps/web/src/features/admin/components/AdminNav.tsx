@@ -19,6 +19,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { NavLink } from "react-router-dom";
 
+import { FEATURES } from "@/config/features";
 import { cn } from "@/lib/utils";
 
 const linkClass = ({ isActive }: { isActive: boolean }) =>
@@ -47,10 +48,12 @@ export function AdminNavLinks({ onNavigate }: { onNavigate?: () => void }) {
         <Package className="h-4 w-4 shrink-0" />
         {t("admin.nav.orders")}
       </NavLink>
-      <NavLink to="/dashboard/admin/payments" className={linkClass} onClick={onNavigate}>
-        <CreditCard className="h-4 w-4 shrink-0" />
-        {t("admin.nav.payments")}
-      </NavLink>
+      {FEATURES.adminFinance ? (
+        <NavLink to="/dashboard/admin/payments" className={linkClass} onClick={onNavigate}>
+          <CreditCard className="h-4 w-4 shrink-0" />
+          {t("admin.nav.payments")}
+        </NavLink>
+      ) : null}
       <NavLink to="/dashboard/admin/disputes" className={linkClass} onClick={onNavigate}>
         <AlertTriangle className="h-4 w-4 shrink-0" />
         {t("admin.nav.disputes")}
@@ -63,10 +66,12 @@ export function AdminNavLinks({ onNavigate }: { onNavigate?: () => void }) {
         <BarChart3 className="h-4 w-4 shrink-0" />
         {t("admin.nav.analytics")}
       </NavLink>
-      <NavLink to="/dashboard/admin/promotions" className={linkClass} onClick={onNavigate}>
-        <Gift className="h-4 w-4 shrink-0" />
-        {t("admin.nav.promotions")}
-      </NavLink>
+      {FEATURES.adminPromotions ? (
+        <NavLink to="/dashboard/admin/promotions" className={linkClass} onClick={onNavigate}>
+          <Gift className="h-4 w-4 shrink-0" />
+          {t("admin.nav.promotions")}
+        </NavLink>
+      ) : null}
       <NavLink to="/dashboard/admin/service-areas" className={linkClass} onClick={onNavigate}>
         <MapPin className="h-4 w-4 shrink-0" />
         {t("admin.nav.serviceAreas")}
@@ -75,10 +80,12 @@ export function AdminNavLinks({ onNavigate }: { onNavigate?: () => void }) {
         <Percent className="h-4 w-4 shrink-0" />
         {t("admin.nav.pricing")}
       </NavLink>
-      <NavLink to="/dashboard/admin/notifications" className={linkClass} onClick={onNavigate}>
-        <Radio className="h-4 w-4 shrink-0" />
-        {t("admin.nav.notifications")}
-      </NavLink>
+      {FEATURES.notifications ? (
+        <NavLink to="/dashboard/admin/notifications" className={linkClass} onClick={onNavigate}>
+          <Radio className="h-4 w-4 shrink-0" />
+          {t("admin.nav.notifications")}
+        </NavLink>
+      ) : null}
       <NavLink to="/dashboard/admin/audit" className={linkClass} onClick={onNavigate}>
         <ScrollText className="h-4 w-4 shrink-0" />
         {t("admin.nav.audit")}

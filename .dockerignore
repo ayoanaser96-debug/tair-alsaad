@@ -1,0 +1,30 @@
+# Build context is the repo root; keep the image small and secret-free.
+**/node_modules
+**/dist
+**/.turbo
+**/.expo
+**/.next
+**/build
+
+# Secrets / local env
+.env
+.env.*
+!.env.example
+**/*.pem
+**/*.keystore
+**/upload_certificate.pem
+
+# VCS / IDE / OS
+.git
+.gitignore
+.idea
+.vscode
+**/*.log
+
+# Mobile / web / native artifacts not needed by the API image
+apps/mobile/android
+apps/mobile/ios
+apps/web/dist
+android
+app/releases
+**/var/uploads

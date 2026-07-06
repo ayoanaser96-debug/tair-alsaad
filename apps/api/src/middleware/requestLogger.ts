@@ -12,6 +12,24 @@ type LoggerRequest = IncomingMessage & { requestId?: string; logger?: Logger };
 
 export const rootLogger = pino({
   level: env.NODE_ENV === 'production' ? 'info' : 'debug',
+  redact: {
+    paths: [
+      'req.headers.authorization',
+      'req.headers.cookie',
+      'res.headers["set-cookie"]',
+      'accessToken',
+      '*.accessToken',
+      'refreshToken',
+      '*.refreshToken',
+      'password',
+      '*.password',
+      'otp',
+      '*.otp',
+      'devCode',
+      '*.devCode',
+    ],
+    remove: true,
+  },
 });
 
 export function httpLogging() {

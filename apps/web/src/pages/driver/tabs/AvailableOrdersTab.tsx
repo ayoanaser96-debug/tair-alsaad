@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { FEATURES } from "@/config/features";
 import { useAcceptOrderMutation, useDeclineOrderMutation } from "@/features/drivers/hooks";
 import { useAvailableOrders } from "@/hooks/driver/useAvailableOrders";
 import i18n from "@/i18n/config";
@@ -171,9 +172,11 @@ export function AvailableOrdersTab({ online }: { online: boolean }) {
                     >
                       {t("driver.dashboard.available.accept")}
                     </Button>
-                    <Button size="sm" variant="outline" disabled={declineMutation.isPending} onClick={() => void decline(o.id)}>
-                      {t("driver.dashboard.available.decline")}
-                    </Button>
+                    {FEATURES.driverDecline ? (
+                      <Button size="sm" variant="outline" disabled={declineMutation.isPending} onClick={() => void decline(o.id)}>
+                        {t("driver.dashboard.available.decline")}
+                      </Button>
+                    ) : null}
                   </div>
                 </CardContent>
               </Card>

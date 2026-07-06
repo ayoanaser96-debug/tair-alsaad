@@ -1,11 +1,13 @@
 import cors from 'cors';
 import express from 'express';
 import helmet from 'helmet';
+import mongoose from 'mongoose';
 import type { Logger } from 'pino';
 
 import { dynamicHttpCorsOrigin } from './config/corsDynamic.js';
 import { env } from './config/env.js';
 import { errorHandler } from './middleware/errorHandler.js';
+import { generalRateLimiter } from './middleware/rateLimit.js';
 import { rootLogger } from './middleware/requestLogger.js';
 import { httpLogging } from './middleware/requestLogger.js';
 import { buildApiRouter } from './routes/v1.routes.js';
@@ -14,6 +16,9 @@ import { buildWhatsappWebhookRouter } from './routes/webhooks-whatsapp.routes.js
 export function createApp() {
   const app = express();
   app.disable('x-powered-by');
+  // Behind a host load balancer / reverse proxy: trust the first hop so req.ip
+  // (used for rate limiting) reflects the real client, not the proxy.
+  app.set('trust proxy', 1);
 
   app.use(helmet());
   app.use(
@@ -43,11 +48,22 @@ export function createApp() {
       apiBase: env.API_PREFIX,
     }),
   );
-  app.get('/health', (_req, res) => res.status(200).json({ ok: true }));
+
+  // Liveness + readiness: 200 only when Mongo is connected (1 = connected).
+  app.get('/health', (_req, res) => {
+    const dbState = mongoose.connection.readyState;
+    const dbUp = dbState === 1;
+    res.status(dbUp ? 200 : 503).json({
+      ok: dbUp,
+      service: 'tayralsaad-api',
+      db: dbUp ? 'up' : 'down',
+      uptime: Math.round(process.uptime()),
+    });
+  });
 
   app.use(buildWhatsappWebhookRouter(rootLogger));
 
-  app.use(env.API_PREFIX, buildApiRouter());
+  app.use(env.API_PREFIX, generalRateLimiter, buildApiRouter());
 
   app.use(errorHandler);
   return app;

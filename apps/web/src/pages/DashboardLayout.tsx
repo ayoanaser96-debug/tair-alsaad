@@ -20,6 +20,8 @@ import {
 } from "lucide-react";
 
 import { getHealth, type HealthResponse } from "@/api";
+import { env } from "@/config/env";
+import { FEATURES } from "@/config/features";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { NotificationBell } from "@/components/sender/NotificationBell";
 import { Badge } from "@/components/ui/badge";
@@ -40,7 +42,7 @@ import { AdminNavLinks } from "@/features/admin/components/AdminNav";
 import { AdminShellBreadcrumbs } from "@/features/admin/components/AdminShellBreadcrumbs";
 import { cn } from "@/lib/utils";
 
-const API_HINT = import.meta.env.VITE_API_URL ?? "http://127.0.0.1:3333";
+const API_HINT = env.VITE_API_URL;
 
 function SenderNavLinks({ onNavigate }: { onNavigate?: () => void }) {
   const { t } = useTranslation();
@@ -67,10 +69,12 @@ function SenderNavLinks({ onNavigate }: { onNavigate?: () => void }) {
         <BookUser className="h-4 w-4 shrink-0" />
         {t("nav.senderAddresses")}
       </NavLink>
-      <NavLink to="/dashboard/sender/payments" className={linkClass} onClick={onNavigate}>
-        <CreditCard className="h-4 w-4 shrink-0" />
-        {t("nav.senderPayments")}
-      </NavLink>
+      {FEATURES.paymentMethods ? (
+        <NavLink to="/dashboard/sender/payments" className={linkClass} onClick={onNavigate}>
+          <CreditCard className="h-4 w-4 shrink-0" />
+          {t("nav.senderPayments")}
+        </NavLink>
+      ) : null}
       <NavLink to="/dashboard/sender/support" className={linkClass} onClick={onNavigate}>
         <HelpCircle className="h-4 w-4 shrink-0" />
         {t("nav.senderSupport")}
@@ -155,7 +159,7 @@ function DashboardSidebarBody({ onNavigate }: { onNavigate?: () => void }) {
   }
 
   const contact = auth?.user.email?.trim() || auth?.user.phone;
-  const dbOk = health?.ok && health.database === "connected";
+  const dbOk = health?.ok && health.db === "up";
   const isAdmin = auth?.user.role === "ADMIN";
 
   const roleLabel =
@@ -259,7 +263,9 @@ function DashboardSidebarBody({ onNavigate }: { onNavigate?: () => void }) {
         <p className={dbOk ? "text-emerald-700" : "text-amber-800"}>
           {health ? (dbOk ? t("dashboard.dbConnected") : t("dashboard.dbCheck")) : t("dashboard.apiPending")}
         </p>
-        <code className="mt-1 block break-all rounded bg-muted px-1 py-0.5 font-mono text-[0.65rem]">{API_HINT}</code>
+        {import.meta.env.DEV ? (
+          <code className="mt-1 block break-all rounded bg-muted px-1 py-0.5 font-mono text-[0.65rem]">{API_HINT}</code>
+        ) : null}
       </div>
     </>
   );
@@ -318,7 +324,7 @@ export function DashboardLayout() {
             </div>
             <div className="flex shrink-0 items-center gap-2">
               <LanguageSwitcher id="dashboard-lang-header" showLabel={false} className="min-w-[7rem]" />
-              {isSender ? <NotificationBell /> : null}
+              {isSender && FEATURES.notifications ? <NotificationBell /> : null}
               <Button size="sm" variant="secondary" type="button" onClick={() => signOut()}>
                 {t("dashboard.signOutShort")}
               </Button>
@@ -326,7 +332,7 @@ export function DashboardLayout() {
           </header>
 
           <main className="flex-1 p-4 md:p-8">
-            {isSender ? (
+            {isSender && FEATURES.notifications ? (
               <div className="mb-4 hidden justify-end md:flex">
                 <NotificationBell />
               </div>

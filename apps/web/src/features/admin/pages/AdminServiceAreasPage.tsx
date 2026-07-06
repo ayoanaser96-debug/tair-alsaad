@@ -9,6 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { NativeSelect } from "@/components/ui/native-select";
+import { FEATURES } from "@/config/features";
 import { AdminHeader } from "@/features/admin/components/AdminHeader";
 import { PermissionGate } from "@/features/admin/components/PermissionGate";
 import { createCity, getCities } from "@/lib/api/cities";
@@ -70,32 +71,36 @@ export function AdminServiceAreasPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex flex-wrap items-end gap-3">
-              <div className="min-w-[10rem] flex-1 space-y-2">
-                <Label htmlFor="city-name">{t("admin.serviceAreas.cityName")}</Label>
-                <Input
-                  id="city-name"
-                  value={newName}
-                  onChange={(e) => setNewName(e.target.value)}
-                  placeholder={t("admin.serviceAreas.cityPlaceholder")}
-                />
-              </div>
-              <div className="min-w-[8rem] space-y-2">
-                <Label htmlFor="city-country">{t("admin.serviceAreas.country")}</Label>
-                <Input
-                  id="city-country"
-                  value={newCountry}
-                  onChange={(e) => setNewCountry(e.target.value)}
-                  placeholder={t("admin.serviceAreas.countryPlaceholder")}
-                />
-              </div>
-              <Button
-                type="button"
-                disabled={createMutation.isPending || !newName.trim() || !newCountry.trim()}
-                onClick={() => createMutation.mutate({ name: newName, country: newCountry })}
-              >
-                <Plus className="me-1 h-4 w-4" />
-                {t("admin.serviceAreas.addCity")}
-              </Button>
+              {FEATURES.cityCreation ? (
+                <>
+                  <div className="min-w-[10rem] flex-1 space-y-2">
+                    <Label htmlFor="city-name">{t("admin.serviceAreas.cityName")}</Label>
+                    <Input
+                      id="city-name"
+                      value={newName}
+                      onChange={(e) => setNewName(e.target.value)}
+                      placeholder={t("admin.serviceAreas.cityPlaceholder")}
+                    />
+                  </div>
+                  <div className="min-w-[8rem] space-y-2">
+                    <Label htmlFor="city-country">{t("admin.serviceAreas.country")}</Label>
+                    <Input
+                      id="city-country"
+                      value={newCountry}
+                      onChange={(e) => setNewCountry(e.target.value)}
+                      placeholder={t("admin.serviceAreas.countryPlaceholder")}
+                    />
+                  </div>
+                  <Button
+                    type="button"
+                    disabled={createMutation.isPending || !newName.trim() || !newCountry.trim()}
+                    onClick={() => createMutation.mutate({ name: newName, country: newCountry })}
+                  >
+                    <Plus className="me-1 h-4 w-4" />
+                    {t("admin.serviceAreas.addCity")}
+                  </Button>
+                </>
+              ) : null}
               <Button
                 type="button"
                 variant="outline"

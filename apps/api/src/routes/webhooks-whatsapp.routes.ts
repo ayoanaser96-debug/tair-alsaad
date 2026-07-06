@@ -28,7 +28,11 @@ export function buildWhatsappWebhookRouter(logger: Logger): Router {
   });
 
   router.post('/webhooks/whatsapp', (req, res) => {
-    logger.info({ payload: req.body }, '[whatsapp.webhook] inbound');
+    // Avoid logging full payloads (contain phone numbers / message content).
+    const entryCount = Array.isArray((req.body as { entry?: unknown[] })?.entry)
+      ? (req.body as { entry: unknown[] }).entry.length
+      : 0;
+    logger.info({ entryCount }, '[whatsapp.webhook] inbound');
     /** Meta expects 200 quickly; ACK here. Implement signature check with META_APP_SECRET if needed. */
     return res.sendStatus(200);
   });

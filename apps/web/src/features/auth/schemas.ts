@@ -39,7 +39,7 @@ export const registerInputSchema = z.object({
   name: z.string().min(1),
   phone: z.string().min(5),
   password: z.string().min(8),
-  role: z.enum(["SENDER", "DRIVER", "ADMIN"]),
+  role: z.enum(["SENDER", "DRIVER"]),
   cityId: z.string().nullable().optional(),
 });
 

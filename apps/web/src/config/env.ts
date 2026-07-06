@@ -2,7 +2,7 @@ import { z } from "zod";
 
 const envSchema = z.object({
   VITE_API_URL: z
-    .preprocess((v) => (typeof v === "string" && v.trim() ? v : "http://127.0.0.1:4001/api/v1"), z.string().url()),
+    .preprocess((v) => (typeof v === "string" && v.trim() ? v : "http://127.0.0.1:4000/api/v1"), z.string().url()),
   VITE_WS_URL: z.string().optional(),
   VITE_MAPBOX_TOKEN: z.string().optional(),
   VITE_USE_MOCKS: z.enum(["true", "false"]).optional(),
@@ -28,7 +28,7 @@ function defaultWsUrl(apiUrl: string): string {
     u.protocol = u.protocol === "https:" ? "wss:" : "ws:";
     return u.toString().replace(/\/$/, "");
   } catch {
-    return "ws://127.0.0.1:4001";
+    return "ws://127.0.0.1:4000";
   }
 }
 
