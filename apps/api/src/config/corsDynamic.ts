@@ -16,6 +16,17 @@ function devOriginAllowed(origin: string): boolean {
   return localhostDev.test(origin) || privateLanDev.test(origin);
 }
 
+/** Vercel production + preview deploys (e.g. tair-alsaad-web-po1w.vercel.app). */
+const vercelApp = /^https:\/\/[a-z0-9-]+\.vercel\.app$/i;
+
+/** Netlify production + hash-prefixed deploy previews. */
+const netlifyApp = /^https:\/\/[a-z0-9-]+(?:--[a-z0-9-]+)?\.netlify\.app$/i;
+
+/** Known static hosts for the web app — avoids manual CORS_ORIGIN updates per preview URL. */
+function hostedWebOriginAllowed(origin: string): boolean {
+  return vercelApp.test(origin) || netlifyApp.test(origin);
+}
+
 /** Parse the comma-separated CORS_ORIGIN allow-list into normalized origins. */
 export function corsAllowList(): string[] {
   return env.CORS_ORIGIN.split(',')
@@ -37,7 +48,11 @@ export function dynamicHttpCorsOrigin(): CorsOptions['origin'] {
       return;
     }
     const normalized = origin.replace(/\/$/, '');
-    if (allow.includes(normalized) || (!isProd && devOriginAllowed(normalized))) {
+    if (
+      allow.includes(normalized) ||
+      hostedWebOriginAllowed(normalized) ||
+      (!isProd && devOriginAllowed(normalized))
+    ) {
       cb(null, true);
       return;
     }
@@ -47,6 +62,6 @@ export function dynamicHttpCorsOrigin(): CorsOptions['origin'] {
 
 /** Same rules as Express CORS for Socket.IO */
 export function dynamicSocketIoCorsOrigin(): string | boolean | RegExp | (string | RegExp)[] {
-  if (env.NODE_ENV === 'production') return corsAllowList();
+  if (env.NODE_ENV === 'production') return [...corsAllowList(), vercelApp, netlifyApp];
   return [localhostDev, privateLanDev];
 }
