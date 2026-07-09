@@ -2,7 +2,7 @@
   "name": "tayralsaad",
   "version": "0.0.0",
   "private": true,
-  "packageManager": "pnpm@9.15.9",
+  "packageManager": "pnpm@10.5.2",
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
