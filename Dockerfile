@@ -11,7 +11,7 @@ COPY . .
 RUN pnpm install --frozen-lockfile
 RUN pnpm --filter @tayralsaad/api build
 RUN test -f apps/api/dist/server.js
-RUN pnpm --filter @tayralsaad/api deploy --prod /app
+RUN pnpm --filter @tayralsaad/api deploy --prod --legacy /app
 
 FROM node:20-alpine AS runner
 ENV NODE_ENV=production
