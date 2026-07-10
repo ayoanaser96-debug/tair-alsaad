@@ -9,6 +9,8 @@ import { attachSocket } from './sockets/io.js';
 import { startNotificationWorker } from './workers/notifications.worker.js';
 
 async function bootstrap() {
+  process.stderr.write(`[api] booting (NODE_ENV=${env.NODE_ENV}, HOST=${env.HOST}, PORT=${env.PORT})\n`);
+
   await connectDb(rootLogger);
   void getRedis(rootLogger);
 

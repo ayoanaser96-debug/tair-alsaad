@@ -20,11 +20,20 @@ export function createApp() {
   // (used for rate limiting) reflects the real client, not the proxy.
   app.set('trust proxy', 1);
 
-  app.use(helmet());
+  const corsOptions: cors.CorsOptions = {
+    origin: dynamicHttpCorsOrigin(),
+    credentials: true,
+    optionsSuccessStatus: 204,
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Request-Id'],
+  };
+
+  // CORS must run before helmet so OPTIONS preflight gets Access-Control-* headers.
+  app.use(cors(corsOptions));
+  app.options('*', cors(corsOptions));
   app.use(
-    cors({
-      origin: dynamicHttpCorsOrigin(),
-      credentials: true,
+    helmet({
+      crossOriginResourcePolicy: { policy: 'cross-origin' },
     }),
   );
   app.use(express.json({ limit: '1mb' }));
@@ -49,11 +58,11 @@ export function createApp() {
     }),
   );
 
-  // Liveness + readiness: 200 only when Mongo is connected (1 = connected).
+  // Liveness: 200 while the process is up. `db` reports Mongo readiness for operators.
   app.get('/health', (_req, res) => {
     const dbState = mongoose.connection.readyState;
     const dbUp = dbState === 1;
-    res.status(dbUp ? 200 : 503).json({
+    res.status(200).json({
       ok: dbUp,
       service: 'tayralsaad-api',
       db: dbUp ? 'up' : 'down',

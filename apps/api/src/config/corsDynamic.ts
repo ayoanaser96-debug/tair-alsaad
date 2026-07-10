@@ -53,7 +53,7 @@ export function dynamicHttpCorsOrigin(): CorsOptions['origin'] {
       hostedWebOriginAllowed(normalized) ||
       (!isProd && devOriginAllowed(normalized))
     ) {
-      cb(null, true);
+      cb(null, normalized);
       return;
     }
     cb(null, false);
