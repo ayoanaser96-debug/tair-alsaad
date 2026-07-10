@@ -23,6 +23,7 @@ COPY --from=builder --chown=nodejs:nodejs /app/node_modules ./node_modules
 COPY --from=builder --chown=nodejs:nodejs /app/package.json ./package.json
 COPY --from=builder --chown=nodejs:nodejs /repo/apps/api/dist ./dist
 
+RUN mkdir -p /app/var/uploads && chown -R nodejs:nodejs /app/var
 USER nodejs
 EXPOSE 4000
 
