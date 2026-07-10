@@ -14,7 +14,7 @@ COPY . .
 RUN pnpm install --frozen-lockfile
 RUN pnpm --filter @tayralsaad/api build
 # Produce a pruned, self-contained deployment (flattened prod node_modules).
-RUN pnpm --filter @tayralsaad/api deploy --prod /app
+RUN pnpm --filter @tayralsaad/api deploy --prod --legacy /app
 
 # ---- Runner: minimal runtime ----
 FROM node:20-alpine AS runner
