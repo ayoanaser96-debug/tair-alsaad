@@ -43,9 +43,15 @@ export default function AdminTabsLayout() {
           tabBarIcon: ({ color, size }) => <Ionicons name="stats-chart-outline" color={color} size={size} />,
         }}
       />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: t('navigation.profile'),
+          tabBarIcon: ({ color, size }) => <Ionicons name="person-outline" color={color} size={size} />,
+        }}
+      />
       <Tabs.Screen name="shipments" options={{ href: null }} />
       <Tabs.Screen name="disputes" options={{ href: null }} />
-      <Tabs.Screen name="profile" options={{ href: null }} />
     </Tabs>
   );
 }

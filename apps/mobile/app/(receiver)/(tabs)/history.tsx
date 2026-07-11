@@ -8,7 +8,6 @@ import {
   Pressable,
   RefreshControl,
   Text,
-  View,
 } from 'react-native';
 
 import type { Shipment } from '@tayralsaad/types';

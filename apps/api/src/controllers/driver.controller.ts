@@ -5,6 +5,7 @@ import { DriverModel } from '../models/Driver.js';
 import { UserModel } from '../models/User.js';
 import { PayoutBatchModel } from '../models/PayoutBatch.js';
 import { ShipmentModel } from '../models/Shipment.js';
+import { issueAuthTokens } from '../services/authService.js';
 
 import { broadcastDriverShipmentLocations } from '../sockets/io.js';
 
@@ -36,6 +37,7 @@ async function propagateDriverPing(driverMongoIdStr: string, lat: number, lng: n
 export const applyDriver = asyncHandler(async (req: Request, res: Response) => {
   if (!req.auth) throw new ForbiddenError();
   const existing = await DriverModel.findOne({ userId: req.auth.userId });
+  let driver;
   if (existing) {
     existing.set({
       vehicle: req.body.vehicle,
@@ -43,21 +45,42 @@ export const applyDriver = asyncHandler(async (req: Request, res: Response) => {
       status: 'pending_review',
     });
     await existing.save();
-    sendOk(res, existing);
-    return;
+    driver = existing;
+  } else {
+    driver = await DriverModel.create({
+      userId: req.auth.userId,
+      vehicle: req.body.vehicle,
+      documents: req.body.documents,
+      status: 'pending_review',
+      serviceCities: ['baghdad'],
+      earnings: {},
+    });
+
+    await UserModel.findByIdAndUpdate(req.auth.userId, { role: 'driver' }).exec();
   }
-  const created = await DriverModel.create({
-    userId: req.auth.userId,
-    vehicle: req.body.vehicle,
-    documents: req.body.documents,
-    status: 'pending_review',
-    serviceCities: ['baghdad'],
-    earnings: {},
-  });
 
-  await UserModel.findByIdAndUpdate(req.auth.userId, { role: 'driver' }).exec();
+  const user = await UserModel.findById(req.auth.userId);
+  if (!user) throw new NotFoundError();
 
-  sendOk(res, created);
+  const payload: Record<string, unknown> = { driver };
+  const jwtRole = String(req.auth.role ?? '').toLowerCase();
+  const dbRole = String(user.role ?? '').toLowerCase();
+
+  if (jwtRole !== dbRole) {
+    const tokens = await issueAuthTokens({
+      user: {
+        id: user.id ?? user._id.toString(),
+        role: user.role,
+        preferredLanguage: user.preferredLanguage,
+      },
+    });
+    payload.user = user;
+    payload.accessToken = tokens.accessToken;
+    payload.refreshToken = tokens.refreshToken;
+    payload.expiresIn = tokens.expiresIn;
+  }
+
+  sendOk(res, payload);
 });
 
 export const getDriverProfile = asyncHandler(async (req: Request, res: Response) => {

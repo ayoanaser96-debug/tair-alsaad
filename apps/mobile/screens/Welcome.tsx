@@ -77,7 +77,7 @@ export function WelcomeScreen() {
           </Animated.View>
 
           <Animated.View style={[ctaStyle, { marginTop: theme.spacing.sm }]}>
-            <ThemeButton onPress={() => router.push('/(auth)/login')}>
+            <ThemeButton onPress={() => router.push('/(auth)/register')}>
               {t('welcome.getStarted')}
             </ThemeButton>
           </Animated.View>

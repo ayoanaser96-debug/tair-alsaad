@@ -21,10 +21,14 @@ import {
 import { displayVariantForLocale, useTheme } from '@/lib/theme';
 import { useRequestOtp } from '@/queries/auth';
 
-export default function LoginScreen() {
+type SignupRole = 'sender' | 'driver';
+
+export default function RegisterScreen() {
   const theme = useTheme();
   const { t, i18n } = useTranslation();
+  const [name, setName] = useState('');
   const [local, setLocal] = useState('');
+  const [role, setRole] = useState<SignupRole>('sender');
   const [errorText, setErrorText] = useState<string>();
   const [attemptedSubmit, setAttemptedSubmit] = useState(false);
 
@@ -38,7 +42,9 @@ export default function LoginScreen() {
         pathname: '/(auth)/otp',
         params: {
           phone: variables.phone,
-          mode: 'login',
+          name: name.trim(),
+          role,
+          mode: 'register',
           expiresIn: String(data.expiresIn),
           ...(data.devCode ? { devCode: data.devCode } : {}),
         },
@@ -47,7 +53,7 @@ export default function LoginScreen() {
   });
 
   const digits = stripLocalPhoneDigits(local);
-  const canSubmit = isValidIraqiLocalPhone(digits);
+  const canSubmit = name.trim().length >= 2 && isValidIraqiLocalPhone(digits);
 
   const inlineError = useMemo(() => {
     if (errorText) return errorText;
@@ -58,6 +64,10 @@ export default function LoginScreen() {
 
   const submit = () => {
     setAttemptedSubmit(true);
+    if (name.trim().length < 2) {
+      setErrorText(t('errors.VALIDATION_FAILED'));
+      return;
+    }
     if (!canSubmit) {
       if (!digits.startsWith('7')) {
         setErrorText(t('auth.phoneMustStartWith7'));
@@ -96,12 +106,22 @@ export default function LoginScreen() {
         >
           <View style={{ gap: theme.spacing.sm }}>
             <AppText variant={displayVariantForLocale(i18n.language)} align="center">
-              {t('auth.phoneScreenTitle')}
+              {t('auth.registerScreenTitle')}
             </AppText>
             <AppText variant="body" color="inkMuted" align="center">
-              {t('auth.phoneScreenSubtitle')}
+              {t('auth.registerScreenSubtitle')}
             </AppText>
           </View>
+
+          <ThemeInput
+            label={t('auth.fullName')}
+            value={name}
+            onChangeText={(text) => {
+              setName(text);
+              setErrorText(undefined);
+            }}
+            autoCapitalize="words"
+          />
 
           <View style={{ gap: theme.spacing.sm }}>
             <View style={{ flexDirection: 'row', alignItems: 'flex-start', gap: theme.spacing.sm }}>
@@ -123,20 +143,31 @@ export default function LoginScreen() {
             </View>
           </View>
 
+          <View style={{ gap: theme.spacing.sm }}>
+            <AppText variant="bodyBold">{t('auth.selectSignupRole')}</AppText>
+            <View style={{ gap: theme.spacing.sm }}>
+              <RoleOption
+                title={t('auth.intentSender')}
+                hint={t('auth.hintSender')}
+                selected={role === 'sender'}
+                onPress={() => setRole('sender')}
+              />
+              <RoleOption
+                title={t('auth.intentDriver')}
+                hint={t('auth.hintDriver')}
+                selected={role === 'driver'}
+                onPress={() => setRole('driver')}
+              />
+            </View>
+          </View>
+
           <ThemeButton loading={requestOtp.isPending} disabled={!canSubmit} onPress={submit}>
-            {t('auth.sendCode')}
+            {t('auth.createAccount')}
           </ThemeButton>
 
-          {/* v2: Google / Apple sign-in — Apple required on iOS if Google is added (App Store 4.8) */}
-
           <AuthFooterLink
-            label={`${t('auth.noAccount')} ${t('auth.createAccountLink')}`}
-            onPress={() => router.push('/(auth)/register')}
-          />
-
-          <AuthFooterLink
-            label={t('track.receiverForSomeoneElse')}
-            onPress={() => router.push('/(auth)/receiver-track')}
+            label={`${t('auth.hasAccount')} ${t('auth.signInLink')}`}
+            onPress={() => router.replace('/(auth)/login')}
           />
 
           <Pressable
@@ -151,5 +182,43 @@ export default function LoginScreen() {
         </ScrollView>
       </KeyboardAvoidingView>
     </ThemeScreen>
+  );
+}
+
+function RoleOption({
+  title,
+  hint,
+  selected,
+  onPress,
+}: {
+  title: string;
+  hint: string;
+  selected: boolean;
+  onPress: () => void;
+}) {
+  const theme = useTheme();
+
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityState={{ selected }}
+      onPress={onPress}
+      style={{
+        borderRadius: theme.radius.card,
+        borderWidth: 1,
+        borderColor: selected ? theme.colors.primary : theme.colors.line,
+        backgroundColor: selected ? theme.colors.surfaceAlt : theme.colors.surface,
+        paddingHorizontal: theme.spacing.lg,
+        paddingVertical: theme.spacing.md,
+        gap: theme.spacing.xs,
+      }}
+    >
+      <AppText variant="bodyBold" color={selected ? 'primary' : 'ink'}>
+        {title}
+      </AppText>
+      <AppText variant="caption" color="inkMuted">
+        {hint}
+      </AppText>
+    </Pressable>
   );
 }

@@ -13,18 +13,38 @@ import { formatCountdown, formatPhoneForDisplay } from '@/lib/auth/phoneFormat';
 import { authenticatedTabsHref } from '@/lib/loginIntent';
 import { displayVariantForLocale, useTheme } from '@/lib/theme';
 import { useRequestOtp, useVerifyOtp } from '@/queries/auth';
+import { fetchDriverMe } from '@/queries/driver';
 import { useAuthStore } from '@/stores/authStore';
+
+type OtpParams = {
+  phone?: string;
+  name?: string;
+  role?: string;
+  mode?: string;
+  expiresIn?: string;
+  devCode?: string;
+};
+
+function parseExpiresIn(value: string | undefined): number {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : 60;
+}
 
 export default function OtpScreen() {
   const theme = useTheme();
   const { t, i18n } = useTranslation();
-  const params = useLocalSearchParams<{ phone?: string }>();
+  const params = useLocalSearchParams<OtpParams>();
   const phone = typeof params.phone === 'string' ? params.phone : '';
+  const presetName = typeof params.name === 'string' ? params.name : '';
+  const signupRole =
+    params.role === 'driver' || params.role === 'sender' ? params.role : undefined;
+  const isRegister = params.mode === 'register';
+  const devCode = typeof params.devCode === 'string' ? params.devCode : undefined;
   const setSession = useAuthStore((s) => s.setSession);
 
   const [digits, setDigits] = useState<string[]>(() => Array.from({ length: OTP_LENGTH }, () => ''));
-  const [name, setName] = useState('');
-  const [seconds, setSeconds] = useState(60);
+  const [name, setName] = useState(presetName);
+  const [seconds, setSeconds] = useState(() => parseExpiresIn(params.expiresIn));
   const [otpError, setOtpError] = useState(false);
   const [shakeToken, setShakeToken] = useState(0);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -41,11 +61,14 @@ export default function OtpScreen() {
   }, [seconds]);
 
   const request = useRequestOtp({
-    onSuccess: ({ expiresIn }) => {
+    onSuccess: ({ expiresIn, devCode: nextDevCode }) => {
       setSeconds(expiresIn);
       setDigits(Array.from({ length: OTP_LENGTH }, () => ''));
       setOtpError(false);
       submittedCodeRef.current = null;
+      if (nextDevCode) {
+        router.setParams({ devCode: nextDevCode, expiresIn: String(expiresIn) });
+      }
     },
     onError: (e) => Alert.alert(t('common.errorTitle'), e.message),
   });
@@ -64,7 +87,12 @@ export default function OtpScreen() {
           user: payload.user,
           initialShell: 'driver',
         });
-        router.replace(authenticatedTabsHref('driver'));
+        try {
+          await fetchDriverMe();
+          router.replace(authenticatedTabsHref('driver'));
+        } catch {
+          router.replace('/(driver)/apply');
+        }
         return;
       }
       if (apiRole === 'admin') {
@@ -104,8 +132,13 @@ export default function OtpScreen() {
     if (submittedCodeRef.current === code) return;
 
     submittedCodeRef.current = code;
-    verifyOtp({ phone, code, name: name.trim() || undefined });
-  }, [code, name, phone, showSuccess, verifyOtp, verifyPending]);
+    verifyOtp({
+      phone,
+      code,
+      name: name.trim() || undefined,
+      role: isRegister ? signupRole : undefined,
+    });
+  }, [code, isRegister, name, phone, showSuccess, signupRole, verifyOtp, verifyPending]);
 
   const handleDigitsChange = (next: string[]) => {
     setDigits(next);
@@ -143,7 +176,7 @@ export default function OtpScreen() {
               </AppText>
               <Pressable
                 accessibilityRole="button"
-                onPress={() => router.replace('/(auth)/login')}
+                onPress={() => router.replace(isRegister ? '/(auth)/register' : '/(auth)/login')}
                 style={{ minHeight: 48, justifyContent: 'center' }}
               >
                 <AppText variant="body" color="primary">
@@ -152,6 +185,23 @@ export default function OtpScreen() {
               </Pressable>
             </View>
           </View>
+
+          {devCode ? (
+            <View
+              style={{
+                borderRadius: theme.radius.input,
+                borderWidth: 1,
+                borderColor: theme.colors.accent,
+                backgroundColor: theme.colors.surfaceAlt,
+                paddingHorizontal: theme.spacing.md,
+                paddingVertical: theme.spacing.sm,
+              }}
+            >
+              <AppText variant="caption" color="inkMuted" align="center" style={{ writingDirection: 'ltr' }}>
+                {t('auth.devOtpHint', { code: devCode })}
+              </AppText>
+            </View>
+          ) : null}
 
           <OtpCodeInput
             value={digits}
@@ -164,18 +214,20 @@ export default function OtpScreen() {
           {showSuccess ? (
             <View style={{ alignItems: 'center', paddingVertical: theme.spacing.md }}>
               <AppText variant="title" color="accent" align="center">
-                ✓
+                {t('auth.otpSuccess')}
               </AppText>
             </View>
           ) : null}
 
-          <ThemeInput
-            label={t('placeholders.nameOptional')}
-            value={name}
-            onChangeText={setName}
-            autoCapitalize="words"
-            editable={!verifyPending && !showSuccess}
-          />
+          {!isRegister ? (
+            <ThemeInput
+              label={t('placeholders.nameOptional')}
+              value={name}
+              onChangeText={setName}
+              autoCapitalize="words"
+              editable={!verifyPending && !showSuccess}
+            />
+          ) : null}
 
           <View style={{ alignItems: 'center', marginTop: theme.spacing.md }}>
             <Pressable

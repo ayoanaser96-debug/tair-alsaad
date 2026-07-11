@@ -1,17 +1,21 @@
 import { useTranslation } from 'react-i18next';
-import { Pressable, Text, View } from 'react-native';
+import { Pressable, ScrollView, View } from 'react-native';
 
 import { router } from 'expo-router';
 
-import { Screen } from '@/components/ui/Screen';
+import { AppText } from '@/components/ui/AppText';
+import { ThemeButton } from '@/components/ui/ThemeButton';
+import { ThemeScreen } from '@/components/ui/ThemeScreen';
 import { authenticatedTabsHref } from '@/lib/loginIntent';
 import { shouldShowLocationPrePrompt } from '@/lib/location/permissionGate';
 import { queryClient } from '@/lib/queryClient';
 import type { AppHomeSegment } from '@/lib/secure';
+import { displayVariantForLocale, useTheme } from '@/lib/theme';
 import { useAuthStore } from '@/stores/authStore';
 
 export default function SelectRoleScreen() {
-  const { t } = useTranslation();
+  const theme = useTheme();
+  const { t, i18n } = useTranslation();
   const user = useAuthStore((s) => s.user);
   const setRole = useAuthStore((s) => s.setRole);
   const logout = useAuthStore((s) => s.logout);
@@ -35,40 +39,66 @@ export default function SelectRoleScreen() {
   };
 
   return (
-    <Screen className="justify-start px-5 pt-14 pb-10">
-      <Text className="mb-2 text-center text-2xl font-bold text-ink">{t('auth.postLoginRoleTitle')}</Text>
-      <Text className="mb-10 text-center text-sm leading-6 text-inkSoft">{t('auth.postLoginRoleSubtitle')}</Text>
-
-      <View className="gap-4">
-        <RolePickRow title={t('auth.intentSender')} hint={t('auth.hintSender')} onPress={() => void choose('sender')} />
-        <RolePickRow title={t('auth.intentReceiver')} hint={t('auth.hintReceiver')} onPress={() => void choose('receiver')} />
-        <RolePickRow
-          title={t('auth.intentDriver')}
-          hint={t('auth.hintDriver')}
-          disabled={apiRole !== 'driver'}
-          onPress={() => void choose('driver')}
-        />
-        <RolePickRow
-          title={t('auth.intentAdmin')}
-          hint={t('auth.hintAdmin')}
-          disabled={apiRole !== 'admin'}
-          onPress={() => void choose('admin')}
-        />
-      </View>
-
-      <Pressable
-        accessibilityRole="button"
-        className="mt-12 items-center py-4"
-        onPress={() => {
-          void logout().then(() => {
-            queryClient.clear();
-            router.replace('/(auth)/login');
-          });
+    <ThemeScreen>
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+          paddingHorizontal: theme.spacing.xl,
+          paddingTop: theme.spacing.xxl,
+          paddingBottom: theme.spacing.xxxl,
+          gap: theme.spacing.xl,
         }}
       >
-        <Text className="text-base text-primary">{t('common.cancel')}</Text>
-      </Pressable>
-    </Screen>
+        <View style={{ gap: theme.spacing.sm }}>
+          <AppText variant={displayVariantForLocale(i18n.language)} align="center">
+            {t('auth.postLoginRoleTitle')}
+          </AppText>
+          <AppText variant="body" color="inkMuted" align="center">
+            {t('auth.postLoginRoleSubtitle')}
+          </AppText>
+        </View>
+
+        <View style={{ gap: theme.spacing.md }}>
+          <RolePickRow title={t('auth.intentSender')} hint={t('auth.hintSender')} onPress={() => void choose('sender')} />
+          <RolePickRow
+            title={t('auth.intentReceiver')}
+            hint={t('auth.hintReceiver')}
+            onPress={() => void choose('receiver')}
+          />
+          {apiRole === 'driver' ? (
+            <RolePickRow
+              title={t('auth.intentDriver')}
+              hint={t('auth.hintDriver')}
+              onPress={() => void choose('driver')}
+            />
+          ) : (
+            <RolePickRow
+              title={t('auth.intentDriver')}
+              hint={t('auth.hintDriver')}
+              onPress={() => router.push('/(driver)/apply')}
+            />
+          )}
+          <RolePickRow
+            title={t('auth.intentAdmin')}
+            hint={t('auth.hintAdmin')}
+            disabled={apiRole !== 'admin'}
+            onPress={() => void choose('admin')}
+          />
+        </View>
+
+        <ThemeButton
+          variant="ghost"
+          onPress={() => {
+            void logout().then(() => {
+              queryClient.clear();
+              router.replace('/(auth)/login');
+            });
+          }}
+        >
+          {t('common.cancel')}
+        </ThemeButton>
+      </ScrollView>
+    </ThemeScreen>
   );
 }
 
@@ -83,16 +113,29 @@ function RolePickRow({
   disabled?: boolean;
   onPress: () => void;
 }) {
+  const theme = useTheme();
+
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityState={{ disabled: Boolean(disabled) }}
       disabled={disabled}
       onPress={onPress}
-      className={`rounded-2xl border border-border bg-surface px-4 py-4 active:opacity-80 ${disabled ? 'opacity-45' : ''}`}
+      style={{
+        borderRadius: theme.radius.card,
+        borderWidth: 1,
+        borderColor: theme.colors.line,
+        backgroundColor: theme.colors.surface,
+        paddingHorizontal: theme.spacing.lg,
+        paddingVertical: theme.spacing.md,
+        gap: theme.spacing.xs,
+        opacity: disabled ? 0.45 : 1,
+      }}
     >
-      <Text className="text-lg font-semibold text-ink">{title}</Text>
-      <Text className="mt-2 text-sm leading-6 text-inkSoft">{hint}</Text>
+      <AppText variant="bodyBold">{title}</AppText>
+      <AppText variant="caption" color="inkMuted">
+        {hint}
+      </AppText>
     </Pressable>
   );
 }

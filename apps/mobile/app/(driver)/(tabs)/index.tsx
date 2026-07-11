@@ -3,6 +3,7 @@ import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, FlatList, Pressable, RefreshControl, Switch, Text, View } from 'react-native';
 
+import type { TFunction } from 'i18next';
 import type { ServiceTier, Shipment } from '@tayralsaad/types';
 import { colors } from '@tayralsaad/tokens';
 import { formatIQD } from '@tayralsaad/utils';
@@ -29,7 +30,7 @@ import { useAuthStore } from '@/stores/authStore';
 
 const MOCK_EARNINGS_TODAY_IQD = 4_500_000;
 
-function serviceTierLabel(t: (k: string) => string, tier: ServiceTier): string {
+function serviceTierLabel(t: TFunction, tier: ServiceTier): string {
   switch (tier) {
     case 'express':
       return t('shipment.tierExpress');
@@ -42,7 +43,7 @@ function serviceTierLabel(t: (k: string) => string, tier: ServiceTier): string {
   }
 }
 
-function pkgLabel(t: (k: string, ...args: unknown[]) => string, shipment: Shipment): string {
+function pkgLabel(t: TFunction, shipment: Shipment): string {
   const ext = shipment as unknown as { package?: { type?: string; weightTier?: string } };
   const typ = ext.package?.type;
   const wt = ext.package?.weightTier;
@@ -291,15 +292,13 @@ export default function DriverRequestsScreen() {
             <Text className="mb-8 text-sm text-inkSoft">{t('common.emptyTitle')}</Text>
           ) : (
             completedTrips.map((trip, idx) => (
-              <Pressable
+              <View
                 key={`${trip.trackingCode}-${idx}`}
-                accessibilityRole="button"
                 className="mb-3 rounded-xl border border-border bg-bg px-4 py-3"
-                onPress={() => router.push('/(driver)/(tabs)/active')}
               >
                 <Text className="text-xs uppercase text-inkSoft">{trip.trackingCode}</Text>
                 <Text className="mt-2 text-sm font-medium text-ink">{t(`status.${trip.status}`, trip.status)}</Text>
-              </Pressable>
+              </View>
             ))
           )}
           <Text className="mb-4 text-lg font-semibold text-ink">{t('driver.openOffersTitle')}</Text>

@@ -1,7 +1,9 @@
 import { useMemo, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, FlatList, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, FlatList, Pressable, Text, TouchableOpacity, View } from 'react-native';
+
+import { router } from 'expo-router';
 
 import { Screen } from '@/components/ui/Screen';
 import { useAdminShipments } from '@/queries/admin';
@@ -51,18 +53,24 @@ export default function AdminShipmentsTab() {
         contentContainerStyle={{ paddingHorizontal: 16, gap: 8, paddingBottom: 24 }}
         renderItem={({ item }) => {
           const row = item as Record<string, unknown>;
+          const id = String(row._id ?? row.id ?? '');
           const tracking = typeof row.trackingCode === 'string' ? row.trackingCode : '—';
           const status = typeof row.status === 'string' ? row.status : '';
           const pickup = (row.pickup as { city?: string } | undefined)?.city;
           const drop = (row.dropoff as { city?: string } | undefined)?.city;
           return (
-            <View className="rounded-xl border border-stone-200 bg-white p-4">
+            <Pressable
+              accessibilityRole="button"
+              disabled={!id}
+              onPress={() => id && router.push(`/(admin)/shipment/${id}`)}
+              className="rounded-xl border border-stone-200 bg-white p-4 active:opacity-80"
+            >
               <Text className="font-bold text-ink">{tracking}</Text>
               <Text className="text-sm text-stone-600 capitalize">{status}</Text>
               {[pickup, drop].filter(Boolean).length ? (
                 <Text className="text-xs text-stone-500">{[pickup, drop].filter(Boolean).join(' → ')}</Text>
               ) : null}
-            </View>
+            </Pressable>
           );
         }}
       />

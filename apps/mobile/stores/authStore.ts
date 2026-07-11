@@ -2,6 +2,8 @@ import { create } from 'zustand';
 
 import type { ApiUser } from '@/lib/types';
 import type { AppHomeSegment } from '@/lib/secure';
+import { revokeServerSession } from '@/lib/authSession';
+import { sanitizeAppHomeSegment } from '@/lib/resolveDashboard';
 import {
   clearTokens,
   clearAppHomeSegment,
@@ -46,7 +48,16 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   appHomeSegment: null,
 
   hydrate: async () => {
-    const [saved, home] = await Promise.all([loadHydratedAuth(), loadAppHomeSegment()]);
+    const [saved, homeRaw] = await Promise.all([loadHydratedAuth(), loadAppHomeSegment()]);
+    const apiRole = String(saved.user?.role ?? '').toLowerCase();
+    const home = sanitizeAppHomeSegment(apiRole, homeRaw);
+    if (homeRaw !== home) {
+      if (home) {
+        await persistAppHomeSegment(home);
+      } else {
+        await clearAppHomeSegment();
+      }
+    }
     set({
       accessToken: saved.accessToken ?? null,
       refreshToken: saved.refreshToken ?? null,
@@ -109,6 +120,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   },
 
   logout: async () => {
+    await revokeServerSession();
     await clearTokens().catch(() => undefined);
     set({
       accessToken: null,

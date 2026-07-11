@@ -65,7 +65,18 @@
     "hintSender": "Create shipments, track deliveries, and manage your wallet.",
     "hintReceiver": "See parcels addressed to your phone number.",
     "hintDriver": "Receive paid delivery offers nearby.",
-    "hintAdmin": "Monitor operations and approvals."
+    "hintAdmin": "Monitor operations and approvals.",
+    "registerScreenTitle": "Create your account",
+    "registerScreenSubtitle": "One minute and you can start sending or delivering",
+    "fullName": "Full name",
+    "createAccount": "Create account",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "signInLink": "Sign in",
+    "createAccountLink": "Create account",
+    "selectSignupRole": "How will you use the app?",
+    "devOtpHint": "Dev code (testing only): {{code}}",
+    "otpSuccess": "Verified"
   },
   "admin": {
     "accessDeniedTitle": "Admin dashboard",

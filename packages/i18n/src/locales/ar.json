@@ -65,7 +65,18 @@
     "hintSender": "إنشاء الشحنات وتتبعها وإدارة المحفظة.",
     "hintReceiver": "عرض الطرود الموجهة لهذا الرقم.",
     "hintDriver": "استلام عروض توصيل مدفوعة بالقرب منك.",
-    "hintAdmin": "مراقبة العمليات والموافقات."
+    "hintAdmin": "مراقبة العمليات والموافقات.",
+    "registerScreenTitle": "أنشئ حسابك",
+    "registerScreenSubtitle": "دقيقة وحدة وتكدر تبدي ترسل أو توصّل",
+    "fullName": "الاسم الكامل",
+    "createAccount": "أنشئ الحساب",
+    "noAccount": "ما عندك حساب؟",
+    "hasAccount": "عندك حساب؟",
+    "signInLink": "سجّل دخول",
+    "createAccountLink": "أنشئ حساب",
+    "selectSignupRole": "شلون تريد تستخدم التطبيق؟",
+    "devOtpHint": "رمز التطوير (للاختبار فقط): {{code}}",
+    "otpSuccess": "تم التحقق"
   },
   "admin": {
     "accessDeniedTitle": "لوحة الإدارة",

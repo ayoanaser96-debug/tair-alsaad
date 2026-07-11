@@ -148,7 +148,33 @@ export function useRequestPayoutMutation() {
   });
 }
 
-export async function postApplyDriver(payload: Record<string, unknown>): Promise<DriverMe> {
+export type ApplyDriverResult = {
+  driver: DriverMe;
+  user?: Record<string, unknown>;
+  accessToken?: string;
+  refreshToken?: string;
+  expiresIn?: number;
+};
+
+export async function postApplyDriver(payload: Record<string, unknown>): Promise<ApplyDriverResult> {
   const res = await api.post('/driver/apply', payload);
-  return unwrapResponse<DriverMe>(res.data);
+  const data = unwrapResponse<{
+    driver?: DriverMe;
+    user?: Record<string, unknown>;
+    accessToken?: string;
+    refreshToken?: string;
+    expiresIn?: number;
+  } & DriverMe>(res.data);
+
+  if (data.driver) {
+    return {
+      driver: data.driver,
+      user: data.user,
+      accessToken: data.accessToken,
+      refreshToken: data.refreshToken,
+      expiresIn: data.expiresIn,
+    };
+  }
+
+  return { driver: data as DriverMe };
 }

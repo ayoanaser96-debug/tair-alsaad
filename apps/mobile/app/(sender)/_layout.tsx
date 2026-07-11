@@ -1,20 +1,24 @@
 import { Redirect, Stack } from 'expo-router';
 
 import { useAuthStore } from '@/stores/authStore';
+import { resolveAuthenticatedRedirect } from '@/lib/resolveDashboard';
 
 export default function SenderRootLayout() {
   const hydrated = useAuthStore((s) => s.hydrated);
   const token = useAuthStore((s) => s.accessToken);
   const user = useAuthStore((s) => s.user);
+  const appHome = useAuthStore((s) => s.appHomeSegment);
 
-  // Route-level guard (first line of defense; the 401 interceptor is the second).
-  // Wait for hydration before deciding so logged-out users never see sender UI.
   if (!hydrated) {
     return null;
   }
 
   if (!token || !user) {
     return <Redirect href="/(auth)/login" />;
+  }
+
+  if (appHome !== 'sender') {
+    return <Redirect href={resolveAuthenticatedRedirect({ token, user, appHome })} />;
   }
 
   return (

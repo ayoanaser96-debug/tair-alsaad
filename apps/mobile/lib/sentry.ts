@@ -5,9 +5,8 @@ export function initSentry(): void {
   if (!dsn?.trim()) return;
   try {
     // Lazy require avoids native linkage issues until a dev client/EAS build is used.
-     
     type SentryType = typeof import('@sentry/react-native');
-     
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const Sentry = require('@sentry/react-native') as SentryType;
      
     if (!Sentry?.init) return;

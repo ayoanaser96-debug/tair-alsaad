@@ -1,9 +1,10 @@
 import { useMemo } from 'react';
 
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, ScrollView, Text, View } from 'react-native';
+import { ActivityIndicator, Pressable, ScrollView, Text, View } from 'react-native';
 
 import { formatIQD } from '@tayralsaad/utils';
+import { router } from 'expo-router';
 
 import { Screen } from '@/components/ui/Screen';
 import { useAdminOverview } from '@/queries/admin';
@@ -45,13 +46,22 @@ export default function AdminOverviewTab() {
 
             <Text className="mt-10 text-lg font-semibold text-ink">{t('admin.recent')}</Text>
             <View className="mt-4 gap-3">
-              {recent.map((s, idx) => (
-                <View key={`${String(s.trackingCode ?? '')}-${idx}`} className="rounded-xl border border-border bg-surface px-3 py-3">
-                  <Text className="font-semibold text-ink">{s.trackingCode ?? '—'}</Text>
-                  <Text className="text-xs text-inkSoft">{[s.pickup?.city, s.dropoff?.city].filter(Boolean).join(' → ')}</Text>
-                  <Text className="mt-1 text-xs capitalize text-primary">{String(s.status ?? '')}</Text>
-                </View>
-              ))}
+              {recent.map((s, idx) => {
+                const sid = String((s as Record<string, unknown>)._id ?? (s as Record<string, unknown>).id ?? '');
+                return (
+                  <Pressable
+                    key={`${String(s.trackingCode ?? '')}-${idx}`}
+                    accessibilityRole="button"
+                    disabled={!sid}
+                    onPress={() => sid && router.push(`/(admin)/shipment/${sid}`)}
+                    className="rounded-xl border border-border bg-surface px-3 py-3 active:opacity-80"
+                  >
+                    <Text className="font-semibold text-ink">{s.trackingCode ?? '—'}</Text>
+                    <Text className="text-xs text-inkSoft">{[s.pickup?.city, s.dropoff?.city].filter(Boolean).join(' → ')}</Text>
+                    <Text className="mt-1 text-xs capitalize text-primary">{String(s.status ?? '')}</Text>
+                  </Pressable>
+                );
+              })}
             </View>
           </>
         ) : null}

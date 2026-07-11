@@ -8,6 +8,7 @@ import { notificationQueue } from '../queues/index.js';
 import { ShipmentModel } from '../models/Shipment.js';
 import { dispatchPendingShipmentToDrivers } from '../services/dispatchService.js';
 import { haversineKm } from '../services/geo.js';
+import { enrichShipmentDoc, enrichShipmentDocs } from '../services/shipmentPresenter.js';
 import { quoteShipment } from '../services/pricingService.js';
 import {
   emitDriverAssigned,
@@ -148,7 +149,7 @@ export const shipmentsCreateController = asyncHandler(async (req: Request, res: 
 
   emitShipmentStatus(shipment.id, 'pending');
 
-  sendOk(res, shipment, 201);
+  sendOk(res, await enrichShipmentDoc(shipment), 201);
 });
 
 export const shipmentsMineController = asyncHandler(async (req: Request, res: Response) => {
@@ -161,11 +162,11 @@ export const shipmentsMineController = asyncHandler(async (req: Request, res: Re
   }
 
   const [items, total] = await Promise.all([
-    ShipmentModel.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit),
+    ShipmentModel.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit).lean(),
     ShipmentModel.countDocuments(filter),
   ]);
 
-  sendOk(res, { items, total });
+  sendOk(res, { items: await enrichShipmentDocs(items), total });
 });
 
 /** Shipments where the authenticated user's phone matches `receiver.phone`. */
@@ -184,17 +185,18 @@ export const shipmentsIncomingController = asyncHandler(async (req: Request, res
   }
 
   const [items, total] = await Promise.all([
-    ShipmentModel.find(filter).sort({ updatedAt: -1 }).skip(skip).limit(limit),
+    ShipmentModel.find(filter).sort({ updatedAt: -1 }).skip(skip).limit(limit).lean(),
     ShipmentModel.countDocuments(filter),
   ]);
 
-  sendOk(res, { items, total });
+  sendOk(res, { items: await enrichShipmentDocs(items), total });
 });
 
 export const shipmentsGetController = asyncHandler(async (req: Request, res: Response) => {
   await shipmentForRoles(req.params.id, 'either', req.auth?.userId);
   const doc = await ShipmentModel.findById(req.params.id);
-  sendOk(res, doc);
+  if (!doc) throw new NotFoundError();
+  sendOk(res, await enrichShipmentDoc(doc));
 });
 
 export const shipmentsCancelController = asyncHandler(async (req: Request, res: Response) => {
@@ -331,9 +333,9 @@ export const shipmentsPickupController = asyncHandler(async (req: Request, res: 
   if (shipment.pickupOtp !== req.body.otp) {
     throw new HttpError(400, 'OTP_INVALID', 'رمز الاستلام غير صحيح', 'Invalid pickup code.');
   }
-  shipment.status = 'picked_up';
+  shipment.status = 'in_transit';
   shipment.proofs.pickupPhotoUrl = req.body.photoUrl;
-  shipment.statusHistory.push(pushedHistory('picked_up'));
+  shipment.statusHistory.push(pushedHistory('in_transit'));
   await shipment.save();
   emitShipmentStatus(shipment.id, shipment.status);
   sendOk(res, shipment);
@@ -341,7 +343,7 @@ export const shipmentsPickupController = asyncHandler(async (req: Request, res: 
 
 export const shipmentsArrivedDropController = asyncHandler(async (req: Request, res: Response) => {
   const shipment = await shipmentForRoles(req.params.id, 'driver', req.auth?.userId);
-  if (!['picked_up', 'in_transit'].includes(shipment.status)) {
+  if (!['in_transit'].includes(shipment.status)) {
     throw new ConflictError('INVALID_STATE', 'حالة غير صالحة', 'Invalid state.');
   }
 

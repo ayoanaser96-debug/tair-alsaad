@@ -20,6 +20,8 @@ import {
   postApplyDriver,
   uploadShipmentPhoto,
 } from '@/queries/driver';
+import { normalizeUser } from '@/lib/types';
+import { useAuthStore } from '@/stores/authStore';
 
 type VehType = 'motorcycle' | 'car' | 'van';
 
@@ -40,8 +42,17 @@ export default function DriverApplyScreen() {
 
   const mut = useMutation({
     mutationFn: postApplyDriver,
-    onSuccess: async (d) => {
-      qc.setQueryData(driverKeys.me(), d);
+    onSuccess: async (result) => {
+      const { driver, user, accessToken, refreshToken } = result;
+      if (user && accessToken && refreshToken) {
+        await useAuthStore.getState().setSession({
+          accessToken,
+          refreshToken,
+          user: normalizeUser(user),
+          initialShell: 'driver',
+        });
+      }
+      qc.setQueryData(driverKeys.me(), driver);
       try {
         const fresh = await fetchDriverMe();
         qc.setQueryData(driverKeys.me(), fresh);

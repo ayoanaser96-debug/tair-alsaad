@@ -2,8 +2,8 @@ import { useState } from 'react';
 
 import { Redirect } from 'expo-router';
 
-import { authenticatedTabsHref } from '@/lib/loginIntent';
 import { BootSplash } from '@/screens/BootSplash';
+import { resolveAuthenticatedRedirect } from '@/lib/resolveDashboard';
 import { useAuthStore } from '@/stores/authStore';
 
 export default function RootIndex() {
@@ -21,23 +21,6 @@ export default function RootIndex() {
     return <BootSplash sessionReady={hydrated} onComplete={() => setBootComplete(true)} />;
   }
 
-  if (!token || !user) {
-    return <Redirect href="/welcome" />;
-  }
-
-  const apiRole = String(user.role ?? '').toLowerCase();
-
-  if (apiRole === 'driver') {
-    return <Redirect href={authenticatedTabsHref('driver')} />;
-  }
-
-  if (apiRole === 'admin') {
-    return <Redirect href={authenticatedTabsHref('admin')} />;
-  }
-
-  if (appHome === null || appHome === undefined) {
-    return <Redirect href="/select-role" />;
-  }
-
-  return <Redirect href={authenticatedTabsHref(appHome)} />;
+  const target = resolveAuthenticatedRedirect({ token, user, appHome });
+  return <Redirect href={target} />;
 }

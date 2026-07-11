@@ -3,10 +3,9 @@ import type { UseMutationOptions } from '@tanstack/react-query';
 import { useMutation } from '@tanstack/react-query';
 
 import type { ApiUser } from '@/lib/types';
+import { normalizeUser } from '@/lib/types';
 
 import { api, unwrapResponse } from '@/lib/api';
-
-import { normalizeUser } from '@/lib/types';
 
 export type OtpVerifyResult = {
   user: ApiUser;
@@ -16,22 +15,26 @@ export type OtpVerifyResult = {
 };
 
 export function useRequestOtp(
-  opts?: UseMutationOptions<{ expiresIn: number }, Error, { phone: string }>,
+  opts?: UseMutationOptions<{ expiresIn: number; devCode?: string }, Error, { phone: string }>,
 ) {
   return useMutation({
     mutationFn: async (payload: { phone: string }) => {
       const res = await api.post('/auth/otp/request', payload);
-      return unwrapResponse<{ expiresIn: number }>(res.data);
+      return unwrapResponse<{ expiresIn: number; devCode?: string }>(res.data);
     },
     ...opts,
   });
 }
 
 export function useVerifyOtp(
-  opts?: UseMutationOptions<OtpVerifyResult, Error, { phone: string; code: string; name?: string }>,
+  opts?: UseMutationOptions<
+    OtpVerifyResult,
+    Error,
+    { phone: string; code: string; name?: string; role?: 'sender' | 'driver' }
+  >,
 ) {
   return useMutation({
-    mutationFn: async (payload: { phone: string; code: string; name?: string }) => {
+    mutationFn: async (payload: { phone: string; code: string; name?: string; role?: 'sender' | 'driver' }) => {
       const res = await api.post('/auth/otp/verify', payload);
       const data = unwrapResponse<{
         user: Record<string, unknown>;

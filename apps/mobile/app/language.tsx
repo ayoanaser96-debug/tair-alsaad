@@ -1,7 +1,7 @@
 import * as SecureStore from 'expo-secure-store';
 import i18next from '@/lib/i18n';
 import { router } from 'expo-router';
-import { Alert, DevSettings, I18nManager, Pressable, Text, View } from 'react-native';
+import { Alert, DevSettings, I18nManager, Pressable, Text } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { Screen } from '@/components/ui/Screen';
